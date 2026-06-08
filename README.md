@@ -1,122 +1,104 @@
-# DOCX Course Report Writer
+<p align="center">
+  <img src="assets/icon.png" width="112" alt="DOCX Course Report Writer icon">
+</p>
 
-[![Skill](https://img.shields.io/badge/Codex-Skill-111827)](#quick-start)
-[![DOCX](https://img.shields.io/badge/output-DOCX%20%2B%20PDF-2563eb)](#quality-gates)
-[![Superpowers](https://img.shields.io/badge/workflow-Superpowers-7c3aed)](#superpowers-mapping)
-[![Windows Word](https://img.shields.io/badge/Word-COM%20field%20update-0f766e)](#quick-start)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+<h1 align="center">DOCX Course Report Writer</h1>
 
-![DOCX Course Report Writer Poster](assets/poster.png)
+<p align="center">
+  面向中文课程报告、实验报告、课程论文与 LaTeX 转 Word 的 Codex 技能。
+  <br>
+  从材料、证据、图表、模板到 DOCX/PDF 交付，按工程化流程生成可检查、可复现、可提交的报告。
+</p>
 
-<div align="center">
+<p align="center">
+  语言 / Language:
+  <a href="#zh-cn">简体中文</a> |
+  <a href="#english">English</a>
+</p>
 
-![Skill Icon](assets/icon.png)
+<p align="center">
+  <a href="#quick-start"><img src="https://img.shields.io/badge/Codex-Skill-111827" alt="Codex Skill"></a>
+  <a href="#quality-gates"><img src="https://img.shields.io/badge/output-DOCX%20%2B%20PDF-2563eb" alt="DOCX and PDF"></a>
+  <a href="#superpowers-workflow"><img src="https://img.shields.io/badge/workflow-Superpowers-7c3aed" alt="Superpowers"></a>
+  <a href="#word-toc-pdf"><img src="https://img.shields.io/badge/Word-COM%20field%20update-0f766e" alt="Word COM"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a>
+</p>
 
-**A Codex skill for building, repairing, and verifying Chinese coursework DOCX reports with source-first evidence, Word TOC handling, figure QA, and Actor/Critic review.**
-
-**面向中文课程报告、实验报告、课程论文与模板迁移的 Codex 技能：强调真实证据、自动目录、图表审查、文生图边界与 Actor/Critic 双智能体迭代。**
-
-</div>
+<p align="center">
+  <img src="assets/poster.png" width="820" alt="DOCX Course Report Writer poster">
+</p>
 
 ---
 
-## English
+<a id="zh-cn"></a>
 
-### What This Skill Is
+## 简体中文
 
-`docx-course-report-writer` is a local Codex skill for end-to-end Chinese academic report work. It helps an agent turn assignments, templates, LaTeX reports, source code, screenshots, experiment logs, citations, and figure assets into a formal `.docx` report package.
+### 这是什么
 
-The skill is designed for situations where a simple text draft is not enough. It focuses on the things that usually break real course-report deliverables:
+`docx-course-report-writer` 是一个本地 Codex skill，用于创建、修复、迁移和验收中文课程类 DOCX 报告。它适用于课程报告、实验报告、课程论文、读书报告、文献综述、LaTeX 转 DOCX、模板迁移、图表密集型报告和用户反馈后的返修。
 
-- stale template content
-- fake or weak evidence
-- broken Word table of contents
-- incorrect score/result claims
-- AI-generated images with wrong text
-- TikZ/flowchart arrows that overlap or point incorrectly
-- screenshots that show error pages rather than real evidence
-- DOCX files that pass text checks but fail rendered-page QA
+它不是单纯的“润色文字”工具，而是把报告当作一个可验证交付物处理：
 
-The workflow is intentionally inspired by [obra/superpowers](https://github.com/obra/superpowers): clarify the target, write a concrete plan, execute in bounded phases, debug from root cause, review the actual artifact, and verify before claiming completion. This skill adapts that discipline to Chinese DOCX report production.
+- 先锁定任务书、模板、证据和交付物
+- 再生成或迁移正文、表格、图、引用和目录
+- 最后检查 DOCX 包、Word TOC、PDF 页面渲染、图表可读性和事实口径
 
-### Highlights
+### 它解决的问题
 
-- **Source-first workflow**: draft, references, image attribution, logs, screenshots, scripts, DOCX, and PDF stay traceable.
-- **Mandatory Actor/Critic loop**: every use requires at least two full `Actor -> Critic` cycles; there is no maximum iteration count.
-- **Superpowers integration**: if `superpowers:*` skills are installed, the skill requires invoking the relevant Superpowers workflow before acting.
-- **Fact ledger**: final scores, filenames, model names, dataset sizes, dates, and result boundaries are tracked before writing claims.
-- **Figure ledger**: every figure records role, method, source/evidence, attribution, and Review And Revise status.
-- **AI-image safety**: the user must be asked whether to enable text-to-image and how many images to generate; default maximum is 3.
-- **Arrow audit**: TikZ, flowcharts, pipelines, architecture diagrams, timelines, and mechanism diagrams must be reviewed after rendering, especially arrows.
-- **Word COM field update**: on Windows, the helper script can update TOC/fields and export PDF through Microsoft Word.
-- **Integrated default DOCX template**: if no user template is supplied, the skill uses `skill-assets/default-course-report-template.docx`; user-supplied templates always take precedence.
-- **Rendered QA**: final checks include DOCX package/text checks and rendered PDF/page inspection when possible.
+真实课程报告经常不是“写得不够通顺”，而是这些地方出问题：
 
-### Repository Structure
+- 模板里的旧主题、静态目录、占位正文残留
+- Word 目录不是自动 TOC，或导出 PDF 后目录没有更新
+- 图表、截图、AI 图片、TikZ 图在最终页面里不可读
+- 流程图箭头交叉、遮挡、指错或与模块重叠
+- 图中文字贴边、压线、与箭头或其他标签碰撞
+- 实验结果、分数、文件名、模型名和用户最新修正不一致
+- AI 生成图里出现错误校名、公司名、数字或伪造证据
+- 只检查 DOCX 文本，没有检查最终 PDF 页面
 
-```text
-.
-├── SKILL.md                         # Main skill entrypoint
-├── references/                      # Detailed workflow, QA, style, figures, sources, Superpowers adapter
-├── scripts/                         # Reusable build, Word-field, QA, and screenshot annotation helpers
-├── skill-assets/                    # Original skill templates/assets
-├── assets/
-│   ├── icon.png                     # Generated README icon
-│   └── poster.png                   # Generated README poster
-├── examples/
-│   └── sample-report/               # Reproducible source fixture for the checked DOCX/PDF sample
-└── docs/
-    ├── testing-report.md            # Local verification evidence
-    ├── historical-failures.md       # Failure scenarios mined from recent usage
-    ├── audit-notes.md               # Actor/Critic audit notes
-    ├── sample-report.docx           # Generated sample DOCX
-    ├── sample-report.pdf            # Word-exported PDF
-    ├── sample-rendered-page-1.png   # Rendered TOC page
-    └── sample-rendered-page-2.png   # Rendered body/figure page
-```
+### 核心亮点
 
-### When To Use
+| 能力 | 说明 |
+|---|---|
+| Source-first 工作区 | 推荐维护 `report-draft.md`、`references.md`、`image-attributions.md`、日志、截图、图源、脚本、DOCX 和 PDF，便于返修和复现 |
+| 默认 DOCX 模板 | 用户未提供模板时自动使用 `skill-assets/default-course-report-template.docx`；用户提供模板时永远优先使用用户模板 |
+| Superpowers 工作流 | 安装了 Superpowers 时必须先调用对应流程技能，例如规划、调试、执行、验证 |
+| Actor/Critic 双智能体 | 每次使用必须创建或激活 Actor 与 Critic，至少两轮 `Actor -> Critic`，无迭代上限 |
+| Fact ledger | 分数、文件名、模型名、数据集大小、日期、最终/中间结果口径都要有来源和验证记录 |
+| Figure ledger | 每张图记录角色、来源、制作方式、归因和 Review And Revise 状态 |
+| 文生图边界 | 使用 AI 文生图前必须询问用户是否开启，以及最多生成/插入几张；默认最多 3 张 |
+| 严格图形 QA | TikZ、流程图、架构图、时间线和机制图必须审查箭头、文字排版、最终缩放效果 |
+| Word 目录与 PDF | Windows 下优先通过 Word COM 更新字段、目录和页码，再导出 PDF |
 
-Use this skill when Codex handles:
+<a id="quick-start"></a>
 
-- Chinese course reports
-- experiment reports
-- course papers
-- reading reports
-- literature reviews
-- LaTeX-to-DOCX conversion
-- DOCX template migration
-- report repair after user feedback
-- figure-heavy academic reports
-- submission-ready report folders
+### 快速开始
 
-Do not use it for legal drafting, arbitrary OOXML surgery, generic forms, or tracked-change review pipelines unrelated to course reports.
-
-### Quick Start
-
-Install or copy this folder into your Codex skills directory:
+将仓库复制到 Codex skills 目录：
 
 ```powershell
 Copy-Item -Recurse . "$env:USERPROFILE\.codex\skills\docx-course-report-writer"
 ```
 
-Then ask Codex to use the skill:
+然后在 Codex 中使用：
 
 ```text
 请使用 docx-course-report-writer，把我的课程报告材料整理成可提交 DOCX，并导出 PDF 做最终检查。
 ```
 
-For a source-first report, prepare:
+推荐准备的源文件：
 
 ```text
 report-draft.md
 references.md
 image-attributions.md
-raw logs or screenshots
+raw logs 或 screenshots
 figure sources
+assignment/template/rubric
 ```
 
-Run the included reproducible sample:
+运行内置样例：
 
 ```powershell
 python scripts/build_report.py `
@@ -126,9 +108,26 @@ python scripts/build_report.py `
   --root examples\sample-report
 ```
 
-When no `--template` is provided, the builder uses `skill-assets/default-course-report-template.docx` as the default style/page-setup template and clears stale body content. Use `--template path\to\template.docx` when the user provides a template. Use `--no-default-template` only when a blank document is explicitly desired.
+如果没有传入 `--template`，脚本会自动使用 `skill-assets/default-course-report-template.docx` 作为样式和页面设置模板，并默认清空模板正文，避免旧目录、`XXXX`、示例章节等残留。
 
-Run DOCX package QA:
+用户提供模板时使用：
+
+```powershell
+python scripts/build_report.py `
+  --template path\to\user-template.docx `
+  --draft path\to\report-draft.md `
+  --refs path\to\references.md `
+  --output path\to\report.docx `
+  --root path\to\working-folder
+```
+
+只有明确想从空白文档开始时才使用：
+
+```powershell
+python scripts/build_report.py --no-default-template ...
+```
+
+### DOCX QA
 
 ```powershell
 python scripts/qa_docx_report.py `
@@ -139,223 +138,247 @@ python scripts/qa_docx_report.py `
   --min-heading1 1
 ```
 
-Update Word fields and export PDF on Windows:
+<a id="word-toc-pdf"></a>
+
+### Word 目录与 PDF
+
+Windows 上推荐用 Word COM 更新目录、字段和页码，并导出 PDF：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass `
   -File scripts/update_word_fields.ps1 `
-  -DocxPath path\to\report.docx `
+  -DocxPath output\sample-report.docx `
+  -ExportPdf `
+  -UseAsciiTemp
+```
+
+`-UseAsciiTemp` 用于规避中文路径和 Word COM 自动化中的编码问题。
+
+### 工作流
+
+1. 检查并调用 Superpowers。
+2. 读取任务书、模板、源文件和用户约束。
+3. 询问 AI 文生图是否开启，以及最多生成/插入几张。
+4. 建立 run record、fact ledger、figure ledger。
+5. 创建或激活 Actor 与 Critic。
+6. Actor 生成或修复报告源文件、图表和 DOCX。
+7. Critic 审查真实产物，而不是只审查计划。
+8. 至少完成两轮 `Actor -> Critic`。
+9. 更新 Word 字段和 TOC，导出 PDF。
+10. 检查最终 DOCX/PDF、图表页、目录页、表格页和代码块页。
+
+<a id="superpowers-workflow"></a>
+
+### Superpowers 工作流
+
+| 场景 | Superpowers skill |
+|---|---|
+| 多步骤报告任务需要规划 | `superpowers:writing-plans` |
+| 执行已有计划 | `superpowers:subagent-driven-development` 或 `superpowers:executing-plans` |
+| 修复坏 DOCX/PDF、坏目录、坏图、旧事实口径 | `superpowers:systematic-debugging` |
+| 修改生成脚本或修复脚本 bug | `superpowers:test-driven-development` |
+| 声称完成前 | `superpowers:verification-before-completion` |
+
+如果 Superpowers 不可用，使用 `references/superpowers-adapter.md` 中的降级流程，并在 run record 中记录。
+
+<a id="quality-gates"></a>
+
+### 质量门
+
+交付前必须通过或明确说明限制：
+
+- 证据真实性：实验结果、截图、日志和数据不能编造
+- 文件归属：最终 DOCX/PDF 和生成脚本由 Orchestrator 统一集成
+- 模板残留：没有旧主题、旧截图、旧目录、占位符、无关媒体
+- Word 字段：标题样式、TOC 字段、页码和目录经过更新
+- 事实口径：分数、文件名、模型名、日期和最终结果一致
+- 图形语义：TikZ/流程图/架构图含义正确
+- 箭头审查：箭头不交叉、不遮挡、不指错、不贴近到影响阅读
+- 文字排版审查：标签不贴边、不压线、不碰撞箭头/模块/其他标签
+- PDF 渲染：目录页、图表页、表格页、代码块页经过最终检查
+
+### 图形审验规则
+
+TikZ、流程图、pipeline、架构图、时间线和机制图必须在渲染后、插入 DOCX/PDF 后各做一次 `Review And Revise`。
+
+这些情况一律拒收：
+
+- 箭头穿过模块、文字、图例、caption 或证据区域
+- 箭头头部被裁剪、被边框盖住、太小、指错对象
+- 多条箭头距离太近，读者无法分辨路径
+- 文本标签贴边、压线、碰撞箭头、碰撞模块或碰撞其他标签
+- 节点文字过长导致行距、留白和视觉重心失衡
+- 图只在源文件里看起来还行，但缩放到 Word/PDF 后变得拥挤
+
+修复顺序：
+
+1. 增加留白、节点距离、节点宽度和内边距。
+2. 缩短标签，把解释性文字移到 caption、表格或正文。
+3. 使用显式 anchors、正交路径、中间坐标、`shorten >=` 和 `shorten <=`。
+4. 拆成多张小图。
+5. 两次源级修复仍不清晰时，重画更简单的结构。
+
+### 目录结构
+
+```text
+.
+├── SKILL.md
+├── references/
+├── scripts/
+├── skill-assets/
+│   ├── default-course-report-template.docx
+│   ├── report-draft-template.md
+│   ├── references-template.md
+│   └── image-attributions-template.md
+├── assets/
+│   ├── icon.png
+│   └── poster.png
+├── examples/
+│   └── sample-report/
+└── docs/
+    ├── testing-report.md
+    ├── historical-failures.md
+    ├── audit-notes.md
+    ├── sample-report.docx
+    ├── sample-report.pdf
+    ├── sample-rendered-page-1.png
+    └── sample-rendered-page-2.png
+```
+
+### 已验证内容
+
+本仓库包含可复现样例和测试记录：
+
+- [docs/testing-report.md](docs/testing-report.md)
+- [docs/sample-report.docx](docs/sample-report.docx)
+- [docs/sample-report.pdf](docs/sample-report.pdf)
+- [docs/sample-rendered-page-1.png](docs/sample-rendered-page-1.png)
+- [docs/sample-rendered-page-2.png](docs/sample-rendered-page-2.png)
+
+验证覆盖：
+
+- Python 脚本编译
+- 默认模板构建
+- 缺失 `Heading 2/3` 时自动补齐 Word 标题样式
+- DOCX package/text QA
+- 自动 TOC 字段
+- 表格、图片、标题统计
+- Word COM 字段更新
+- PDF 导出
+- PDF 关键事实口径检查
+- 首屏非空检查
+- TikZ/流程图箭头与文字排版审验规则
+
+### 设计来源
+
+README 首屏结构参考了 [luongnv89/claude-howto](https://github.com/luongnv89/claude-howto) 的方式：顶部集中展示 logo、标题、徽章、语言入口和一句话定位，再在正文展开问题、解决方案、快速开始和验证证据。
+
+工作流思想参考 [obra/superpowers](https://github.com/obra/superpowers)：先澄清和规划，再分阶段执行；遇到问题先定位根因；完成前必须用真实产物和命令结果验证。
+
+---
+
+## English
+
+### What It Is
+
+`docx-course-report-writer` is a local Codex skill for creating, repairing, migrating, and verifying Chinese coursework DOCX reports. It is designed for course reports, lab reports, course papers, reading reports, literature reviews, LaTeX-to-DOCX conversion, template migration, figure-heavy Word reports, and submission-ready report packages.
+
+It treats a report as an engineering deliverable, not just a writing task: source files, evidence, figures, citations, Word fields, DOCX output, PDF rendering, and final QA all stay traceable.
+
+### Highlights
+
+| Capability | Description |
+|---|---|
+| Source-first workspace | Keep draft, references, image attribution, logs, screenshots, figure sources, scripts, DOCX, and PDF reproducible |
+| Default DOCX template | Uses `skill-assets/default-course-report-template.docx` when no user template is supplied; user templates always take precedence |
+| Superpowers workflow | Invokes relevant Superpowers skills for planning, debugging, execution, and verification when installed |
+| Actor/Critic loop | Requires at least two complete `Actor -> Critic` cycles; no maximum iteration count |
+| Fact ledger | Tracks scores, filenames, model names, dataset sizes, dates, and final/intermediate claims |
+| Figure ledger | Tracks every figure's role, source, method, attribution, and Review And Revise status |
+| AI-image safety | Requires user opt-in and a maximum generation/insertion count; default maximum is 3 |
+| Strict diagram QA | Rejects unclear arrows, arrow overlaps, label collisions, cramped nodes, and bad final-scale rendering |
+| Word COM export | Updates Word fields/TOC and exports PDF on Windows |
+
+### Quick Start
+
+Copy this repository into your Codex skills folder:
+
+```powershell
+Copy-Item -Recurse . "$env:USERPROFILE\.codex\skills\docx-course-report-writer"
+```
+
+Run the included sample:
+
+```powershell
+python scripts/build_report.py `
+  --draft examples\sample-report\report-draft.md `
+  --refs examples\sample-report\references.md `
+  --output output\sample-report.docx `
+  --root examples\sample-report
+```
+
+Run DOCX QA:
+
+```powershell
+python scripts/qa_docx_report.py `
+  --docx output\sample-report.docx `
+  --require-toc `
+  --min-images 1 `
+  --min-tables 2 `
+  --min-heading1 1
+```
+
+Update fields and export PDF with Microsoft Word:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File scripts/update_word_fields.ps1 `
+  -DocxPath output\sample-report.docx `
   -ExportPdf `
   -UseAsciiTemp
 ```
 
 ### Workflow
 
-The main run card is:
-
-1. Check and invoke Superpowers when installed.
-2. Lock scope, deliverables, evidence, template constraints, and AI-image permission/count.
-3. Create a fact ledger and requirement-to-evidence checklist.
-4. Create or activate `Actor` and `Critic`.
-5. Run `Actor -> Critic` cycle 1.
-6. Fix source-level defects.
-7. Run `Actor -> Critic` cycle 2.
-8. Continue iterating while blocking defects remain.
-9. Update Word fields/TOC and export PDF.
-10. Inspect actual DOCX/PDF artifacts before final delivery.
-
-### Superpowers Mapping
-
-When Superpowers is available, this skill routes work as follows:
-
-| Situation | Superpowers skill |
-|---|---|
-| Need to plan multi-step report work | `superpowers:writing-plans` |
-| Execute an existing plan | `superpowers:subagent-driven-development` or `superpowers:executing-plans` |
-| Fix a failed report, bad DOCX/PDF, broken TOC, bad diagram, or stale result | `superpowers:systematic-debugging` |
-| Implement report-generation scripts or bug fixes | `superpowers:test-driven-development` when tests are feasible |
-| Claim the work is complete | `superpowers:verification-before-completion` |
-
-If Superpowers is not installed, use `references/superpowers-adapter.md` as a fallback.
+1. Invoke Superpowers when installed.
+2. Read assignment, template, source files, and user constraints.
+3. Ask whether AI text-to-image is enabled and how many images may be generated/inserted.
+4. Create run record, fact ledger, and figure ledger.
+5. Create or activate Actor and Critic.
+6. Complete at least two `Actor -> Critic` cycles.
+7. Update Word fields/TOC and export PDF.
+8. Inspect the actual DOCX/PDF before delivery.
 
 ### Quality Gates
 
 The skill blocks delivery unless these are satisfied or explicitly documented:
 
-- Evidence authenticity gate
-- File ownership gate
-- Template residue gate
-- Word field / TOC gate
-- Fact ledger gate
-- Figure semantics gate
-- Strict diagram arrow and text-layout gate
-- External screenshot gate
-- Analysis depth gate
-- Rendered visual QA gate
+- evidence authenticity
+- file ownership
+- template residue removal
+- Word field / TOC update
+- fact ledger consistency
+- figure semantics
+- arrow audit
+- text-layout audit
+- rendered visual QA
 
-The generated sample in `docs/` was checked with:
-
-- Python compile checks for helper scripts
-- DOCX package/text QA
-- Word COM field update
-- Word PDF export through an ASCII temp path
-- PDF text extraction for result values and forbidden stale score tokens
-- PDF page rendering through `pdftoppm`
-- Visual inspection of TOC and figure pages
-
-See `docs/testing-report.md`.
-
-### Included Sample
-
-The repository contains both source inputs and generated outputs:
-
-| Path | Role |
-|---|---|
-| `examples/sample-report/report-draft.md` | Source-first report draft |
-| `examples/sample-report/references.md` | Reference ledger |
-| `examples/sample-report/image-attributions.md` | Figure attribution ledger |
-| `examples/sample-report/assets/skill-flow.png` | Reviewed diagram used by the sample |
-| `docs/sample-report.docx` | Generated DOCX artifact |
-| `docs/sample-report.pdf` | Word-exported PDF artifact |
-| `docs/sample-rendered-page-1.png` | Rendered page inspection evidence |
-| `docs/sample-rendered-page-2.png` | Rendered page inspection evidence |
-
-### Diagram Quality Policy
-
-TikZ, flowcharts, pipelines, architecture diagrams, timelines, and mechanism figures must pass a final `Review And Revise` stage after rendering and again after insertion into DOCX/PDF. The gate rejects:
-
-- arrows crossing through boxes, labels, captions, legends, or evidence regions
-- hidden, clipped, ambiguous, or wrong-target arrowheads
-- labels touching or overlapping borders, arrows, arrowheads, other labels, legends, or captions
-- cramped nodes caused by long text
-- diagrams that only look acceptable before final DOCX/PDF scaling
-
-If two source-level revisions cannot fix a crowded diagram, the skill requires splitting or rebuilding the diagram instead of continuing small arrow tweaks.
-
----
-
-## 中文说明
-
-### 这个 Skill 是什么
-
-`docx-course-report-writer` 是一个面向 Codex 的本地技能包，用于完成中文课程报告、实验报告、课程论文、读书报告、综述、LaTeX 转 DOCX、模板替换和报告返修等任务。
-
-它不是单纯“润色文字”的技能，而是把课程报告当成一个可验证的工程交付：读取任务书、锁定证据、生成或迁移内容、插入图表、更新 Word 目录、导出 PDF，并检查最终页面。
-
-### 核心特点
-
-- **源文件优先**：先维护 `report-draft.md`、引用、图像归因、日志、截图、图源和脚本，再生成 DOCX/PDF。
-- **强制 Actor/Critic 双智能体**：每次使用至少两轮 `Actor -> Critic`，没有迭代上限。
-- **强制 Superpowers 调用门**：如果安装了 Superpowers 插件或技能，必须先调用对应流程技能。
-- **事实台账**：分数、数据集大小、模型名、文件名、日期、最终/中间结果口径都要进入 fact ledger。
-- **图像台账**：每张图都记录角色、来源、制作方式、归因和审查状态。
-- **文生图边界**：使用 AI 文生图前必须询问用户是否开启，以及最多生成/插入几张；默认最多 3 张。
-- **箭头审查**：TikZ、流程图、架构图、时间线、机制图必须进入 Review And Revise，重点检查箭头是否交叉、遮挡、指错或与模块重叠。
-- **Word 自动目录**：使用真实 Word Heading 样式和 TOC 字段；Windows 下优先通过 Word COM 更新字段并导出 PDF。
-- **内置默认 DOCX 模板**：用户没有提供模板时，默认使用 `skill-assets/default-course-report-template.docx`；用户提供模板时永远优先使用用户模板。
-- **渲染级 QA**：不仅检查 DOCX 文本，还要检查 PDF 或页面渲染，避免目录、表格、图片、代码块在最终页面出问题。
-
-### 适用场景
-
-适合：
-
-- 中文课程报告
-- 实验报告
-- 课程论文
-- 文献综述
-- 读书报告
-- LaTeX 报告迁移到 Word 模板
-- 旧 DOCX 模板替换
-- 带大量截图、图表、代码块的报告
-- 用户指出问题后的报告返修
-
-不适合：
-
-- 法律文书
-- 与报告无关的复杂 OOXML 手术
-- 表单/内容控件工作流
-- 通用文档审阅流水线
-
-### 使用方式
-
-将仓库复制到 Codex skills 目录：
-
-```powershell
-Copy-Item -Recurse . "$env:USERPROFILE\.codex\skills\docx-course-report-writer"
-```
-
-然后在 Codex 中说明任务，例如：
+### Repository Structure
 
 ```text
-请使用 docx-course-report-writer，将我的课程报告材料整理成正式 DOCX，并检查 PDF 页面效果。
+.
+├── SKILL.md
+├── references/
+├── scripts/
+├── skill-assets/
+├── assets/
+├── examples/
+└── docs/
 ```
 
-推荐的工作目录材料：
+### Verification
 
-```text
-report-draft.md
-references.md
-image-attributions.md
-原始日志
-真实截图
-图源文件
-生成脚本
-```
-
-### 最重要的强制规则
-
-1. 不允许编造实验结果。
-2. 要求真实截图时，必须截取真实终端或应用窗口。
-3. AI 图片不能替代真实证据。
-4. AI 图片中如果包含事实文字，必须先写白名单，生成后再检查。
-5. 目录必须是真实 Word TOC 字段，不允许用静态文字假装目录。
-6. 每次使用必须创建或激活 Actor 与 Critic。
-7. 至少两轮 Actor/Critic，发现阻塞问题继续迭代。
-8. 所有流程图、架构图、TikZ 图和时间线必须做最终图像审查，重点检查箭头。
-9. TikZ/流程图文字也必须审查：标签不能贴边、压线、碰撞箭头、遮挡模块或与其他标签重叠。
-10. 用户反馈就是新的失败测试，必须回到源文件、脚本或图源修复。
-11. 交付前必须检查实际 DOCX/PDF，而不是只检查计划。
-
-### 脚本说明
-
-| Script | Purpose |
-|---|---|
-| `scripts/build_report.py` | 从轻量 Markdown 草稿构建 DOCX |
-| `scripts/qa_docx_report.py` | 检查 DOCX 文本、TOC、图片、表格、标题和残留内容 |
-| `scripts/update_word_fields.ps1` | 通过 Word COM 更新 TOC/字段并导出 PDF |
-| `scripts/annotate_screenshot.py` | 给真实截图添加红框和透明红色标签 |
-
-### 已验证内容
-
-本仓库包含一个测试样例：
-
-- [sample-report.docx](docs/sample-report.docx)
-- [sample-report.pdf](docs/sample-report.pdf)
-- [sample-rendered-page-1.png](docs/sample-rendered-page-1.png)
-- [sample-rendered-page-2.png](docs/sample-rendered-page-2.png)
-
-该样例覆盖：
-
-- 自动目录字段
-- Word Heading 样式
-- 表格
-- 插图与图注来源
-- 代码块
-- `99.69% / 99.61%` 事实口径
-- 禁止残留 `100%` 结果口径
-- PDF 页面渲染检查
-- 首页非空检查
-- 箭头 Review And Revise
-
-详情见 [docs/testing-report.md](docs/testing-report.md)。
-
-### 设计理念
-
-这个技能参考了高星 agent skill 项目的组织方式：主 `SKILL.md` 保持短入口，复杂细节放到 `references/`；执行时不是靠“记住规则”，而是通过 run record、fact ledger、figure ledger、Actor/Critic loop 和 QA checklist 强制落地。
-
-它尤其强调：报告质量不是语言流畅度，而是证据、结构、图表、引用、目录、事实口径和最终渲染共同通过检查。
-
-它也吸收了 [Superpowers](https://github.com/obra/superpowers) 的任务执行思想：先澄清和规划，再分阶段执行；遇到问题先定位根因；完成前必须用真实产物和命令结果验证，而不是只给出主观判断。
+See [docs/testing-report.md](docs/testing-report.md). The checked sample covers script compilation, default template behavior, Word heading/TOC handling, DOCX QA, Word COM PDF export, PDF text checks, rendered-page inspection, and stricter TikZ/diagram QA rules.
 
 ---
 
