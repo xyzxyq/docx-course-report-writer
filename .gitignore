@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+~$*.docx
+rendered-pages/
+tmp/
+output/
