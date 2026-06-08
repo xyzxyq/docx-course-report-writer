@@ -12,6 +12,8 @@ The release repository includes the final sample artifacts under `docs/`.
 
 The release repository was also re-run from `examples/sample-report/` after packaging. The rebuilt `output/sample-report.docx` passed package QA, Word COM field update, PDF export, PDF text checks, and rendered first-page nonblank inspection.
 
+On 2026-06-08, the default template integration was regression-tested. `scripts/build_report.py` was run without `--template`; it selected `skill-assets/default-course-report-template.docx`, cleared stale template body content, generated DOCX successfully, passed DOCX QA with stale terms such as `XXXX`, `图3-1`, and `宋体，小四号`, and exported PDF through Word COM.
+
 ## Historical Issues Covered
 
 - AI image text hallucination or unrelated labels.
@@ -121,8 +123,11 @@ Release-package re-run from `examples/sample-report/`:
 ## Fixes Made During Testing
 
 - `scripts/build_report.py` no longer inserts an unconditional page break before TOC. A pre-TOC page break is now inserted only when a template cover/opening is preserved.
+- `scripts/build_report.py` now uses `skill-assets/default-course-report-template.docx` when no user template is supplied, while clearing stale template body content by default.
+- `scripts/build_report.py` now creates missing `Heading 1/2/3` paragraph styles when a DOCX template does not contain them, preserving automatic TOC compatibility.
 - `references/report-qa-checklist.md` now includes a first-rendered-page blank check.
 - `references/failure-patterns.md` now includes the accidental blank first page failure pattern.
+- TikZ/diagram QA was tightened with strict arrow and text-layout rejection criteria.
 
 ## Known Notes
 

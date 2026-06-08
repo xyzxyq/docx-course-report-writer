@@ -16,6 +16,8 @@ python scripts\build_report.py `
   --root examples\sample-report
 ```
 
+This uses `skill-assets/default-course-report-template.docx` when no `--template` is provided. Pass `--template path\to\user-template.docx` to use a user-supplied template, or `--no-default-template` only when intentionally building from a blank document.
+
 ## Check
 
 ```powershell

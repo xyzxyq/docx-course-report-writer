@@ -49,6 +49,7 @@ The workflow is intentionally inspired by [obra/superpowers](https://github.com/
 - **AI-image safety**: the user must be asked whether to enable text-to-image and how many images to generate; default maximum is 3.
 - **Arrow audit**: TikZ, flowcharts, pipelines, architecture diagrams, timelines, and mechanism diagrams must be reviewed after rendering, especially arrows.
 - **Word COM field update**: on Windows, the helper script can update TOC/fields and export PDF through Microsoft Word.
+- **Integrated default DOCX template**: if no user template is supplied, the skill uses `skill-assets/default-course-report-template.docx`; user-supplied templates always take precedence.
 - **Rendered QA**: final checks include DOCX package/text checks and rendered PDF/page inspection when possible.
 
 ### Repository Structure
@@ -125,6 +126,8 @@ python scripts/build_report.py `
   --root examples\sample-report
 ```
 
+When no `--template` is provided, the builder uses `skill-assets/default-course-report-template.docx` as the default style/page-setup template and clears stale body content. Use `--template path\to\template.docx` when the user provides a template. Use `--no-default-template` only when a blank document is explicitly desired.
+
 Run DOCX package QA:
 
 ```powershell
@@ -185,6 +188,7 @@ The skill blocks delivery unless these are satisfied or explicitly documented:
 - Word field / TOC gate
 - Fact ledger gate
 - Figure semantics gate
+- Strict diagram arrow and text-layout gate
 - External screenshot gate
 - Analysis depth gate
 - Rendered visual QA gate
@@ -216,6 +220,18 @@ The repository contains both source inputs and generated outputs:
 | `docs/sample-rendered-page-1.png` | Rendered page inspection evidence |
 | `docs/sample-rendered-page-2.png` | Rendered page inspection evidence |
 
+### Diagram Quality Policy
+
+TikZ, flowcharts, pipelines, architecture diagrams, timelines, and mechanism figures must pass a final `Review And Revise` stage after rendering and again after insertion into DOCX/PDF. The gate rejects:
+
+- arrows crossing through boxes, labels, captions, legends, or evidence regions
+- hidden, clipped, ambiguous, or wrong-target arrowheads
+- labels touching or overlapping borders, arrows, arrowheads, other labels, legends, or captions
+- cramped nodes caused by long text
+- diagrams that only look acceptable before final DOCX/PDF scaling
+
+If two source-level revisions cannot fix a crowded diagram, the skill requires splitting or rebuilding the diagram instead of continuing small arrow tweaks.
+
 ---
 
 ## 中文说明
@@ -236,6 +252,7 @@ The repository contains both source inputs and generated outputs:
 - **文生图边界**：使用 AI 文生图前必须询问用户是否开启，以及最多生成/插入几张；默认最多 3 张。
 - **箭头审查**：TikZ、流程图、架构图、时间线、机制图必须进入 Review And Revise，重点检查箭头是否交叉、遮挡、指错或与模块重叠。
 - **Word 自动目录**：使用真实 Word Heading 样式和 TOC 字段；Windows 下优先通过 Word COM 更新字段并导出 PDF。
+- **内置默认 DOCX 模板**：用户没有提供模板时，默认使用 `skill-assets/default-course-report-template.docx`；用户提供模板时永远优先使用用户模板。
 - **渲染级 QA**：不仅检查 DOCX 文本，还要检查 PDF 或页面渲染，避免目录、表格、图片、代码块在最终页面出问题。
 
 ### 适用场景
@@ -295,8 +312,9 @@ image-attributions.md
 6. 每次使用必须创建或激活 Actor 与 Critic。
 7. 至少两轮 Actor/Critic，发现阻塞问题继续迭代。
 8. 所有流程图、架构图、TikZ 图和时间线必须做最终图像审查，重点检查箭头。
-9. 用户反馈就是新的失败测试，必须回到源文件、脚本或图源修复。
-10. 交付前必须检查实际 DOCX/PDF，而不是只检查计划。
+9. TikZ/流程图文字也必须审查：标签不能贴边、压线、碰撞箭头、遮挡模块或与其他标签重叠。
+10. 用户反馈就是新的失败测试，必须回到源文件、脚本或图源修复。
+11. 交付前必须检查实际 DOCX/PDF，而不是只检查计划。
 
 ### 脚本说明
 

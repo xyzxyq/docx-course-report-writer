@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from docx import Document
+from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
@@ -18,6 +19,7 @@ from docx.shared import Cm, Pt
 
 SOURCE_PREFIX = "图片来源："
 WIDTH_PREFIX = "图片宽度："
+DEFAULT_TEMPLATE_PATH = Path(__file__).resolve().parents[1] / "skill-assets" / "default-course-report-template.docx"
 
 
 def set_run_font(
@@ -36,6 +38,41 @@ def set_run_font(
     rfonts.set(qn("w:eastAsia"), east_asia)
     rfonts.set(qn("w:ascii"), latin)
     rfonts.set(qn("w:hAnsi"), latin)
+
+
+def set_style_font(
+    style,
+    east_asia: str = "宋体",
+    latin: str = "Times New Roman",
+    size: float = 10.5,
+    bold: bool | None = None,
+) -> None:
+    style.font.name = latin
+    style.font.size = Pt(size)
+    if bold is not None:
+        style.font.bold = bold
+    rpr = style._element.get_or_add_rPr()
+    rfonts = rpr.get_or_add_rFonts()
+    rfonts.set(qn("w:eastAsia"), east_asia)
+    rfonts.set(qn("w:ascii"), latin)
+    rfonts.set(qn("w:hAnsi"), latin)
+
+
+def ensure_heading_styles(doc: Document) -> None:
+    for level, size in ((1, 16), (2, 14), (3, 12)):
+        name = f"Heading {level}"
+        try:
+            style = doc.styles[name]
+        except KeyError:
+            style = doc.styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
+            style.base_style = doc.styles["Normal"]
+        set_style_font(style, east_asia="黑体", size=size, bold=True)
+        ppr = style._element.get_or_add_pPr()
+        outline = ppr.find(qn("w:outlineLvl"))
+        if outline is None:
+            outline = OxmlElement("w:outlineLvl")
+            ppr.append(outline)
+        outline.set(qn("w:val"), str(level - 1))
 
 
 def set_cell_shading(cell, fill: str) -> None:
@@ -67,6 +104,7 @@ def configure_document(doc: Document) -> None:
     normal.font.name = "Times New Roman"
     normal.font.size = Pt(10.5)
     normal._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
+    ensure_heading_styles(doc)
 
 
 def parse_markdown_table(lines: list[str], start: int) -> tuple[list[str], list[list[str]], int]:
@@ -185,6 +223,21 @@ def preserve_template_opening(doc: Document, keep_paragraphs: int) -> None:
         body.remove(child)
 
 
+def clear_document_body(doc: Document) -> None:
+    body = doc._element.body
+    for child in list(body):
+        if not child.tag.endswith("}sectPr"):
+            body.remove(child)
+
+
+def resolve_template(args: argparse.Namespace) -> tuple[Path | None, bool]:
+    if args.template:
+        return args.template, False
+    if not args.no_default_template and DEFAULT_TEMPLATE_PATH.exists():
+        return DEFAULT_TEMPLATE_PATH, True
+    return None, False
+
+
 def add_body_paragraph(doc: Document, text: str, indent: bool = True) -> None:
     paragraph = doc.add_paragraph(style="Normal")
     paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -301,17 +354,22 @@ def add_references(doc: Document, refs_path: Path) -> None:
 
 
 def build(args: argparse.Namespace) -> None:
-    if args.template:
-        doc = Document(str(args.template))
-        if args.preserve_cover_paragraphs > 0:
+    template_path, _used_default_template = resolve_template(args)
+    if template_path:
+        doc = Document(str(template_path))
+        if args.keep_template_body:
+            pass
+        elif args.preserve_cover_paragraphs > 0:
             preserve_template_opening(doc, args.preserve_cover_paragraphs)
+        else:
+            clear_document_body(doc)
     else:
         doc = Document()
 
     configure_document(doc)
 
     if not args.no_toc:
-        if args.template and args.preserve_cover_paragraphs > 0:
+        if template_path and (args.keep_template_body or args.preserve_cover_paragraphs > 0):
             doc.add_page_break()
         add_toc_field(doc)
         doc.add_page_break()
@@ -345,6 +403,8 @@ def main() -> None:
     parser.add_argument("--refs", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--template", type=Path)
+    parser.add_argument("--no-default-template", action="store_true")
+    parser.add_argument("--keep-template-body", action="store_true")
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--preserve-cover-paragraphs", type=int, default=0)
     parser.add_argument("--no-toc", action="store_true")

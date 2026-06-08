@@ -89,7 +89,10 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - TikZ/self-drawn arrows are visible, point to the intended node/region, avoid unnecessary crossings, and remain readable after DOCX/PDF scaling.
 - Flowcharts, pipelines, architecture diagrams, timelines, and mechanism figures completed a Review And Revise pass after rendering.
 - Arrow audit passed: no hidden arrowheads, wrong targets, ambiguous direction, cramped spacing, or overlaps with modules/text that reduce readability or visual quality.
+- Text-layout audit passed for every TikZ/self-drawn/process diagram: no label touches or overlaps box borders, arrows, arrowheads, legends, captions, other labels, or important evidence.
+- Diagram density is acceptable: if two source-level revisions cannot remove crossings, overlaps, or cramped labels, the diagram was split or rebuilt in a simpler layout.
 - The figure ledger records arrow audit status for every TikZ/self-drawn/process diagram used in the report.
+- The figure ledger records text-layout audit status for every TikZ/self-drawn/process diagram used in the report.
 - AI-generated figures have a pre-generation drawing spec and post-generation text check. Reject figures with unrelated names, fake logos, wrong numbers, or hallucinated labels.
 - If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. Default maximum is 3 when enabled without a count.
 - External screenshots show the intended source content. 403/CAPTCHA/login/error pages are replaced with verifiable metadata cards or source tables.

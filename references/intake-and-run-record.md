@@ -9,6 +9,7 @@ Ask or infer these before writing final deliverables:
 - Assignment/report type:
 - Required deliverables:
 - Template/prior report to preserve:
+- Template decision: user-provided / integrated default / blank document by explicit request
 - Required evidence:
 - Runtime environment:
 - Screenshot requirements:
@@ -30,6 +31,7 @@ If the user already gave enough information, record the answer instead of asking
 - Report type:
 - Deliverables:
 - Template/source files:
+- Template decision:
 - Evidence required:
 - Runtime/screenshot plan:
 - AI text-to-image: off/on
@@ -57,7 +59,7 @@ If the user already gave enough information, record the answer instead of asking
 ## Figure Ledger
 | Figure | Role | Method | Source/evidence | Review And Revise status |
 |---|---|---|---|---|
-|  | evidence/explanatory/concept | screenshot/TikZ/plot/AI |  | arrows checked / text checked / rendered checked |
+|  | evidence/explanatory/concept | screenshot/TikZ/plot/AI |  | arrows checked / text-layout checked / rendered checked |
 
 ## Actor -> Critic Cycle 1
 - Actor changes:
@@ -80,7 +82,7 @@ If the user already gave enough information, record the answer instead of asking
 - Template residue:
 - Word fields/TOC:
 - Fact ledger scan:
-- Figure arrow/text review:
+- Figure arrow/text-layout review:
 - PDF/rendered visual QA:
 - Remaining limitations:
 ```
@@ -91,4 +93,5 @@ If the user already gave enough information, record the answer instead of asking
 - The Critic must audit the current artifact, not only the plan.
 - If a blocking issue is found, the Actor fixes the source of truth before regeneration.
 - If AI-generated images are used, each image must appear in the figure ledger with permission, maximum count, prompt/spec source, text verification, and attribution.
-- If TikZ, flowcharts, pipelines, architecture diagrams, timelines, or mechanism diagrams are used, each must show `Review And Revise status` with arrow audit completed after rendering.
+- If TikZ, flowcharts, pipelines, architecture diagrams, timelines, or mechanism diagrams are used, each must show `Review And Revise status` with arrow audit and text-layout audit completed after rendering and after DOCX/PDF insertion.
+- If no user template is provided, the template decision must record `integrated default: skill-assets/default-course-report-template.docx`.

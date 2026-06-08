@@ -112,6 +112,22 @@ When converting a LaTeX course report into a template DOCX:
 
 If Pandoc or subprocess output fails with a `gbk`/Unicode encode/decode error, rerun with UTF-8 environment variables and avoid printing converted long text directly to PowerShell.
 
+## Build Report Script Template Behavior
+
+`scripts/build_report.py` uses this template precedence:
+
+1. `--template path\to\user-template.docx` when the user supplied a template.
+2. `skill-assets/default-course-report-template.docx` when the user did not supply one.
+3. A blank Word document only when `--no-default-template` is explicitly passed.
+
+By default, the script clears template body content and keeps the template as a style/page-setup source. This prevents old static TOC entries, sample chapters, and placeholders from leaking into the new report.
+
+Use these flags only when intentional:
+
+- `--preserve-cover-paragraphs N`: keep the first `N` template paragraphs, then remove the rest.
+- `--keep-template-body`: keep all template body content. Use only for controlled repair work where the template body is the intended source, then run a stale-term scan.
+- `--no-default-template`: ignore the integrated default template and build from a blank document.
+
 ## DOCX QA
 
 Use `scripts/qa_docx_report.py` after generating the DOCX:

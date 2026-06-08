@@ -22,8 +22,9 @@ These rules apply every time this skill is active:
 4. **Treat generated images as non-evidence.** AI-generated images must not replace real experiment results, real data plots, required screenshots, or item-by-item proof. Factual labels in generated images require a pre-generation text whitelist and post-generation verification.
 5. **Use source-first evidence.** Do not invent results. Run programs, collect logs, capture real screenshots, or clearly document missing evidence before writing final claims.
 6. **Use real Word mechanisms.** Use Word heading styles and automatic TOC fields when a TOC is expected. On Windows, prefer Word COM for field update, TOC update, save, and PDF export; use an ASCII temp path fallback for path/encoding failures.
-7. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules in a way that weakens readability or aesthetics.
-8. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
+7. **Use the correct report template.** If the user provides a DOCX template, use the user's template. If the user does not provide one, use the integrated default template at `skill-assets/default-course-report-template.docx`. The default builder uses that template for styles/page setup and clears stale body content unless cover/body preservation is explicitly requested.
+8. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
+9. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
 
 ## Run Card
 
@@ -88,6 +89,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 ## Working Defaults
 
 - Prefer a reproducible source-first workspace: `report-draft.md`, `references.md`, `image-attributions.md`, helper scripts, raw logs, raw screenshots, annotated screenshots, figure sources, final DOCX, and final PDF.
+- Template precedence is strict: user-provided template first; otherwise `skill-assets/default-course-report-template.docx`; use `--no-default-template` only when the user explicitly requests a blank Word document.
 - Preserve useful template page setup, cover style, table style, heading hierarchy, captions, and metadata.
 - Remove stale body content, old screenshots, old captions, old TOC entries, and irrelevant media before assembly.
 - Put proof inside the report body when the assignment requires proof, not only in side folders.

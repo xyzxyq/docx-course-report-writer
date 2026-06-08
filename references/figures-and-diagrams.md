@@ -151,16 +151,55 @@ If TikZ is used:
 4. Inspect the rendered image before insertion.
 5. Inspect the final PDF after insertion.
 
+For report-scale TikZ, the default should be conservative and spacious:
+
+- prefer one main reading direction: left-to-right or top-to-bottom
+- use explicit node dimensions such as `text width`, `minimum width`, `minimum height`, `inner sep`, and `align=center`
+- wrap long Chinese labels manually; avoid forcing paragraph-length text into a small node
+- keep module names short and move explanations to captions or nearby prose
+- use `node distance`, grid/layer alignment, or fixed coordinates so boxes do not drift into arrows
+- prefer orthogonal routing with `|-`, `-|`, `out/in`, or named intermediate coordinates
+- use `shorten >=` and `shorten <=` so arrowheads do not hide under node borders
+- avoid diagonal arrows unless the relation cannot be shown orthogonally
+- split dense pipelines, timelines, and multi-lane systems into multiple figures before arrows become tangled
+
 For report-scale TikZ, also check:
 
 - arrows use explicit anchors such as `node.east -- node.west`, `north`, `south`, or orthogonal routes instead of vague diagonal lines
 - arrowheads remain visible after DOCX/PDF scaling
 - node spacing is large enough that arrows do not hide behind boxes
+- labels do not touch node borders, arrow shafts, arrowheads, legends, or captions
+- labels remain fully inside their boxes after PDF/PNG conversion and DOCX scaling
+- no text is clipped, squeezed, overprinted, or placed on top of another visual element
+- every edge label, if used, has enough white space and does not sit directly on the arrow line
 - timeline arrows point to the intended event/card
 - swimlanes, layers, and long pipelines are split or routed when a single dense diagram becomes confusing
 - no factual label, score, or final-result statement in `.tex` is stale after the user corrects the report facts
 
 User feedback such as "arrows are messy", "layout is confusing", or "the TOC/figure is gone" is a failed visual QA test. Fix the source generator or TikZ source, regenerate every derived asset, and inspect the final report page.
+
+## Strict TikZ And Diagram Acceptance Gate
+
+A diagram is not acceptable if any of the following is true in the rendered image or final PDF page:
+
+- an arrow crosses through a node, text label, caption, legend, or important evidence region
+- an arrowhead is hidden by a node border, outside the crop, too small to see, or points to the wrong object
+- two or more arrows overlap closely enough that the reader cannot distinguish their paths
+- a text label touches or overlaps a box border, arrow, arrowhead, icon, legend, or another label
+- a node contains too much text for its width and the line breaks look cramped or unbalanced
+- a label is visually detached from the module it describes
+- dense crossings make the graph look clever but harder to read
+- the diagram only looks acceptable in the source editor but becomes cramped after DOCX/PDF scaling
+
+Required repair order:
+
+1. Increase whitespace: larger canvas, larger `node distance`, larger nodes, shorter labels.
+2. Route arrows explicitly: anchors, orthogonal paths, intermediate coordinates, `shorten >=`, and `shorten <=`.
+3. Move explanatory text out of nodes into captions, side notes, or a table.
+4. Split the diagram by chapter, phase, lane, or abstraction level.
+5. If two source-level revisions still fail, discard the crowded layout and rebuild a simpler diagram from scratch.
+
+Do not accept a diagram by saying "the meaning is still understandable." The standard is readable, accurate, and visually clean at the final report size.
 
 ## Mandatory Review And Revise Stage
 
@@ -177,7 +216,17 @@ Arrow audit checklist:
 - swimlane arrows stay in the correct lane unless an intentional cross-lane transition is clearly shown
 - node spacing is increased when arrowheads or line segments become cramped
 
-Revision rule: if any arrow weakens clarity or aesthetics, revise the source layout and regenerate. Do not deliver with a note saying the reader can infer the direction.
+Text-layout audit checklist:
+
+- every label stays inside its intended node or label area
+- no label touches a node border unless the design intentionally uses a borderless label
+- no label overlaps an arrow, icon, legend, figure border, caption, or another label
+- Chinese labels are manually wrapped when needed and remain balanced
+- font size is large enough after DOCX/PDF scaling
+- node padding is large enough that text does not look squeezed
+- explanatory prose is moved out of boxes when it makes the box crowded
+
+Revision rule: if any arrow or label weakens clarity or aesthetics, revise the source layout and regenerate. Do not deliver with a note saying the reader can infer the direction or tolerate the overlap.
 
 ## Data Plot And Result Figure Rules
 

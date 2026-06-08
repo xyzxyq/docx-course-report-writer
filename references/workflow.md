@@ -3,7 +3,7 @@
 ## End-To-End Flow
 
 1. Check for installed Superpowers plugin/skills. Invoke applicable `superpowers:*` skills before acting; otherwise follow `superpowers-adapter.md` as fallback.
-2. Read assignment, template/prior report, source files, and user constraints.
+2. Read assignment, template/prior report, source files, and user constraints. If the user did not provide a template, select `skill-assets/default-course-report-template.docx` as the default template.
 3. Create or update the run record from `intake-and-run-record.md`.
 4. Lock report archetype, deliverables, metadata, naming, chapter structure, required evidence, and AI-image permission/count.
 5. Create or activate the mandatory Actor and Critic roles.
@@ -90,20 +90,24 @@ Every TikZ, flowchart, pipeline, architecture diagram, timeline, mechanism diagr
 
 1. Inspect the rendered image/page at final scale.
 2. Trace every arrow from source anchor to target anchor.
-3. Fix crossings, overlaps with modules/text, hidden arrowheads, clipped paths, wrong targets, ambiguous direction, and cramped spacing.
-4. Prefer explicit anchors, orthogonal routing, wider spacing, and simpler graph structure over decorative density.
-5. Update the figure ledger with `Review And Revise` status before final delivery.
+3. Inspect every text block: label text must stay inside its node, avoid touching borders, avoid arrow collisions, and remain readable at final report width.
+4. Fix crossings, overlaps with modules/text, hidden arrowheads, clipped paths, wrong targets, ambiguous direction, cramped spacing, and label overflow.
+5. Prefer explicit anchors, orthogonal routing, wider spacing, shorter labels, wrapped labels, larger nodes, and simpler graph structure over decorative density.
+6. If one diagram cannot meet the standard after two source-level revisions, split it into smaller figures or replace it with a table plus simpler diagram.
+7. Update the figure ledger with `Review And Revise` status before final delivery.
 
 ## Decision Rules
 
 - If Superpowers is installed and a mapped Superpowers skill applies, invoke it before doing the DOCX work.
 - If the report work is multi-step and not already planned, write a phase plan before artifact writes.
 - If repairing a defect, complete root-cause investigation before changing files.
-- If the template is good, adapt it instead of rebuilding it.
+- If the user provides a template, use it. If not, use the integrated default template. Never silently fall back to an unrelated old report.
+- If the template is good, adapt it instead of rebuilding it, but clear stale body content unless the user explicitly asks to preserve it.
 - If the assignment is strict, create a visible requirement-to-evidence mapping inside the report.
 - If a result is required item-by-item, the report itself must show direct evidence.
 - If source code or runtime evidence is missing, make the experiment runnable before writing final results.
 - If the TOC looks blank in a renderer, verify the field in DOCX XML, Word, or exported PDF before declaring failure.
 - If the run record does not show two Actor -> Critic cycles, the report is not ready.
 - If a diagram arrow audit is not recorded, the report is not ready.
+- If a diagram label-overlap audit is not recorded, the report is not ready.
 - If fresh completion verification has not run, the report is not ready.
