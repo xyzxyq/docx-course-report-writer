@@ -18,13 +18,13 @@ These rules apply every time this skill is active:
 0. **Invoke Superpowers when installed.** If the environment has the Superpowers plugin or any `superpowers:*` skills installed, call the relevant Superpowers skill before acting. Start with `superpowers:using-superpowers` when available, then route through `superpowers:writing-plans`, `superpowers:subagent-driven-development`, `superpowers:executing-plans`, `superpowers:systematic-debugging`, `superpowers:test-driven-development`, or `superpowers:verification-before-completion` as the task requires. If Superpowers is unavailable, use `references/superpowers-adapter.md` as the fallback and record that limitation.
 1. **Create Actor and Critic roles first.** Every run must create or activate two independent agents or clearly separated local roles: `Actor` and `Critic`. Use real subagents when available; otherwise run separated local notes and checkpoints.
 2. **Run at least two full Actor -> Critic cycles.** Minimum: `Actor cycle 1`, `Critic cycle 1`, `Actor cycle 2`, `Critic cycle 2`. There is no maximum iteration count. Continue until the Critic finds no blocking defects or only documented acceptable limitations remain.
-3. **Ask the AI-image intake question before generation.** Ask whether to enable text-to-image figures and how many may be generated/inserted. Default maximum is 3 when enabled without a count. Do not generate or insert AI images until permission and count are recorded, unless the user already gave both in the current request.
+3. **AI-image intake is a blocking question.** Before writing the report body, generating figures, or assembling DOCX/PDF, ask whether to enable text-to-image figures and exactly how many may be generated/inserted. Do not silently default to `off`. Proceed only when the user has explicitly answered, unless the current request already states both enablement and count. If the user enables AI images without a count, ask for the count instead of assuming. For nontrivial creation reports where AI images are enabled, generate and insert at least one academically appropriate conceptual/explanatory AI figure in a suitable section.
 4. **Treat generated images as non-evidence.** AI-generated images must not replace real experiment results, real data plots, required screenshots, or item-by-item proof. Factual labels in generated images require a pre-generation text whitelist and post-generation verification.
 5. **Use source-first evidence.** Do not invent results. Run programs, collect logs, capture real screenshots, or clearly document missing evidence before writing final claims.
 6. **Route Linux work through a verified Linux runtime.** When the assignment needs Linux/POSIX behavior, first check whether the user host is already Linux. If not, check for available local Linux runtimes, especially WSL on Windows. If no suitable Linux runtime exists, ask whether the user wants WSL installed and do not install it until the user explicitly permits it. When permission is granted, install/enable WSL using the platform's normal mechanism, then verify the distribution, kernel, path mapping, compilers, and commands before using results in the report.
 7. **Plan screenshots as first-class evidence.** When a browser page, terminal, GUI, or external source should be visually proven, decide the screenshot target during intake, capture the real visible page/window when required, keep raw screenshots, create annotated copies when useful, and inspect the image content before treating it as evidence. Browser screenshots must show the intended page, not a login, 403, CAPTCHA, blank page, or error page. Terminal screenshots must show enough command/result context.
 8. **Use real Word mechanisms.** Use Word heading styles and automatic TOC fields when a TOC is expected. On Windows, prefer Word COM for field update, TOC update, save, and PDF export; use an ASCII temp path fallback for path/encoding failures.
-9. **Use the correct report template.** If the user provides a DOCX template, use the user's template. If the user does not provide one, use the integrated default template at `skill-assets/default-course-report-template.docx`. The default builder uses that template for styles/page setup and clears stale body content unless cover/body preservation is explicitly requested.
+9. **Use the correct report template visibly.** If the user provides a DOCX template, use the user's template. If the user does not provide one, use the integrated default template at `skill-assets/default-course-report-template.docx`. The default template is not merely a style source: preserve its visible cover/page setup/heading/table/TOC styling unless the user explicitly requests a blank document or no cover. Remove sample body content, stale static TOC entries, old screenshots, and placeholders without discarding the default cover.
 10. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
 11. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
 
@@ -33,7 +33,7 @@ These rules apply every time this skill is active:
 Follow this compact sequence unless the user explicitly limits the task to analysis only:
 
 1. **Scope and intake**
-   Check and invoke applicable Superpowers skills. Read the assignment, template/prior report, source files, user constraints, and required deliverables. Ask the mandatory AI-image question. Determine whether Linux/WSL or real screenshots are required. Create a run record using `references/intake-and-run-record.md`.
+   Check and invoke applicable Superpowers skills. Read the assignment, template/prior report, source files, user constraints, and required deliverables. Ask the mandatory AI-image question and wait for the user's answer before artifact creation. Determine whether Linux/WSL or real screenshots are required. Create a run record using `references/intake-and-run-record.md`.
 2. **Evidence plan**
    Build a requirement-to-evidence checklist, runtime plan, screenshot plan, and fact ledger for scores, filenames, dataset sizes, model names, dates, source boundaries, and final-vs-intermediate claims.
 3. **Actor cycle 1**
@@ -89,6 +89,8 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
    Experiment/project reports include result analysis, interpretation, failure causes, limitations, and personal understanding, not only implementation description.
 10. **Rendered visual QA gate**
    PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, and code-block pages before claiming layout is verified.
+11. **Default-template visual gate**
+   When no user template is supplied, the generated DOCX/PDF preserves the integrated default template's visible cover and professional report styling. A plain white document with only generic margins/headings fails this gate unless the user explicitly requested a blank document.
 
 ## Working Defaults
 
@@ -96,8 +98,9 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 - If Linux behavior matters, prefer native Linux on Linux hosts; on Windows, prefer verified WSL. Record distro, kernel, package/compiler versions, commands, logs, and path mapping.
 - Treat browser and terminal screenshots as planned evidence assets. Keep raw captures separate from cropped or annotated copies.
 - Template precedence is strict: user-provided template first; otherwise `skill-assets/default-course-report-template.docx`; use `--no-default-template` only when the user explicitly requests a blank Word document.
-- Preserve useful template page setup, cover style, table style, heading hierarchy, captions, and metadata.
+- Preserve useful template page setup, visible cover style, table style, heading hierarchy, TOC styling, captions, and metadata.
 - Remove stale body content, old screenshots, old captions, old TOC entries, and irrelevant media before assembly.
+- For nontrivial report creation, include at least one figure. If the user enables text-to-image, at least one inserted figure should be AI-generated conceptual/explanatory art unless a stricter assignment forbids it.
 - Put proof inside the report body when the assignment requires proof, not only in side folders.
 - Use `scripts/qa_docx_report.py` for DOCX text/package checks when useful.
 - Use `scripts/update_word_fields.ps1` or Word COM for TOC/field/PDF workflows.
@@ -107,7 +110,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 
 - Use `doc` / `documents` for low-level DOCX editing, rendering, and OOXML details.
 - Use `pdf` when PDF rendering or page-level visual QA matters.
-- Use `imagegen` only for explanatory or conceptual figures that are not evidence, after the mandatory AI-image intake.
+- Use `imagegen` only for explanatory or conceptual figures that are not evidence, after the blocking AI-image intake and recorded count.
 - Use Browser/Playwright/browser tools for web-page screenshot evidence when available; use Computer Use or visible terminal capture for real terminal screenshots when required by the assignment.
 - On Windows, prefer Word COM for Word-specific fidelity.
 - For Linux/POSIX/socket/file-system assignments on Windows, verify and use WSL unless the user asks for native Windows. If WSL is missing, ask before installing or enabling it.

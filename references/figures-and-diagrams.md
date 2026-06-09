@@ -59,12 +59,12 @@ For highlighted experiment results:
 
 ## When AI Image Generation Is Appropriate
 
-Before any AI text-to-image generation for the report, ask the user:
+Before any report drafting, figure generation, or DOCX assembly, ask the user:
 
 1. Whether to enable AI-generated images and insert them into the DOCX.
-2. The maximum number of generated images to run/insert.
+2. The exact maximum number of generated images to run/insert.
 
-Default: if the user enables AI images but gives no count, generate/insert at most 3. If the user does not answer, keep AI image generation off and use deterministic diagrams, screenshots, paper crops, or data plots instead.
+This is a blocking intake question. Do not treat silence as `off`. If the user enables AI images but gives no count, stop and ask for the count. For nontrivial creation reports where AI images are enabled, generate and insert at least one conceptual or explanatory AI figure unless the assignment or user forbids it.
 
 Use AI image generation only when:
 

@@ -9,9 +9,10 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Topic matches the assignment.
 - Chapter structure matches the requested report type.
 - Cover metadata and filename match the assignment or are explicitly pending.
-- No old experiment names, old topic words, old screenshots, old TOC entries, `{{...}}`, `[[TOC]]`, or `待补` remain.
+- No old experiment names, old topic words, old screenshots, old TOC entries, `{{...}}`, `[[TOC]]`, `待补`, `待确认`, or mojibake strings such as `鐩綍` remain.
 - If the task is item-by-item, the report contains visible requirement coverage.
 - Run record exists or equivalent notes are present, including scope lock, AI-image permission/count, fact ledger, figure ledger, and final gates.
+- AI-image intake was answered explicitly before report drafting/DOCX assembly. User silence is not recorded as `off`.
 - Superpowers availability and invoked workflow skills are recorded; if unavailable, the fallback process from `superpowers-adapter.md` was used.
 - Actor and Critic agents/roles were created or activated. The loop record exists for at least two complete cycles, has no artificial iteration cap, and the Critic audited the current artifact, not only the plan.
 - Latest user-approved fact ledger is reflected in the whole artifact: final scores, dataset sizes, model names, filenames, class names, dates, and "final" claims are not stale.
@@ -51,6 +52,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - PDF or page renders were inspected, not only DOCX XML/text.
 - TOC pages render correctly.
 - The first rendered page is not accidentally blank. A pre-TOC page break is allowed only when a real cover/template opening is preserved.
+- If no user template was supplied, the rendered report shows the integrated default template's visible cover/style unless the user explicitly requested a blank or no-cover document.
 - Figure-heavy pages render correctly.
 - Table-heavy pages render correctly.
 - Code-block pages render correctly.
@@ -95,7 +97,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - The figure ledger records arrow audit status for every TikZ/self-drawn/process diagram used in the report.
 - The figure ledger records text-layout audit status for every TikZ/self-drawn/process diagram used in the report.
 - AI-generated figures have a pre-generation drawing spec and post-generation text check. Reject figures with unrelated names, fake logos, wrong numbers, or hallucinated labels.
-- If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. Default maximum is 3 when enabled without a count.
+- If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. If AI images were enabled for a nontrivial creation report, at least one AI-generated conceptual/explanatory figure is inserted unless the assignment or user forbids it.
 - External screenshots show the intended source content. 403/CAPTCHA/login/error pages are replaced with verifiable metadata cards or source tables.
 - Browser screenshots were inspected for wrong page, blank page, loading state, login wall, 403, CAPTCHA, and error pages.
 - Terminal screenshots include command/result context and remain readable at final DOCX/PDF scale.

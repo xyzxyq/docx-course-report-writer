@@ -24,9 +24,19 @@ DEFAULT_PLACEHOLDERS = [
 ]
 
 DEFAULT_STALE_TERMS = [
-    "实验五",
+    "实验一",
     "日志渲染",
 ]
+
+DEFAULT_MOJIBAKE_TERMS = [
+    "鐩綍",
+    "瀹嬩綋",
+    "榛戜綋",
+    "鍥剧墖",
+    "锛?",
+]
+
+COVER_MARKERS = ["课程报告", "实验题目", "学生姓名", "任课教师"]
 
 
 def read_document_xml(docx_path: Path) -> str:
@@ -64,6 +74,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="QA a Chinese course-report DOCX.")
     parser.add_argument("--docx", type=Path, required=True)
     parser.add_argument("--require-toc", action="store_true")
+    parser.add_argument("--require-cover", action="store_true")
     parser.add_argument("--min-images", type=int, default=0)
     parser.add_argument("--min-tables", type=int, default=0)
     parser.add_argument("--min-heading1", type=int, default=0)
@@ -91,13 +102,19 @@ def main() -> int:
     placeholder_terms = [t for t in DEFAULT_PLACEHOLDERS if t not in set(args.allow_placeholder)]
     placeholder_hits = find_terms(text, placeholder_terms)
     stale_hits = find_terms(text, DEFAULT_STALE_TERMS + args.stale_term)
+    mojibake_hits = find_terms(text, DEFAULT_MOJIBAKE_TERMS)
+    cover_marker_hits = find_terms(text, COVER_MARKERS)
 
     if placeholder_hits:
         failures.append(f"Placeholder residue found: {placeholder_hits}")
     if stale_hits:
         failures.append(f"Stale-topic terms found: {stale_hits}")
+    if mojibake_hits:
+        failures.append(f"Mojibake/encoding residue found: {mojibake_hits}")
     if args.require_toc and not toc_field:
         failures.append("Required automatic TOC field not found in DOCX XML.")
+    if args.require_cover and not cover_marker_hits:
+        failures.append("Required default/template cover markers not found.")
     if inline_shapes < args.min_images:
         failures.append(f"Image count {inline_shapes} < required {args.min_images}.")
     if table_count < args.min_tables:
@@ -114,8 +131,10 @@ def main() -> int:
         "inline_shapes": inline_shapes,
         "heading_counts": headings,
         "toc_field": toc_field,
+        "cover_marker_hits": cover_marker_hits,
         "placeholder_hits": placeholder_hits,
         "stale_hits": stale_hits,
+        "mojibake_hits": mojibake_hits,
         "warnings": warnings,
         "failures": failures,
         "status": "PASS" if not failures else "BLOCK",
@@ -131,6 +150,7 @@ def main() -> int:
         print(f"Images: {inline_shapes}")
         print(f"Headings: {headings}")
         print(f"TOC field: {toc_field}")
+        print(f"Cover markers: {cover_marker_hits}")
         for warning in warnings:
             print(f"WARN: {warning}")
         for failure in failures:

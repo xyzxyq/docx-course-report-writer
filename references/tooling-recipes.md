@@ -196,13 +196,15 @@ If Pandoc or subprocess output fails with a `gbk`/Unicode encode/decode error, r
 2. `skill-assets/default-course-report-template.docx` when the user did not supply one.
 3. A blank Word document only when `--no-default-template` is explicitly passed.
 
-By default, the script clears template body content and keeps the template as a style/page-setup source. This prevents old static TOC entries, sample chapters, and placeholders from leaking into the new report.
+By default, when the integrated default template is used, the script preserves the visible default cover and page setup, then removes sample body content and stale static TOC entries before inserting a fresh automatic TOC field and report body. This prevents a plain white document while still avoiding old sample chapters and placeholders.
 
 Use these flags only when intentional:
 
 - `--preserve-cover-paragraphs N`: keep the first `N` template paragraphs, then remove the rest.
 - `--keep-template-body`: keep all template body content. Use only for controlled repair work where the template body is the intended source, then run a stale-term scan.
 - `--no-default-template`: ignore the integrated default template and build from a blank document.
+- `--drop-template-cover`: use the integrated default template only as a style/page-setup source and discard its visible cover. Use only when the user explicitly asks for no cover.
+- `{{PAGEBREAK}}` in `report-draft.md`: insert a Word page break, useful before full-page figures or appendices.
 
 ## DOCX QA
 
@@ -212,6 +214,7 @@ Use `scripts/qa_docx_report.py` after generating the DOCX:
 python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\qa_docx_report.py `
   --docx report.docx `
   --require-toc `
+  --require-cover `
   --min-images 4 `
   --min-tables 3 `
   --stale-term 实验五 `
@@ -219,6 +222,8 @@ python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\qa_docx_re
 ```
 
 This is a gate, not a replacement for visual inspection. Still inspect exported PDF or rendered pages.
+
+If AI text-to-image was enabled during intake, set `--min-images` high enough to include the generated AI figure plus other required figures, then verify `image-attributions.md` marks the AI figure as `explanatory` or `concept-enhancement`.
 
 ## PDF/Page Visual QA
 

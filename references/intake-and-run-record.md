@@ -18,10 +18,11 @@ Ask or infer these before writing final deliverables:
 - Naming/metadata requirements:
 - Superpowers installed/available: yes/no
 - Superpowers skills invoked:
-- AI text-to-image enabled: yes/no
-- Maximum AI-generated images to generate/insert: integer; default is 3 when enabled without a count
+- AI text-to-image enabled: yes/no, must be answered explicitly before artifact creation unless already specified by the user
+- Maximum AI-generated images to generate/insert: integer, must be answered explicitly when AI text-to-image is enabled
+- Minimum AI-generated images to insert: 1 for nontrivial creation reports when enabled, unless the assignment or user forbids AI images
 
-If the user already gave enough information, record the answer instead of asking again. The AI-image permission and count must still be explicitly recorded.
+If the user already gave enough information, record the answer instead of asking again. The AI-image permission and count must still be explicitly recorded. Do not treat user silence as `off`, and do not begin report drafting, figure generation, DOCX assembly, or PDF export before this intake is resolved.
 
 ## Required Run Record
 
@@ -39,6 +40,8 @@ If the user already gave enough information, record the answer instead of asking
 - Screenshot plan:
 - AI text-to-image: off/on
 - AI image maximum:
+- AI image minimum:
+- AI-image intake answer source: user answered / already specified in request
 - Superpowers availability:
 - Superpowers skills invoked:
 - Known limitations:
@@ -85,6 +88,7 @@ If the user already gave enough information, record the answer instead of asking
 - Linux/WSL runtime:
 - Screenshot authenticity:
 - Template residue:
+- Default-template visible cover/style:
 - Word fields/TOC:
 - Fact ledger scan:
 - Figure arrow/text-layout review:

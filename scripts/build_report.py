@@ -14,12 +14,13 @@ from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Cm, Pt
+from docx.shared import Cm, Pt, RGBColor
 
 
 SOURCE_PREFIX = "图片来源："
 WIDTH_PREFIX = "图片宽度："
 DEFAULT_TEMPLATE_PATH = Path(__file__).resolve().parents[1] / "skill-assets" / "default-course-report-template.docx"
+DEFAULT_COVER_PARAGRAPHS = 16
 
 
 def set_run_font(
@@ -28,11 +29,14 @@ def set_run_font(
     latin: str = "Times New Roman",
     size: float = 10.5,
     bold: bool | None = None,
+    color: tuple[int, int, int] | None = None,
 ) -> None:
     run.font.name = latin
     run.font.size = Pt(size)
     if bold is not None:
         run.font.bold = bold
+    if color is not None:
+        run.font.color.rgb = RGBColor(*color)
     rpr = run._element.get_or_add_rPr()
     rfonts = rpr.get_or_add_rFonts()
     rfonts.set(qn("w:eastAsia"), east_asia)
@@ -84,15 +88,6 @@ def set_cell_shading(cell, fill: str) -> None:
     shd.set(qn("w:fill"), fill)
 
 
-def set_paragraph_shading(paragraph, fill: str) -> None:
-    p_pr = paragraph._p.get_or_add_pPr()
-    shd = p_pr.find(qn("w:shd"))
-    if shd is None:
-        shd = OxmlElement("w:shd")
-        p_pr.append(shd)
-    shd.set(qn("w:fill"), fill)
-
-
 def configure_document(doc: Document) -> None:
     for section in doc.sections:
         section.top_margin = Cm(2.54)
@@ -140,6 +135,11 @@ def parse_tokens(text: str) -> list[tuple[str, Any]]:
             i += 1
             continue
 
+        if stripped == "{{PAGEBREAK}}":
+            tokens.append(("pagebreak", None))
+            i += 1
+            continue
+
         if stripped.startswith("```"):
             language = stripped.strip("`").strip()
             i += 1
@@ -174,7 +174,7 @@ def parse_tokens(text: str) -> list[tuple[str, Any]]:
 
             caption, path = match.group(1), match.group(2)
             source = ""
-            width_cm = 11.8
+            width_cm = 13.8
 
             if i + 1 < len(lines) and lines[i + 1].strip().startswith(SOURCE_PREFIX):
                 source = lines[i + 1].strip()
@@ -201,7 +201,7 @@ def parse_tokens(text: str) -> list[tuple[str, Any]]:
             if not nxt:
                 i += 1
                 break
-            if nxt.startswith(("# ", "## ", "### ", "![", "|", "```")) or nxt == "{{REFERENCES}}":
+            if nxt.startswith(("# ", "## ", "### ", "![", "|", "```")) or nxt in {"{{REFERENCES}}", "{{PAGEBREAK}}"}:
                 break
             block.append(nxt)
             i += 1
@@ -263,10 +263,13 @@ def add_heading(doc: Document, text: str, level: int) -> None:
 def add_toc_field(doc: Document) -> None:
     title = doc.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = title.add_run("目录")
-    set_run_font(run, east_asia="黑体", size=16, bold=True)
+    title.paragraph_format.space_before = Pt(12)
+    title.paragraph_format.space_after = Pt(12)
+    run = title.add_run("目 录")
+    set_run_font(run, east_asia="黑体", size=18, bold=True)
 
     paragraph = doc.add_paragraph()
+    paragraph.paragraph_format.space_after = Pt(8)
     fld = OxmlElement("w:fldSimple")
     fld.set(qn("w:instr"), 'TOC \\o "1-3" \\h \\z \\u')
     run_el = OxmlElement("w:r")
@@ -282,7 +285,7 @@ def add_figure(doc: Document, payload: dict[str, Any], root: Path) -> None:
     paragraph = doc.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     paragraph.paragraph_format.space_before = Pt(6)
-    paragraph.add_run().add_picture(str(fig_path), width=Cm(float(payload.get("width_cm", 11.8))))
+    paragraph.add_run().add_picture(str(fig_path), width=Cm(float(payload.get("width_cm", 13.8))))
 
     caption = doc.add_paragraph()
     caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -296,7 +299,7 @@ def add_figure(doc: Document, payload: dict[str, Any], root: Path) -> None:
         source_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         source_para.paragraph_format.space_after = Pt(6)
         run = source_para.add_run(source)
-        set_run_font(run, size=9.5)
+        set_run_font(run, size=9.5, color=(90, 90, 90))
 
 
 def add_table(doc: Document, payload: dict[str, Any]) -> None:
@@ -314,7 +317,7 @@ def add_table(doc: Document, payload: dict[str, Any]) -> None:
         p = cell.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         run = p.add_run(text)
-        set_run_font(run, east_asia="宋体", size=10.5, bold=True)
+        set_run_font(run, size=10.5, bold=True)
 
     for row_i, row in enumerate(rows, start=1):
         for col, text in enumerate(row):
@@ -324,7 +327,7 @@ def add_table(doc: Document, payload: dict[str, Any]) -> None:
             p = cell.paragraphs[0]
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER if len(str(text)) <= 18 else WD_ALIGN_PARAGRAPH.LEFT
             run = p.add_run(str(text))
-            set_run_font(run, size=10.5)
+            set_run_font(run, size=10.0)
 
     doc.add_paragraph()
 
@@ -354,13 +357,15 @@ def add_references(doc: Document, refs_path: Path) -> None:
 
 
 def build(args: argparse.Namespace) -> None:
-    template_path, _used_default_template = resolve_template(args)
+    template_path, used_default_template = resolve_template(args)
     if template_path:
         doc = Document(str(template_path))
         if args.keep_template_body:
             pass
         elif args.preserve_cover_paragraphs > 0:
             preserve_template_opening(doc, args.preserve_cover_paragraphs)
+        elif used_default_template and not args.drop_template_cover:
+            preserve_template_opening(doc, DEFAULT_COVER_PARAGRAPHS)
         else:
             clear_document_body(doc)
     else:
@@ -369,7 +374,12 @@ def build(args: argparse.Namespace) -> None:
     configure_document(doc)
 
     if not args.no_toc:
-        if template_path and (args.keep_template_body or args.preserve_cover_paragraphs > 0):
+        preserved_opening = template_path and (
+            args.keep_template_body
+            or args.preserve_cover_paragraphs > 0
+            or (used_default_template and not args.drop_template_cover)
+        )
+        if preserved_opening and not (used_default_template and not args.drop_template_cover):
             doc.add_page_break()
         add_toc_field(doc)
         doc.add_page_break()
@@ -392,6 +402,8 @@ def build(args: argparse.Namespace) -> None:
             add_code_block(doc, payload)
         elif kind == "references":
             add_references(doc, args.refs)
+        elif kind == "pagebreak":
+            doc.add_page_break()
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(args.output))
@@ -407,6 +419,11 @@ def main() -> None:
     parser.add_argument("--keep-template-body", action="store_true")
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--preserve-cover-paragraphs", type=int, default=0)
+    parser.add_argument(
+        "--drop-template-cover",
+        action="store_true",
+        help="When using the integrated default template, discard its visible cover and build only from styles/page setup.",
+    )
     parser.add_argument("--no-toc", action="store_true")
     build(parser.parse_args())
 
