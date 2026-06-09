@@ -67,6 +67,29 @@ If the user already gave enough information, record the answer instead of asking
 |---|---|---|---|---|
 |  | evidence/explanatory/concept | screenshot/TikZ/plot/AI |  | arrows checked / text-layout checked / rendered checked |
 
+## AI Figure Prompt Cards
+Use this section only when AI text-to-image is enabled. Each generated or attempted image must have one card.
+
+```markdown
+### AI Figure Prompt Card: <figure id>
+- Report section:
+- Figure role:
+- Reader question answered:
+- Why AI was chosen:
+- Visual density target:
+- Focal subject:
+- Foreground / midground / background:
+- Composition:
+- Lighting/color/material:
+- Camera/framing/aspect ratio:
+- Allowed visible text:
+- Deterministic overlay plan:
+- Positive prompt:
+- Negative prompt / avoid:
+- Rejection criteria:
+- Accepted/rejected iteration notes:
+```
+
 ## Actor -> Critic Cycle 1
 - Actor changes:
 - Critic artifact reviewed:

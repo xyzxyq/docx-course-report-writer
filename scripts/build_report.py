@@ -11,7 +11,7 @@ from typing import Any
 from docx import Document
 from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT, WD_TAB_LEADER
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
@@ -79,6 +79,29 @@ def ensure_heading_styles(doc: Document) -> None:
         outline.set(qn("w:val"), str(level - 1))
 
 
+def ensure_toc_styles(doc: Document) -> None:
+    specs = {
+        "TOC 1": {"size": 11.0, "bold": True, "left": 0.0, "first": 0.0, "after": 4},
+        "TOC 2": {"size": 10.5, "bold": False, "left": 0.55, "first": 0.0, "after": 3},
+        "TOC 3": {"size": 10.0, "bold": False, "left": 1.1, "first": 0.0, "after": 2},
+    }
+    for name, spec in specs.items():
+        try:
+            style = doc.styles[name]
+        except KeyError:
+            style = doc.styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
+            style.base_style = doc.styles["Normal"]
+        set_style_font(style, east_asia="宋体", size=float(spec["size"]), bold=bool(spec["bold"]))
+        fmt = style.paragraph_format
+        fmt.left_indent = Cm(float(spec["left"]))
+        fmt.first_line_indent = Cm(float(spec["first"]))
+        fmt.space_before = Pt(0)
+        fmt.space_after = Pt(int(spec["after"]))
+        fmt.line_spacing = 1.15
+        fmt.tab_stops.clear_all()
+        fmt.tab_stops.add_tab_stop(Cm(15.2), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+
+
 def set_cell_shading(cell, fill: str) -> None:
     tc_pr = cell._tc.get_or_add_tcPr()
     shd = tc_pr.find(qn("w:shd"))
@@ -100,6 +123,7 @@ def configure_document(doc: Document) -> None:
     normal.font.size = Pt(10.5)
     normal._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
     ensure_heading_styles(doc)
+    ensure_toc_styles(doc)
 
 
 def parse_markdown_table(lines: list[str], start: int) -> tuple[list[str], list[list[str]], int]:

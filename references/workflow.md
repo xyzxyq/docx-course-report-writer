@@ -81,29 +81,21 @@ Use this branch when visual evidence improves or is required by the report.
 Use this branch only after blocking intake is resolved. AI generation is for conceptual or explanatory enhancement, not evidence.
 
 0. Confirm the mandatory intake record says AI text-to-image is enabled and records a maximum count. If the user enabled AI images without a count, stop and ask for the count. Do not infer `off` from silence.
-1. Identify the image goal.
-2. Write a prompt summary:
-   - what the image explains
-   - figure role
-   - why AI is the right medium
-3. Build a structured prompt:
-   - use case
-   - asset type
-   - primary request
-   - scene/backdrop
-   - style/medium
-   - composition/framing
-   - constraints
-   - avoid
+1. Load `references/ai-image-prompting.md`.
+2. Identify the reader question and why AI is the right medium instead of self-drawn/TikZ/screenshot/paper crop.
+3. Write the full AI Figure Prompt Card, including visual density target, focal subject, foreground/midground/background, composition, positive prompt, negative/avoid prompt, and rejection criteria.
 4. Use the system `imagegen` skill.
-5. Validate the result:
+5. Validate the result against the prompt card:
    - academically appropriate
    - no watermark
    - no accidental text
    - not over-stylized
-6. Record attribution metadata.
-7. Insert with caption and nearby explanatory prose.
-8. Re-check the exported PDF after insertion.
+   - not generic, sparse, or stock-like
+   - enough purposeful visual density for the report section
+6. If the result fails, regenerate with a narrower prompt or replace it with a deterministic diagram; do not keep weak AI art to satisfy a count.
+7. Record attribution metadata and accepted/rejected iteration notes.
+8. Insert with caption and nearby explanatory prose.
+9. Re-check the exported PDF after insertion.
 
 ## Diagram Review And Revise
 

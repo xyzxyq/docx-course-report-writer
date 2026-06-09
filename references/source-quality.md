@@ -40,11 +40,15 @@ Also capture source type:
 
 If a figure is AI-generated, additionally record:
 
+- the full prompt card from `references/ai-image-prompting.md`
 - prompt summary
 - final prompt
+- negative prompt / avoid list
 - generation method
 - why AI was chosen instead of other figure types
 - whether the figure is `concept-enhancement` or `explanatory`
+- accepted/rejected iteration notes
+- original generated file path when the image was copied into the project
 
 Never mark an AI-generated figure as evidence unless the user explicitly wants to document that AI generation itself is the subject of the assignment.
 

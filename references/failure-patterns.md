@@ -4,6 +4,8 @@ These patterns come from recent DOCX report runs. Apply them as checks, not as s
 
 | Symptom | Root Cause | Required Response |
 |---|---|---|
+| AI-generated concept figure is clean but empty, vague, or stock-like | Prompt lacked a concrete reader question, focal subject, composition, density target, and negative prompt; Critic accepted only "no text/no watermark" | Load `references/ai-image-prompting.md`, write a full prompt card, reject mostly empty/generic outputs, regenerate with narrower prompt or replace with deterministic diagrams |
+| Automatic TOC exists but looks flat, cramped, or visually unclear | QA checked only the DOCX `TOC` field and did not configure or inspect Word `TOC 1/2/3` styles | Configure TOC styles, update fields through Word, render/export the TOC page, and treat "automatic but ugly" as a polish blocker |
 | Report delivered but the TOC page says "please update in Word" or the user says the directory/TOC disappeared | DOCX was generated with a TOC field but exported before Word field update, or a later script edit replaced the TOC body | Re-run Word COM field update before PDF export; inspect the TOC page render; add script-level update/export so reruns do not regress |
 | Chinese filenames become `????`, Word cannot find files, or Python/PDF readers fail on Chinese paths | PowerShell/Python subprocess encoding or Word COM path handling failed | Use UTF-8 output, absolute paths, and an ASCII temp path fallback; avoid passing garbled filenames; verify the final native-path DOCX/PDF exists |
 | Template old topic leaks into the new report | Prior report body/media/TOC was not fully removed | Search DOCX text and OOXML for stale terms, old captions, old media count, and old TOC entries before delivery |

@@ -27,6 +27,19 @@ Use the template or user-polished report as the source of truth. Use these defau
 - Keep spacing stable: headings should not collide with previous body text or float alone at the bottom of a page.
 - Typical spacing: Heading 1 has about 12 pt before and 6 pt after; Heading 2 has about 10 pt before and 4 pt after.
 
+## Table Of Contents
+
+- The TOC must be an automatic Word field, not hand-typed text.
+- TOC page title should be centered, bold, and visually separated from entries.
+- TOC entries must show a clear hierarchy:
+  - level 1: no left indent, larger/bolder than sublevels
+  - level 2: modest left indent
+  - level 3: deeper left indent and slightly smaller font
+- Use dot leaders and right-aligned page numbers when Word supports them.
+- Avoid cramped TOC pages: line spacing should be about 1.15-1.25, with enough paragraph spacing that entries scan cleanly.
+- After Word field update, inspect the exported PDF TOC page. A TOC that is technically automatic but visually cluttered, flat, over-dense, or hard to scan fails QA.
+- If the template's TOC styling is weak, override Word `TOC 1`, `TOC 2`, and `TOC 3` styles before field update.
+
 ## Captions
 
 - Figure caption format: `图X ...`

@@ -66,6 +66,8 @@ Before any report drafting, figure generation, or DOCX assembly, ask the user:
 
 This is a blocking intake question. Do not treat silence as `off`. If the user enables AI images but gives no count, stop and ask for the count. For nontrivial creation reports where AI images are enabled, generate and insert at least one conceptual or explanatory AI figure unless the assignment or user forbids it.
 
+After intake is resolved, load `references/ai-image-prompting.md` before every text-to-image call. The prompt-card workflow in that file is mandatory, not optional.
+
 Use AI image generation only when:
 
 - the figure materially improves reader understanding
@@ -85,11 +87,13 @@ Bad use cases:
 - replacing real data plots
 - pretending a generated image is experimental proof
 - adding decorative filler just because the page looks empty
+- satisfying the requested image count with generic, sparse, stock-like concept art
 
 ## AI Figure Requirements
 
 Before generating an AI figure, record:
 
+- the full prompt card from `references/ai-image-prompting.md`
 - figure role
 - prompt summary
 - why AI is the right medium
@@ -97,6 +101,7 @@ Before generating an AI figure, record:
 - allowed text, numbers, names, labels, and symbols
 - forbidden text, wrong examples, hallucination risks, and source facts that must not appear
 - a one-paragraph drawing plan covering layout, visual hierarchy, and where factual labels will appear
+- rejection criteria, including what counts as too empty, too generic, or insufficiently related to the report section
 
 After generating it, ensure:
 
@@ -106,6 +111,8 @@ After generating it, ensure:
 - nearby prose explains what it helps the reader understand
 - all visible text and numbers match the drawing spec exactly
 - no unrelated school, company, logo, license plate, UI text, fake metric, or model name appears
+- the figure has enough purposeful visual density for a course report; mostly empty backgrounds and vague glowing networks fail
+- the Critic records accepted/rejected iteration notes, not only the final image path
 
 If accurate text is important, prefer one of these safer patterns:
 
