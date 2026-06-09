@@ -5,9 +5,9 @@
 <h1 align="center">DOCX Course Report Writer</h1>
 
 <p align="center">
-  <em>“你以为你累得像条狗，你错了，狗并没有你这么累。”</em>
+  <em>“没有什么比一件未完成的任务一直挂在那里更令人疲惫。”</em>
   <br>
-  <sub>鲁迅，大概没有说过。但每个被水课课程报告追杀的大学生都懂。</sub>
+  <sub>William James，1886。每个被课程报告追杀的大学生都懂。</sub>
 </p>
 
 <p align="center">
