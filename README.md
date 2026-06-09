@@ -5,22 +5,38 @@
 <h1 align="center">DOCX Course Report Writer</h1>
 
 <p align="center">
-  面向中文课程报告、实验报告、课程论文与综述写作的 Codex Skill。
+  <em>“你以为你累得像条狗，你错了，狗并没有你这么累。”</em>
   <br>
-  把“写一份 Word 报告”升级为“可规划、可验证、可修复、可提交”的文档工程流程。
+  <sub>鲁迅，大概没有说过。但每个被水课课程报告追杀的大学生都懂。</sub>
+</p>
+
+<p align="center">
+  面向大学生水课课程报告、实验报告、课程论文与综述写作的 Codex Skill。
+  <br>
+  这是一个被本学期过量课程报告逼出来的自动化工作流。
+  <br>
+  把“又要写 Word 报告”变成“可规划、可验证、可修复、可提交”的文档工程流程。
 </p>
 
 <p align="center">
   <a href="#quick-start"><img src="https://img.shields.io/badge/Codex-Skill-111827" alt="Codex Skill"></a>
+  <a href="#demo"><img src="https://img.shields.io/badge/watercourse-report%20automation-f97316" alt="大学水课报告自动化"></a>
   <a href="#demo"><img src="https://img.shields.io/badge/demo-DOCX%20%2B%20PDF-2563eb" alt="DOCX and PDF demo"></a>
   <a href="#highlights"><img src="https://img.shields.io/badge/Word-TOC%20%2F%20PDF%20QA-0f766e" alt="Word TOC and PDF QA"></a>
   <a href="#workflow"><img src="https://img.shields.io/badge/workflow-Actor%20%2F%20Critic-7c3aed" alt="Actor Critic workflow"></a>
   <a href="README.en.md"><img src="https://img.shields.io/badge/README-English-64748b" alt="English README"></a>
 </p>
 
+<p align="center">
+  <img src="assets/coursework-overload.jpg" width="390" alt="我怎么不记得有这么多作业">
+  <img src="assets/coursework-done.jpg" width="390" alt="我作业写完了">
+</p>
+
 ---
 
 ## 它解决什么问题？
+
+大学水课很多，课程报告也很多。真正消耗人的不是某一篇报告，而是一学期里反复出现的“查资料、凑结构、配图、写格式、调目录、导 PDF、再返工”。这个 Skill 就是为这种场景做的：让重复性课程报告尽量自动化，让 Codex 不只是写正文，而是把 Word 交付链路一起跑完。
 
 很多课程报告不是“写不出来”，而是交付前容易在这些地方翻车：
 
@@ -32,7 +48,7 @@
 | 图表插进去后不专业 | 强制正式图注、图号顺序、箭头/文字布局审查和 PDF 页面级 QA |
 | AI 图片被误当证据 | AI 图只作概念解释；来源、prompt 和非证据属性写入旁路记录 |
 
-`docx-course-report-writer` 的目标不是生成一份“能打开”的 DOCX，而是生成一份能经得住课程提交、教师检查和二次修订的报告包。
+`docx-course-report-writer` 的目标不是生成一份“能打开”的 DOCX，而是生成一份能经得住课程提交、教师检查和二次修订的报告包。它适合那些要求不一定难、但格式和交付细节非常烦的课程报告。
 
 <a id="demo"></a>
 
