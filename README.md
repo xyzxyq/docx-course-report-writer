@@ -42,11 +42,11 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| [`deep-learning-architecture-report-demo.docx`](docs/deep-learning-architecture-report-demo.docx) | 修订后的 Word 示例报告 |
-| [`deep-learning-architecture-report-demo.pdf`](docs/deep-learning-architecture-report-demo.pdf) | Word COM 导出的 PDF 示例 |
+| [`deep-learning-architecture-report-demo.docx`](docs/deep-learning-architecture-report-demo.docx) | 已上传到 GitHub 的修订版 Word 示例产出 |
+| [`deep-learning-architecture-report-demo.pdf`](docs/deep-learning-architecture-report-demo.pdf) | 已上传到 GitHub 的 Word COM 导出 PDF 示例产出 |
 | [`deep-learning-demo-cover.png`](docs/deep-learning-demo-cover.png) | 封面页渲染预览 |
 | [`deep-learning-demo-toc.png`](docs/deep-learning-demo-toc.png) | 目录页渲染预览 |
-| [`deep-learning-demo-figure.png`](docs/deep-learning-demo-figure.png) | 图表页渲染预览 |
+| [`deep-learning-demo-figure.png`](docs/deep-learning-demo-figure.png) | 第 11 页正式图注与页面级检查预览 |
 
 ### 封面：只占第一页
 
@@ -60,10 +60,10 @@
   <img src="docs/deep-learning-demo-toc.png" width="680" alt="修订版报告目录预览">
 </p>
 
-### 图表：正式图注与页面级检查
+### 图表：正式图注与页面级检查（第 11 页）
 
 <p align="center">
-  <img src="docs/deep-learning-demo-figure.png" width="680" alt="修订版报告图表页预览">
+  <img src="docs/deep-learning-demo-figure.png" width="680" alt="修订版报告第 11 页正式图注与页面级检查预览">
 </p>
 
 <a id="highlights"></a>
