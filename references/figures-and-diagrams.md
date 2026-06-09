@@ -106,6 +106,7 @@ Before generating an AI figure, record:
 After generating it, ensure:
 
 - it is labeled as `概念图`, `示意图`, or `概念架构图`
+- it has a formal chapter-scoped caption in the report body, such as `图2.1 概念图：从早期网络到现代基础模型的架构演化`
 - it is visually restrained
 - it contains no accidental text or watermark
 - nearby prose explains what it helps the reader understand
@@ -142,6 +143,12 @@ If accurate text is important, prefer one of these safer patterns:
 - AI-generated image:
   - concept-enhancement
   - some explanatory visuals where illustration is more effective than formal diagramming
+
+## Captions And Provenance Placement
+
+Every image inserted into the final report needs a formal figure caption immediately below the image. Use chapter-scoped numbering: `图<chapter>.<index> 标题`. Reset the second number when the chapter changes, and keep captions consistent with the chapter number after heading renumbering.
+
+Do not place raw provenance lines such as `图片来源：Codex image tool 生成；AI-generated, non-evidence...` below figures in the report body by default. They make the report look like a draft and compete with the formal caption. Put source/provenance details in `image-attributions.md`, the figure ledger, or the references/evidence prose. Only render visible source lines when the user, template, publisher, or assignment explicitly requires them.
 
 ## TikZ Guidance
 

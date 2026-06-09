@@ -198,6 +198,8 @@ If Pandoc or subprocess output fails with a `gbk`/Unicode encode/decode error, r
 
 By default, when the integrated default template is used, the script preserves the visible default cover and page setup, then removes sample body content and stale static TOC entries before inserting a fresh automatic TOC field and report body. This prevents a plain white document while still avoiding old sample chapters and placeholders.
 
+The default cover must fit entirely on page 1. If rendered PDF page 2 contains only a cover date, blank cover residue, or other cover metadata, fix the cover spacing/source template and regenerate before delivery.
+
 Use these flags only when intentional:
 
 - `--preserve-cover-paragraphs N`: keep the first `N` template paragraphs, then remove the rest.
@@ -217,6 +219,8 @@ python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\qa_docx_re
   --require-cover `
   --min-images 4 `
   --min-tables 3 `
+  --require-formal-figure-captions `
+  --forbid-image-source-lines `
   --stale-term 实验五 `
   --stale-term 日志渲染
 ```
@@ -237,6 +241,9 @@ Render or inspect pages around:
 
 Typical checks:
 
+- TOC page numbers share a single right edge and dot leaders reach that edge
+- figure captions use formal `图x.x` numbering
+- raw `图片来源：` provenance lines did not leak into the report body
 - no missing images
 - no unreadable screenshots
 - no table overflow

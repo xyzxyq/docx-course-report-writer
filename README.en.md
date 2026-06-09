@@ -228,9 +228,11 @@ Before delivery, the run must pass or explicitly document limitations for:
 - Template residue.
 - Linux/WSL runtime verification when Linux/POSIX behavior matters.
 - Word TOC, page numbers, references, and fields.
+- Cover and TOC layout: the default cover occupies page 1 only, and TOC page numbers are right-aligned with formal dot leaders.
 - Fact consistency across text, captions, tables, and figures.
 - Screenshot authenticity for browser and terminal captures.
 - Diagram semantics, arrows, labels, and layout.
+- Figure captions: every image has a formal `图x.x Title` caption, and raw `图片来源：` provenance lines do not leak into the report body.
 - Rendered PDF or page inspection when layout matters.
 - Analysis depth for experiment-heavy reports.
 

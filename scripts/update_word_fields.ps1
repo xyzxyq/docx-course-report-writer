@@ -29,12 +29,50 @@ function Invoke-WordFieldUpdate {
     $word = $null
     $doc = $null
 
+    function Set-TocTabStops {
+        param(
+            [Parameter(Mandatory = $true)]
+            $Document
+        )
+
+        $wdAlignTabRight = 2
+        $wdTabLeaderDots = 1
+        $contentWidth = $Document.PageSetup.PageWidth - $Document.PageSetup.LeftMargin - $Document.PageSetup.RightMargin
+        $tocStyleNames = @("TOC 1", "TOC 2", "TOC 3", "toc 1", "toc 2", "toc 3")
+
+        foreach ($styleName in $tocStyleNames) {
+            try {
+                $style = $Document.Styles.Item($styleName)
+                $style.ParagraphFormat.TabStops.ClearAll()
+                $null = $style.ParagraphFormat.TabStops.Add($contentWidth, $wdAlignTabRight, $wdTabLeaderDots)
+            }
+            catch {
+                # Style names vary by Word locale; paragraph-level formatting below is the fallback.
+            }
+        }
+
+        foreach ($paragraph in $Document.Paragraphs) {
+            $styleName = ""
+            try { $styleName = [string]$paragraph.Style.NameLocal } catch {}
+            if ($styleName -match "^(TOC|toc)\s*[1-3]$") {
+                $paragraph.Format.TabStops.ClearAll()
+                $null = $paragraph.Format.TabStops.Add($contentWidth, $wdAlignTabRight, $wdTabLeaderDots)
+            }
+        }
+    }
+
     try {
         $word = New-Object -ComObject Word.Application
         $word.Visible = $false
         $word.DisplayAlerts = 0
 
         $doc = $word.Documents.Open($resolvedDocx)
+
+        foreach ($toc in $doc.TablesOfContents) {
+            $toc.Update()
+        }
+
+        Set-TocTabStops -Document $doc
 
         foreach ($toc in $doc.TablesOfContents) {
             $toc.Update()

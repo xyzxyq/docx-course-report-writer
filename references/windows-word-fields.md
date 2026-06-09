@@ -68,11 +68,14 @@ Do not trust visible TOC-looking text alone. Verify at least one of:
 - Exported PDF shows the TOC entries and page numbers.
 - Page-rendered QA confirms the TOC and nearby pages are visually correct.
 
+For formal reports, also inspect whether TOC page numbers share one right edge. If the rightmost page numbers drift, reset TOC style tab stops to the usable page width and update the TOC again through Word COM before exporting PDF.
+
 Treat these as blocking issues unless the user accepts the limitation:
 
 - static hand-typed TOC when automatic TOC is expected
 - TOC field missing
 - stale page numbers
+- visibly misaligned TOC page numbers or missing dot leaders
 - failed field update without Word/ASCII-path fallback attempt
 - PDF export missing when page-sensitive QA is required
 

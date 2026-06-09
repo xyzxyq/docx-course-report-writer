@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 import zipfile
+from base64 import b64decode
 from pathlib import Path
 
 from docx import Document
@@ -12,6 +13,9 @@ from docx import Document
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "scripts" / "build_report.py"
+ONE_PIXEL_PNG = b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII="
+)
 
 
 class BuildReportFormatTest(unittest.TestCase):
@@ -84,6 +88,59 @@ class BuildReportFormatTest(unittest.TestCase):
             reference_pos = xml.index("参考文献")
             before_reference = xml[max(0, reference_pos - 1200) : reference_pos]
             self.assertRegex(before_reference, r'<w:br w:type="page"|<w:lastRenderedPageBreak')
+
+    def test_figures_are_numbered_and_source_lines_hidden_by_default(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            assets = work / "assets"
+            assets.mkdir()
+            (assets / "figure.png").write_bytes(ONE_PIXEL_PNG)
+            draft = work / "report-draft.md"
+            refs = work / "references.md"
+            out = work / "report.docx"
+
+            draft.write_text(
+                "\n".join(
+                    [
+                        "# 摘要",
+                        "摘要正文。",
+                        "# 引言",
+                        "引言正文。",
+                        "![概念图：结构演化](assets/figure.png)",
+                        "图片来源：不应写入正文。",
+                        "图片宽度：2cm",
+                        "{{REFERENCES}}",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            refs.write_text("[1] 测试参考文献。", encoding="utf-8")
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(BUILD),
+                    "--draft",
+                    str(draft),
+                    "--refs",
+                    str(refs),
+                    "--output",
+                    str(out),
+                    "--root",
+                    str(work),
+                    "--title",
+                    "图注测试",
+                    "--course",
+                    "深度学习",
+                ],
+                cwd=ROOT,
+                check=True,
+            )
+
+            doc = Document(str(out))
+            text = "\n".join(p.text for p in doc.paragraphs)
+            self.assertIn("图2.1 概念图：结构演化", text)
+            self.assertNotIn("图片来源：不应写入正文。", text)
 
 
 if __name__ == "__main__":

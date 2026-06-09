@@ -37,6 +37,7 @@ DEFAULT_MOJIBAKE_TERMS = [
 ]
 
 COVER_MARKERS = ["课程报告", "实验题目", "学生姓名", "任课教师"]
+SOURCE_PREFIX = "图片来源："
 
 
 def read_document_xml(docx_path: Path) -> str:
@@ -71,11 +72,20 @@ def has_toc_field(xml: str) -> bool:
 
 
 def has_page_break_before_reference(xml: str) -> bool:
-    reference_pos = xml.find("参考文献")
+    reference_pos = xml.rfind("参考文献")
     if reference_pos < 0:
         return False
     before_reference = xml[max(0, reference_pos - 1500) : reference_pos]
     return bool(re.search(r'<w:br w:type="page"|<w:lastRenderedPageBreak', before_reference))
+
+
+def formal_figure_captions(text: str) -> list[str]:
+    captions: list[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if re.match(r"^图\d+\.\d+\s+\S+", stripped):
+            captions.append(stripped)
+    return captions
 
 
 def main() -> int:
@@ -87,6 +97,8 @@ def main() -> int:
     parser.add_argument("--min-tables", type=int, default=0)
     parser.add_argument("--min-heading1", type=int, default=0)
     parser.add_argument("--require-reference-pagebreak", action="store_true")
+    parser.add_argument("--forbid-image-source-lines", action="store_true")
+    parser.add_argument("--require-formal-figure-captions", action="store_true")
     parser.add_argument("--stale-term", action="append", default=[])
     parser.add_argument("--allow-placeholder", action="append", default=[])
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON.")
@@ -105,6 +117,7 @@ def main() -> int:
     text = docx_text(doc)
     headings = heading_counts(doc)
     inline_shapes = len(doc.inline_shapes)
+    captions = formal_figure_captions(text)
     table_count = len(doc.tables)
     toc_field = has_toc_field(xml)
     reference_pagebreak = has_page_break_before_reference(xml)
@@ -127,6 +140,12 @@ def main() -> int:
         failures.append("Required default/template cover markers not found.")
     if args.require_reference_pagebreak and not reference_pagebreak:
         failures.append("Required page break before 参考文献 not found.")
+    if args.forbid_image_source_lines and SOURCE_PREFIX in text:
+        failures.append("Image source lines are present in report body; keep provenance in sidecar files instead.")
+    if args.require_formal_figure_captions and inline_shapes and len(captions) < inline_shapes:
+        failures.append(
+            f"Formal figure captions {len(captions)} < image count {inline_shapes}; expected captions like 图2.1 标题."
+        )
     if inline_shapes < args.min_images:
         failures.append(f"Image count {inline_shapes} < required {args.min_images}.")
     if table_count < args.min_tables:
@@ -141,6 +160,7 @@ def main() -> int:
         "paragraphs": len(doc.paragraphs),
         "tables": table_count,
         "inline_shapes": inline_shapes,
+        "formal_figure_captions": captions,
         "heading_counts": headings,
         "toc_field": toc_field,
         "reference_pagebreak": reference_pagebreak,

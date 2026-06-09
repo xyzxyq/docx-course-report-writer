@@ -21,7 +21,8 @@ from docx.shared import Cm, Pt, RGBColor
 SOURCE_PREFIX = "图片来源："
 WIDTH_PREFIX = "图片宽度："
 DEFAULT_TEMPLATE_PATH = Path(__file__).resolve().parents[1] / "skill-assets" / "default-course-report-template.docx"
-DEFAULT_COVER_PARAGRAPHS = 16
+DEFAULT_COVER_PARAGRAPHS = 11
+TOC_RIGHT_TAB_CM = 15.35
 CHAPTER_NUMERALS = {
     1: "一",
     2: "二",
@@ -97,6 +98,15 @@ def ensure_heading_styles(doc: Document) -> None:
         outline.set(qn("w:val"), str(level - 1))
 
 
+def get_or_create_paragraph_style(doc: Document, name: str):
+    for style in doc.styles:
+        if style.type == WD_STYLE_TYPE.PARAGRAPH and style.name.lower() == name.lower():
+            return style
+    style = doc.styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
+    style.base_style = doc.styles["Normal"]
+    return style
+
+
 def ensure_toc_styles(doc: Document) -> None:
     specs = {
         "TOC 1": {"size": 11.0, "bold": True, "left": 0.0, "first": 0.0, "after": 4},
@@ -104,11 +114,7 @@ def ensure_toc_styles(doc: Document) -> None:
         "TOC 3": {"size": 10.0, "bold": False, "left": 1.1, "first": 0.0, "after": 2},
     }
     for name, spec in specs.items():
-        try:
-            style = doc.styles[name]
-        except KeyError:
-            style = doc.styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
-            style.base_style = doc.styles["Normal"]
+        style = get_or_create_paragraph_style(doc, name)
         set_style_font(style, east_asia="宋体", size=float(spec["size"]), bold=bool(spec["bold"]))
         fmt = style.paragraph_format
         fmt.left_indent = Cm(float(spec["left"]))
@@ -117,7 +123,7 @@ def ensure_toc_styles(doc: Document) -> None:
         fmt.space_after = Pt(int(spec["after"]))
         fmt.line_spacing = 1.15
         fmt.tab_stops.clear_all()
-        fmt.tab_stops.add_tab_stop(Cm(15.2), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+        fmt.tab_stops.add_tab_stop(Cm(TOC_RIGHT_TAB_CM), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
 
 
 def set_cell_shading(cell, fill: str) -> None:
@@ -406,12 +412,12 @@ def populate_default_cover(doc: Document, args: argparse.Namespace, report_title
         f"学生姓名    {args.student_name.strip() or '________________________________'}",
         f"学生学号    {args.student_id.strip() or '________________________________'}",
         f"任课教师    {args.teacher.strip() or '________________________________'}",
-        "",
-        "",
-        "",
-        "",
-        "",
         args.date.strip() or current_date_text(),
+        "",
+        "",
+        "",
+        "",
+        "",
     ]
 
     for index, text in enumerate(values):
@@ -420,7 +426,27 @@ def populate_default_cover(doc: Document, args: argparse.Namespace, report_title
         paragraph = doc.paragraphs[index]
         paragraph.text = ""
         paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        paragraph.paragraph_format.space_after = Pt(6)
+        paragraph.paragraph_format.space_before = Pt(0)
+        paragraph.paragraph_format.space_after = Pt(0)
+        paragraph.paragraph_format.line_spacing = 1.0
+        paragraph.paragraph_format.first_line_indent = Pt(0)
+        if index == 0:
+            paragraph.paragraph_format.space_after = Pt(96)
+        elif index == 2:
+            paragraph.paragraph_format.space_after = Pt(16)
+        elif index == 3:
+            paragraph.paragraph_format.space_after = Pt(36)
+        elif index == 4:
+            paragraph.paragraph_format.space_after = Pt(34)
+        elif 5 <= index <= 9:
+            paragraph.paragraph_format.space_after = Pt(27)
+        elif index == 10:
+            paragraph.paragraph_format.space_before = Pt(48)
+            paragraph.paragraph_format.space_after = Pt(0)
+        elif 11 <= index <= 14:
+            paragraph.paragraph_format.space_after = Pt(0)
+        elif index == 15:
+            paragraph.paragraph_format.space_after = Pt(0)
         run = paragraph.add_run(text)
         if index == 2:
             set_run_font(run, east_asia="黑体", size=18, bold=True)
@@ -430,27 +456,39 @@ def populate_default_cover(doc: Document, args: argparse.Namespace, report_title
             set_run_font(run, east_asia="宋体", size=13)
         elif 5 <= index <= 9:
             set_run_font(run, east_asia="宋体", size=12)
-        elif index == 15:
+        elif index == 10:
             set_run_font(run, east_asia="宋体", size=12)
         else:
-            set_run_font(run, east_asia="宋体", size=12)
+            set_run_font(run, east_asia="宋体", size=1 if not text else 12)
 
 
-def add_figure(doc: Document, payload: dict[str, Any], root: Path) -> None:
+def formal_figure_caption(raw_caption: str, chapter: int, figure_index: int) -> str:
+    caption = raw_caption.strip()
+    caption = re.sub(r"^图\s*\d+(?:[.\-]\d+)?\s*", "", caption).strip()
+    return f"图{chapter}.{figure_index} {caption}"
+
+
+def add_figure(
+    doc: Document,
+    payload: dict[str, Any],
+    root: Path,
+    caption_text: str,
+    include_source_lines: bool = False,
+) -> None:
     fig_path = (root / str(payload["path"])).resolve()
     paragraph = doc.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     paragraph.paragraph_format.space_before = Pt(6)
     paragraph.add_run().add_picture(str(fig_path), width=Cm(float(payload.get("width_cm", 13.8))))
 
-    caption = doc.add_paragraph()
-    caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    caption.paragraph_format.space_after = Pt(6)
-    run = caption.add_run(str(payload["caption"]))
+    caption_para = doc.add_paragraph()
+    caption_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    caption_para.paragraph_format.space_after = Pt(6)
+    run = caption_para.add_run(caption_text)
     set_run_font(run, size=10.5)
 
     source = str(payload.get("source", "")).strip()
-    if source:
+    if source and include_source_lines:
         source_para = doc.add_paragraph()
         source_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         source_para.paragraph_format.space_after = Pt(6)
@@ -548,6 +586,8 @@ def build(args: argparse.Namespace) -> None:
 
     tokens = parse_tokens(draft_text)
     numbering = HeadingNumbering()
+    current_chapter = 1
+    figure_counts: dict[int, int] = {}
     reference_heading_added = False
     for kind, payload in tokens:
         if kind == "h1":
@@ -557,19 +597,32 @@ def build(args: argparse.Namespace) -> None:
                 add_heading(doc, "参考文献", 1)
                 reference_heading_added = True
             else:
-                add_heading(doc, numbering.format(text, 1) if args.number_headings else text, 1)
+                heading_text = numbering.format(text, 1) if args.number_headings else text
+                current_chapter = numbering.chapter if args.number_headings else max(current_chapter, 1)
+                add_heading(doc, heading_text, 1)
                 reference_heading_added = False
         elif kind == "h2":
-            add_heading(doc, numbering.format(str(payload), 2) if args.number_headings else str(payload), 2)
+            heading_text = numbering.format(str(payload), 2) if args.number_headings else str(payload)
+            current_chapter = numbering.chapter if args.number_headings else max(current_chapter, 1)
+            add_heading(doc, heading_text, 2)
             reference_heading_added = False
         elif kind == "h3":
-            add_heading(doc, numbering.format(str(payload), 3) if args.number_headings else str(payload), 3)
+            heading_text = numbering.format(str(payload), 3) if args.number_headings else str(payload)
+            current_chapter = numbering.chapter if args.number_headings else max(current_chapter, 1)
+            add_heading(doc, heading_text, 3)
             reference_heading_added = False
         elif kind == "p":
             add_body_paragraph(doc, str(payload))
             reference_heading_added = False
         elif kind == "figure":
-            add_figure(doc, payload, args.root)
+            chapter = max(current_chapter, 1)
+            figure_counts[chapter] = figure_counts.get(chapter, 0) + 1
+            caption = (
+                formal_figure_caption(str(payload["caption"]), chapter, figure_counts[chapter])
+                if args.number_figures
+                else str(payload["caption"])
+            )
+            add_figure(doc, payload, args.root, caption, include_source_lines=args.include_image_source_lines)
             reference_heading_added = False
         elif kind == "table":
             add_table(doc, payload)
@@ -618,7 +671,19 @@ def main() -> None:
         action="store_false",
         help="Disable automatic Chinese chapter and decimal section numbering.",
     )
+    parser.add_argument(
+        "--no-figure-numbering",
+        dest="number_figures",
+        action="store_false",
+        help="Disable automatic formal figure captions such as 图2.1.",
+    )
+    parser.add_argument(
+        "--include-image-source-lines",
+        action="store_true",
+        help="Render 图片来源 lines below captions. Default keeps provenance in sidecar attribution files only.",
+    )
     parser.set_defaults(number_headings=True)
+    parser.set_defaults(number_figures=True)
     build(parser.parse_args())
 
 
