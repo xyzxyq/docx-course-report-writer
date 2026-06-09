@@ -25,9 +25,63 @@ Rules:
 - If a tool returns `????` paths, stop and rerun with a Unicode-safe path strategy before opening DOCX/PDF files.
 - For Word COM and PDF export in Chinese paths, prefer the existing `-UseAsciiTemp` fallback.
 
-## WSL Runtime Evidence
+## Linux And WSL Runtime Evidence
 
-Use WSL for Linux/POSIX/socket/file-system experiments on Windows unless the user asks for native Windows.
+Use this whenever the report depends on Linux/POSIX behavior: sockets, fork/processes, signals, shared memory, semaphores, file permissions, shell scripts, Makefiles, GCC/Clang, Linux-only packages, or teacher-provided Linux commands.
+
+### Runtime Selection Order
+
+1. Check whether the user host is already Linux. If yes, use native Linux and record `uname -a`.
+2. If the host is not Linux, check for local Linux runtimes. On Windows, check WSL first.
+3. If a suitable WSL distribution exists, use it unless the user explicitly asks for native Windows.
+4. If no suitable Linux runtime exists, ask the user whether to install WSL. Do not install, enable features, change default distributions, or run admin-level setup before explicit user permission.
+5. If installation is approved but requires admin rights, reboot, Store login, or network access, report that limitation and continue only after the environment is usable.
+
+### Windows Host Checks
+
+```powershell
+$PSVersionTable.PSEdition
+[System.Runtime.InteropServices.RuntimeInformation]::OSDescription
+where.exe wsl
+wsl.exe --status
+wsl.exe -l -v
+```
+
+If `wsl.exe -l -v` lists a distribution, verify it:
+
+```powershell
+wsl.exe -d Ubuntu-24.04 -- bash -lc 'uname -a; printf "PWD=%s\n" "$PWD"; command -v gcc || true; command -v make || true'
+```
+
+Use the actual distribution name from `wsl.exe -l -v`; do not assume `Ubuntu-24.04`.
+
+### WSL Install Gate
+
+Ask a concise permission question before installing:
+
+```text
+该任务需要 Linux/POSIX 环境。当前未检测到可用 WSL。是否允许我安装/启用 WSL？安装可能需要管理员权限、联网和重启。
+```
+
+After approval, use the platform's normal WSL setup path, then verify again:
+
+```powershell
+wsl.exe --install
+wsl.exe --status
+wsl.exe -l -v
+```
+
+If a distribution must be selected, prefer a current Ubuntu distribution available on the machine. Record the exact command and any reboot/admin limitation.
+
+### Running Projects In WSL
+
+Convert Windows paths to WSL mount paths:
+
+```powershell
+$win = 'C:\Users\20795\Documents\project'
+$wsl = $win -replace '^C:', '/mnt/c' -replace '\\', '/'
+wsl.exe -d Ubuntu-24.04 -- bash -lc "cd '$wsl' && pwd && uname -a"
+```
 
 Recommended evidence commands:
 
@@ -39,21 +93,35 @@ wsl.exe -d Ubuntu-24.04 -- bash -lc 'cd /mnt/c/path/to/project && ./run_tests.sh
 
 Record:
 
-- WSL distribution
-- compiler/runtime versions
-- exact project path
-- build command
-- run/test command
-- raw log path
+- host OS and whether native Linux or WSL was used
+- WSL distribution and version
+- Linux kernel and compiler/runtime versions
+- exact Windows path and WSL path
+- build/run/test commands
+- raw log paths and screenshot paths
+- missing packages and installation commands, if any
 
-## Real Terminal Screenshots
+## Screenshot Evidence
 
-When the user asks for real screenshots:
+Treat screenshots as planned evidence, not decoration. Use them when visual proof helps the report: browser output, UI state, terminal build/test result, server/client interaction, external source page, or required proof of execution.
+
+### Browser Page Screenshots
+
+- Navigate to the intended page and wait for the relevant content, not just network idle.
+- Capture full page or a focused region according to the report need.
+- Inspect the screenshot content before using it.
+- Reject or relabel screenshots that show 403, CAPTCHA, login wall, cookie blocker, blank page, loading spinner, wrong tab, or error page.
+- Record URL, capture time, raw screenshot path, and any cropped/annotated path.
+
+### Real Terminal Screenshots
+
+When the user or assignment needs real terminal screenshots:
 
 - Run the command in an actual visible terminal/application window.
-- Capture the real window region after the command has produced the result.
-- Keep raw screenshots and produce annotated copies.
-- Do not use log-rendered images as screenshots.
+- Capture after the command has produced the result.
+- Include enough context: prompt/current directory, command, result summary, and key verification lines.
+- Keep raw screenshots and produce annotated copies when helpful.
+- Do not use log-rendered images as screenshots. If a log-rendered image is used, label it as a rendered log.
 
 For server/client workflows:
 
@@ -61,6 +129,14 @@ For server/client workflows:
 - capture server listening state
 - capture client command/result session
 - capture verification command such as `diff`, checksum, or test summary
+
+### Screenshot Quality Checks
+
+- Text is readable at final DOCX/PDF scale.
+- Crop focuses the evidence but keeps enough context to prove what was run.
+- Annotations do not cover proof text.
+- Raw and annotated versions are not confused.
+- Caption states what the screenshot proves.
 
 ## Annotating Screenshots
 

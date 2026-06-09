@@ -12,7 +12,8 @@ Ask or infer these before writing final deliverables:
 - Template decision: user-provided / integrated default / blank document by explicit request
 - Required evidence:
 - Runtime environment:
-- Screenshot requirements:
+- Linux/WSL requirement and availability:
+- Screenshot requirements and capture targets:
 - PDF/export requirement:
 - Naming/metadata requirements:
 - Superpowers installed/available: yes/no
@@ -33,7 +34,9 @@ If the user already gave enough information, record the answer instead of asking
 - Template/source files:
 - Template decision:
 - Evidence required:
-- Runtime/screenshot plan:
+- Runtime plan:
+- Linux/WSL decision:
+- Screenshot plan:
 - AI text-to-image: off/on
 - AI image maximum:
 - Superpowers availability:
@@ -79,6 +82,8 @@ If the user already gave enough information, record the answer instead of asking
 ## Final Gates
 - Superpowers verification/fallback:
 - Evidence authenticity:
+- Linux/WSL runtime:
+- Screenshot authenticity:
 - Template residue:
 - Word fields/TOC:
 - Fact ledger scan:
@@ -93,5 +98,7 @@ If the user already gave enough information, record the answer instead of asking
 - The Critic must audit the current artifact, not only the plan.
 - If a blocking issue is found, the Actor fixes the source of truth before regeneration.
 - If AI-generated images are used, each image must appear in the figure ledger with permission, maximum count, prompt/spec source, text verification, and attribution.
+- If Linux/POSIX behavior is required, the record must show host OS check, native Linux/WSL decision, WSL availability or install-permission outcome, distribution/kernel/compiler facts, and exact build/run/test commands.
+- If screenshots are required, the record must show capture targets, raw screenshot paths, annotated/cropped paths when used, and whether each screenshot was inspected for wrong-page/error/login/CAPTCHA problems.
 - If TikZ, flowcharts, pipelines, architecture diagrams, timelines, or mechanism diagrams are used, each must show `Review And Revise status` with arrow audit and text-layout audit completed after rendering and after DOCX/PDF insertion.
 - If no user template is provided, the template decision must record `integrated default: skill-assets/default-course-report-template.docx`.

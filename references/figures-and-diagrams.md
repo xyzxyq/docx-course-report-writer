@@ -41,6 +41,8 @@ Use these rules when screenshots are evidence:
 - Save raw logs or terminal output separately.
 - Keep raw screenshots when possible, then create annotated copies for the report.
 - Crop to the useful area but retain enough command/result context to prove what was run.
+- For terminal screenshots, include visible command context: prompt/current directory when useful, exact command, key output, and verification line.
+- For browser screenshots, capture the actual rendered page or target region after the intended content is visible, then inspect the screenshot before using it.
 - If a server and client are both part of the proof, capture each role separately when needed.
 - Log-rendered images may be used only when acceptable for the task, and must be labeled as rendered logs, not screenshots.
 
@@ -245,6 +247,7 @@ Do not trust a web screenshot because the URL is authoritative. Inspect the visi
 
 - If it shows the intended official page/article/table, it can be used with source attribution.
 - If it shows 403, CAPTCHA, login prompts, cookie-blocking overlays, blank pages, or unrelated redirects, it is not valid evidence.
+- If it captures the wrong tab, stale browser state, loading skeleton, or an error overlay, retake it after navigating and waiting for the intended content.
 - When access is blocked, use a source-backed metadata card, DOI/PubMed/official-title table, or manually verified citation record instead of inserting the broken page.
 
 ## Paper Figure Crop Rules

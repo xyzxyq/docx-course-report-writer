@@ -5,10 +5,10 @@
 1. Check for installed Superpowers plugin/skills. Invoke applicable `superpowers:*` skills before acting; otherwise follow `superpowers-adapter.md` as fallback.
 2. Read assignment, template/prior report, source files, and user constraints. If the user did not provide a template, select `skill-assets/default-course-report-template.docx` as the default template.
 3. Create or update the run record from `intake-and-run-record.md`.
-4. Lock report archetype, deliverables, metadata, naming, chapter structure, required evidence, and AI-image permission/count.
+4. Lock report archetype, deliverables, metadata, naming, chapter structure, required evidence, Linux/WSL need, screenshot targets, and AI-image permission/count.
 5. Create or activate the mandatory Actor and Critic roles.
 6. Build a requirement-to-evidence checklist before writing long prose.
-7. Verify or create real runtime evidence when the report depends on program behavior.
+7. Verify or create real runtime evidence when the report depends on program behavior. If Linux/POSIX behavior matters, use native Linux or verified WSL and record the environment facts.
 8. Run a Figure Decision Pass chapter by chapter.
 9. Create working source files:
    - `report-draft.md`
@@ -50,10 +50,30 @@ For each major section, decide:
    - local experiment output
    - TikZ / self-drawn
    - paper crop
-   - screenshot
+   - screenshot, including browser page, terminal, GUI, or external source capture
    - AI-generated image
 
 Do not jump to AI image generation just because a page feels visually sparse.
+
+## Linux/WSL Branch
+
+Use this branch when the report depends on Linux-specific behavior.
+
+1. Check whether the host is Linux. If yes, use native Linux and record OS/kernel facts.
+2. If not Linux, check local Linux runtimes. On Windows, run WSL availability checks from `tooling-recipes.md`.
+3. If WSL exists, verify the distribution, kernel, compiler/runtime, project path mapping, and build/run/test commands.
+4. If WSL is missing, ask the user whether to install/enable WSL. Do not install until explicit permission is given.
+5. If installation is blocked by admin rights, reboot, network, or policy, record the limitation and do not present Linux results as verified.
+
+## Screenshot Branch
+
+Use this branch when visual evidence improves or is required by the report.
+
+1. Decide screenshot targets during intake: browser page, terminal, GUI, external source, server/client state, or PDF render.
+2. Capture raw screenshots before cropping or annotation.
+3. Inspect each screenshot for semantic correctness. Reject wrong tab, wrong page, blank/error/login/CAPTCHA/403 captures.
+4. For terminal screenshots, include command and result context. Do not describe log-rendered images as real screenshots.
+5. Add cropped or annotated copies only after preserving raw captures.
 
 ## AI Image Branch
 

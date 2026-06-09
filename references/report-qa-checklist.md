@@ -21,6 +21,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 ### Evidence Authenticity
 
 - Required experiment outputs are real outputs, not AI substitutes.
+- Linux/POSIX outputs came from native Linux or verified WSL when Linux behavior matters. If no Linux runtime was available, the report records the limitation and user install decision.
 - Real screenshots are actual terminal/application captures when requested.
 - Log-rendered images are not described as screenshots.
 - Raw logs or raw screenshots are preserved when screenshots are cropped or annotated.
@@ -96,6 +97,8 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - AI-generated figures have a pre-generation drawing spec and post-generation text check. Reject figures with unrelated names, fake logos, wrong numbers, or hallucinated labels.
 - If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. Default maximum is 3 when enabled without a count.
 - External screenshots show the intended source content. 403/CAPTCHA/login/error pages are replaced with verifiable metadata cards or source tables.
+- Browser screenshots were inspected for wrong page, blank page, loading state, login wall, 403, CAPTCHA, and error pages.
+- Terminal screenshots include command/result context and remain readable at final DOCX/PDF scale.
 
 ### Deliverables
 

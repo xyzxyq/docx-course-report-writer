@@ -46,6 +46,7 @@ Use it for:
 - [Workflow](#workflow)
 - [Superpowers Workflow](#superpowers-workflow)
 - [Actor/Critic Iteration](#actor-critic)
+- [WSL And Screenshot Highlights](#wsl-screenshot)
 - [Diagram QA](#diagram-qa)
 - [Default Template](#default-template)
 - [Quality Gates](#quality-gates)
@@ -79,6 +80,8 @@ The goal is not only to create a file that opens. The goal is to produce a repor
 | Word TOC and field update | Uses real heading styles and automatic Word fields |
 | PDF and page-level QA | Exports or renders pages when layout verification matters |
 | Evidence-first writing | Tracks logs, screenshots, data, scores, filenames, model names, and dates |
+| Linux/WSL runtime | Checks whether the host is Linux; otherwise verifies WSL on Windows; asks before installing WSL when missing |
+| Browser and terminal screenshots | Treats screenshots as first-class evidence, including browser pages, terminal windows, GUI states, and external source pages |
 | Diagram and TikZ review | Audits arrows, labels, spacing, semantics, and final scaling |
 | Controlled AI images | Always asks whether text-to-image is enabled and how many images may be generated, default 3 |
 | Actor/Critic loop | Creates Actor and Critic roles, runs at least two full iterations, and continues while blockers remain |
@@ -160,6 +163,34 @@ Rules:
 
 See [`references/actor-critic-loop.md`](references/actor-critic-loop.md).
 
+<a id="wsl-screenshot"></a>
+
+## WSL And Screenshot Highlights
+
+### Skilled Linux/WSL Runtime Handling
+
+When a coursework task needs Linux/POSIX behavior, this Skill follows a fixed runtime route:
+
+1. Check whether the host is already Linux.
+2. If not, check for a local Linux runtime. On Windows, prefer WSL.
+3. If WSL is available, record the distribution, kernel, compiler/runtime versions, Windows-to-WSL path mapping, and real build/run/test commands.
+4. If WSL is missing, ask whether the user allows WSL installation or enablement. It does not install WSL without explicit permission.
+5. If setup needs admin rights, network access, Store login, or reboot, record the limitation and use results only after the Linux environment is verified.
+
+This is useful for Linux coursework, C/POSIX labs, sockets, processes, signals, shared memory, semaphores, Makefiles, and Linux-only commands.
+
+### Screenshots As Verifiable Evidence
+
+Screenshots are treated as evidence assets, not decoration. The Skill plans screenshot targets during intake:
+
+- Browser screenshots: verify the intended page and reject 403, login, CAPTCHA, blank, error, or wrong-tab captures.
+- Terminal screenshots: prefer real visible terminal captures with command, working directory, key output, and verification result.
+- GUI/app screenshots: capture the window region that proves the relevant state.
+- Raw and annotated separation: save raw screenshots first, then make cropped or red-box annotated copies.
+- Final insertion review: check readability after DOCX/PDF scaling and ensure annotations do not hide proof text.
+
+See [`references/tooling-recipes.md`](references/tooling-recipes.md).
+
 <a id="diagram-qa"></a>
 
 ## Diagram QA
@@ -195,8 +226,10 @@ Before delivery, the run must pass or explicitly document limitations for:
 
 - Evidence authenticity.
 - Template residue.
+- Linux/WSL runtime verification when Linux/POSIX behavior matters.
 - Word TOC, page numbers, references, and fields.
 - Fact consistency across text, captions, tables, and figures.
+- Screenshot authenticity for browser and terminal captures.
 - Diagram semantics, arrows, labels, and layout.
 - Rendered PDF or page inspection when layout matters.
 - Analysis depth for experiment-heavy reports.

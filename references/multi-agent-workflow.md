@@ -67,12 +67,13 @@ Outputs:
 - runnable implementation or missing-work diagnosis
 - exact build/run/test commands
 - WSL or local environment facts
+- host OS, Linux/WSL availability, and WSL install-permission outcome when relevant
 - raw logs and verification results
 - list of proof points that need screenshots
 
 Rules:
 
-- For Linux/POSIX/socket/file-system assignments on Windows, use WSL unless the user asks otherwise.
+- For Linux/POSIX/socket/file-system assignments, first check whether the host is Linux. On Windows, verify WSL. If WSL is missing, ask before installing/enabling it.
 - Do not invent results. Run the program and preserve commands/logs.
 - If implementing code, own only the experiment source/test files assigned by the Orchestrator.
 
@@ -86,10 +87,14 @@ Outputs:
 - cropped screenshots that retain enough context
 - annotated screenshots
 - image attribution records
+- browser screenshot URL/content checks
+- terminal screenshot command/result context checks
 
 Rules:
 
 - Real screenshot means actual visible terminal/application capture, not a log-rendered image.
+- Browser screenshots must show the intended content, not a login, CAPTCHA, 403, blank page, or error page.
+- Terminal screenshots must include enough command/result context to prove what was run.
 - Keep raw screenshots alongside annotated versions when possible.
 - Use red boxes for key experiment results.
 - Labels must be red text, transparent background, inside image bounds, no more than 10 Chinese characters, and must not cover the evidence.
@@ -195,6 +200,7 @@ Gate 2: Runtime Evidence Ready
 
 - Program builds/runs in the intended environment.
 - Required commands have real outputs.
+- Linux/POSIX work used native Linux or verified WSL, or the missing-runtime limitation is documented.
 - Raw logs or raw screenshots exist.
 - Verification commands prove key claims.
 

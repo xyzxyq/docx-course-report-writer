@@ -21,19 +21,21 @@ These rules apply every time this skill is active:
 3. **Ask the AI-image intake question before generation.** Ask whether to enable text-to-image figures and how many may be generated/inserted. Default maximum is 3 when enabled without a count. Do not generate or insert AI images until permission and count are recorded, unless the user already gave both in the current request.
 4. **Treat generated images as non-evidence.** AI-generated images must not replace real experiment results, real data plots, required screenshots, or item-by-item proof. Factual labels in generated images require a pre-generation text whitelist and post-generation verification.
 5. **Use source-first evidence.** Do not invent results. Run programs, collect logs, capture real screenshots, or clearly document missing evidence before writing final claims.
-6. **Use real Word mechanisms.** Use Word heading styles and automatic TOC fields when a TOC is expected. On Windows, prefer Word COM for field update, TOC update, save, and PDF export; use an ASCII temp path fallback for path/encoding failures.
-7. **Use the correct report template.** If the user provides a DOCX template, use the user's template. If the user does not provide one, use the integrated default template at `skill-assets/default-course-report-template.docx`. The default builder uses that template for styles/page setup and clears stale body content unless cover/body preservation is explicitly requested.
-8. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
-9. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
+6. **Route Linux work through a verified Linux runtime.** When the assignment needs Linux/POSIX behavior, first check whether the user host is already Linux. If not, check for available local Linux runtimes, especially WSL on Windows. If no suitable Linux runtime exists, ask whether the user wants WSL installed and do not install it until the user explicitly permits it. When permission is granted, install/enable WSL using the platform's normal mechanism, then verify the distribution, kernel, path mapping, compilers, and commands before using results in the report.
+7. **Plan screenshots as first-class evidence.** When a browser page, terminal, GUI, or external source should be visually proven, decide the screenshot target during intake, capture the real visible page/window when required, keep raw screenshots, create annotated copies when useful, and inspect the image content before treating it as evidence. Browser screenshots must show the intended page, not a login, 403, CAPTCHA, blank page, or error page. Terminal screenshots must show enough command/result context.
+8. **Use real Word mechanisms.** Use Word heading styles and automatic TOC fields when a TOC is expected. On Windows, prefer Word COM for field update, TOC update, save, and PDF export; use an ASCII temp path fallback for path/encoding failures.
+9. **Use the correct report template.** If the user provides a DOCX template, use the user's template. If the user does not provide one, use the integrated default template at `skill-assets/default-course-report-template.docx`. The default builder uses that template for styles/page setup and clears stale body content unless cover/body preservation is explicitly requested.
+10. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
+11. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
 
 ## Run Card
 
 Follow this compact sequence unless the user explicitly limits the task to analysis only:
 
 1. **Scope and intake**
-   Check and invoke applicable Superpowers skills. Read the assignment, template/prior report, source files, user constraints, and required deliverables. Ask the mandatory AI-image question. Create a run record using `references/intake-and-run-record.md`.
+   Check and invoke applicable Superpowers skills. Read the assignment, template/prior report, source files, user constraints, and required deliverables. Ask the mandatory AI-image question. Determine whether Linux/WSL or real screenshots are required. Create a run record using `references/intake-and-run-record.md`.
 2. **Evidence plan**
-   Build a requirement-to-evidence checklist and a fact ledger for scores, filenames, dataset sizes, model names, dates, source boundaries, and final-vs-intermediate claims.
+   Build a requirement-to-evidence checklist, runtime plan, screenshot plan, and fact ledger for scores, filenames, dataset sizes, model names, dates, source boundaries, and final-vs-intermediate claims.
 3. **Actor cycle 1**
    Draft, repair, assemble, run experiments, collect screenshots, create figures, or update DOCX sources.
 4. **Critic cycle 1**
@@ -59,7 +61,7 @@ Open these only when needed:
 - Past defects and required prevention checks: `references/failure-patterns.md`
 - Chinese DOCX typography, tables, and code blocks: `references/chinese-docx-style.md`
 - Word COM, TOC, fields, and PDF export: `references/windows-word-fields.md`
-- WSL, screenshot, Word, PDF, and QA command recipes: `references/tooling-recipes.md`
+- Linux/WSL runtime selection, screenshots, Word, PDF, and QA command recipes: `references/tooling-recipes.md`
 - Source quality, citations, and attribution: `references/source-quality.md`
 - Report-type defaults: `references/report-archetypes.md`
 
@@ -77,18 +79,22 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
    Heading styles are real Word headings. TOC is automatic. Fields/page numbers are updated through Word COM or an equivalent documented process.
 5. **Fact ledger gate**
    Numeric results, scores, dataset sizes, filenames, class names, model names, dates, and final-vs-intermediate claims match the latest approved evidence across DOCX text, PDF text, figure sources, captions, tables, and image specs.
-6. **Figure semantics gate**
+6. **Linux runtime gate**
+   Linux/POSIX claims were produced in native Linux or a verified local Linux runtime such as WSL. If no Linux runtime was available, the run records the missing environment and the user's install decision. WSL installation or distribution changes were never attempted without explicit user permission.
+7. **Figure semantics gate**
    Every self-drawn/TikZ/AI figure has correct semantics, readable labels, clean spacing, and completed `Review And Revise`. Arrow audit must pass after final scaling/rendering.
-7. **External screenshot gate**
-   Website/source screenshots show the intended content. A 403 page, CAPTCHA, login wall, cookie blocker, or error page is not evidence.
-8. **Analysis depth gate**
+8. **Screenshot evidence gate**
+   Browser/source screenshots show the intended content. Terminal screenshots show enough command/result context. A 403 page, CAPTCHA, login wall, cookie blocker, blank page, error page, or log-rendered substitute is not real screenshot evidence unless explicitly labeled as such.
+9. **Analysis depth gate**
    Experiment/project reports include result analysis, interpretation, failure causes, limitations, and personal understanding, not only implementation description.
-9. **Rendered visual QA gate**
+10. **Rendered visual QA gate**
    PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, and code-block pages before claiming layout is verified.
 
 ## Working Defaults
 
 - Prefer a reproducible source-first workspace: `report-draft.md`, `references.md`, `image-attributions.md`, helper scripts, raw logs, raw screenshots, annotated screenshots, figure sources, final DOCX, and final PDF.
+- If Linux behavior matters, prefer native Linux on Linux hosts; on Windows, prefer verified WSL. Record distro, kernel, package/compiler versions, commands, logs, and path mapping.
+- Treat browser and terminal screenshots as planned evidence assets. Keep raw captures separate from cropped or annotated copies.
 - Template precedence is strict: user-provided template first; otherwise `skill-assets/default-course-report-template.docx`; use `--no-default-template` only when the user explicitly requests a blank Word document.
 - Preserve useful template page setup, cover style, table style, heading hierarchy, captions, and metadata.
 - Remove stale body content, old screenshots, old captions, old TOC entries, and irrelevant media before assembly.
@@ -102,8 +108,9 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 - Use `doc` / `documents` for low-level DOCX editing, rendering, and OOXML details.
 - Use `pdf` when PDF rendering or page-level visual QA matters.
 - Use `imagegen` only for explanatory or conceptual figures that are not evidence, after the mandatory AI-image intake.
+- Use Browser/Playwright/browser tools for web-page screenshot evidence when available; use Computer Use or visible terminal capture for real terminal screenshots when required by the assignment.
 - On Windows, prefer Word COM for Word-specific fidelity.
-- For Linux/POSIX/socket/file-system assignments on Windows, prefer the user's local WSL environment unless the user asks for native Windows.
+- For Linux/POSIX/socket/file-system assignments on Windows, verify and use WSL unless the user asks for native Windows. If WSL is missing, ask before installing or enabling it.
 
 ## Scope Boundaries
 

@@ -46,6 +46,7 @@
 - [工作流](#workflow)
 - [Superpowers 执行方式](#superpowers-workflow)
 - [Actor/Critic 双智能体迭代](#actor-critic)
+- [WSL 与截图亮点](#wsl-screenshot)
 - [图像与流程图审查](#diagram-qa)
 - [默认模板](#default-template)
 - [质量门](#quality-gates)
@@ -79,6 +80,8 @@
 | Word 字段与目录 | 使用真实标题样式和自动目录字段，Windows 下优先 Word COM 更新 |
 | PDF 与页面级 QA | 需要时导出 PDF 或渲染页面，检查目录页、图表页、表格页、代码块页 |
 | 证据优先写作 | 对实验结果、截图、数据、分数、文件名、模型名建立事实台账 |
+| Linux/WSL 运行环境 | 需要 Linux/POSIX 时先判断用户系统；非 Linux 则检查 WSL；缺失时先征得用户许可再安装 |
+| 浏览器与终端截图 | 把截图当作一等证据资产，支持浏览器页面、终端窗口、GUI 状态和外部来源页面的捕获、审查与标注 |
 | 图表与 TikZ 审查 | 流程图、架构图、机制图、时间线等必须完成最终审查与修正 |
 | AI 图像受控插入 | 使用前必须询问是否开启文生图，以及最多生成几张，默认 3 张 |
 | Actor/Critic 迭代 | 每次使用都创建 Actor 和 Critic，至少完成两轮迭代，缺陷未清零则继续 |
@@ -170,6 +173,34 @@ flowchart LR
 
 协议细节见 [`references/actor-critic-loop.md`](references/actor-critic-loop.md)。
 
+<a id="wsl-screenshot"></a>
+
+## WSL 与截图亮点
+
+### 熟练使用 Linux/WSL 完成课程任务
+
+当课程项目需要 Linux/POSIX 环境时，本 Skill 会按固定顺序处理：
+
+1. 先检查用户是否已经在 Linux 系统中。
+2. 如果不是 Linux，则检查本机是否有可用 Linux 运行环境，Windows 下优先 WSL。
+3. 如果 WSL 可用，则记录发行版、内核、编译器/运行时版本、Windows 路径到 WSL 路径的映射，以及真实 build/run/test 命令。
+4. 如果没有可用 WSL，则先询问用户是否允许安装/启用 WSL；未经用户明确许可，不会执行安装。
+5. 如果安装需要管理员权限、联网或重启，则记录限制，并在环境可用后再把结果写入报告。
+
+这使它适合 Linux 课程项目、C/POSIX 实验、socket、进程、信号、共享内存、信号量、Makefile 和 Linux-only 命令相关报告。
+
+### 把截图作为可审查证据
+
+截图不是装饰，而是报告证据链的一部分。Skill 会在 intake 阶段规划截图目标：
+
+- 浏览器页面截图：确认页面内容正确，排除 403、登录墙、CAPTCHA、空白页、错误页和错误标签页。
+- 终端截图：优先捕获真实可见终端窗口，保留命令、当前路径、关键输出和验证结果。
+- GUI/应用截图：保留能证明操作状态的窗口区域。
+- 原始与标注分离：先保存 raw screenshot，再生成裁剪版或红框标注版。
+- 插入前审查：检查最终 DOCX/PDF 缩放后是否清晰，标注是否遮挡证据。
+
+操作配方见 [`references/tooling-recipes.md`](references/tooling-recipes.md)。
+
 <a id="diagram-qa"></a>
 
 ## 图像与流程图审查
@@ -205,8 +236,10 @@ flowchart LR
 
 - 证据真实性：实验结果、截图、数据、日志和引用不能凭空编造。
 - 模板残留：不能残留旧主题、旧截图、旧目录、占位符或乱码。
+- Linux/WSL：Linux/POSIX 结果来自原生 Linux 或已验证 WSL；缺失运行环境时记录用户安装决定。
 - Word 字段：目录、页码、交叉引用和字段应更新。
 - 事实一致性：分数、文件名、模型名、数据规模、日期和最终结论一致。
+- 截图真实性：浏览器截图不是错误页/登录墙，终端截图包含命令与结果上下文。
 - 图像语义：每张自绘图或 TikZ 图都完成箭头、标签和排版审查。
 - 渲染检查：必要时检查 PDF 或页面截图，而不只检查源文本。
 - 分析深度：实验报告不能只有实现过程，还应包含结果分析、失败原因、局限和个人理解。
