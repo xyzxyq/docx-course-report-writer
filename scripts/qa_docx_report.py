@@ -70,6 +70,14 @@ def has_toc_field(xml: str) -> bool:
     return bool(re.search(r"TOC\s+\\o|TOC\\o|TOC ", xml))
 
 
+def has_page_break_before_reference(xml: str) -> bool:
+    reference_pos = xml.find("参考文献")
+    if reference_pos < 0:
+        return False
+    before_reference = xml[max(0, reference_pos - 1500) : reference_pos]
+    return bool(re.search(r'<w:br w:type="page"|<w:lastRenderedPageBreak', before_reference))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="QA a Chinese course-report DOCX.")
     parser.add_argument("--docx", type=Path, required=True)
@@ -78,6 +86,7 @@ def main() -> int:
     parser.add_argument("--min-images", type=int, default=0)
     parser.add_argument("--min-tables", type=int, default=0)
     parser.add_argument("--min-heading1", type=int, default=0)
+    parser.add_argument("--require-reference-pagebreak", action="store_true")
     parser.add_argument("--stale-term", action="append", default=[])
     parser.add_argument("--allow-placeholder", action="append", default=[])
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON.")
@@ -98,6 +107,7 @@ def main() -> int:
     inline_shapes = len(doc.inline_shapes)
     table_count = len(doc.tables)
     toc_field = has_toc_field(xml)
+    reference_pagebreak = has_page_break_before_reference(xml)
 
     placeholder_terms = [t for t in DEFAULT_PLACEHOLDERS if t not in set(args.allow_placeholder)]
     placeholder_hits = find_terms(text, placeholder_terms)
@@ -115,6 +125,8 @@ def main() -> int:
         failures.append("Required automatic TOC field not found in DOCX XML.")
     if args.require_cover and not cover_marker_hits:
         failures.append("Required default/template cover markers not found.")
+    if args.require_reference_pagebreak and not reference_pagebreak:
+        failures.append("Required page break before 参考文献 not found.")
     if inline_shapes < args.min_images:
         failures.append(f"Image count {inline_shapes} < required {args.min_images}.")
     if table_count < args.min_tables:
@@ -131,6 +143,7 @@ def main() -> int:
         "inline_shapes": inline_shapes,
         "heading_counts": headings,
         "toc_field": toc_field,
+        "reference_pagebreak": reference_pagebreak,
         "cover_marker_hits": cover_marker_hits,
         "placeholder_hits": placeholder_hits,
         "stale_hits": stale_hits,
@@ -150,6 +163,7 @@ def main() -> int:
         print(f"Images: {inline_shapes}")
         print(f"Headings: {headings}")
         print(f"TOC field: {toc_field}")
+        print(f"Reference page break: {reference_pagebreak}")
         print(f"Cover markers: {cover_marker_hits}")
         for warning in warnings:
             print(f"WARN: {warning}")

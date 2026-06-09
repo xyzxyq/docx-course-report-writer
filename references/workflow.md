@@ -20,6 +20,7 @@
 12. Complete Actor -> Critic cycle 2 after source-level fixes and regeneration.
 13. Continue extra cycles while the Critic finds blocking defects.
 14. Generate or update the DOCX.
+    When using `scripts/build_report.py` with the integrated default template, pass known cover metadata such as `--title`, `--course`, `--student-name`, `--student-id`, `--teacher`, and `--date`. The builder should produce a formal cover, automatic TOC, chapter numbering (`第一章`, `1.1`), and a new-page references section by default.
 15. Update TOC and fields in Word when available.
 16. Export PDF or render page images for QA.
 17. Fix blocking defects at the source of truth and regenerate.
@@ -116,6 +117,7 @@ Every TikZ, flowchart, pipeline, architecture diagram, timeline, mechanism diagr
 - If repairing a defect, complete root-cause investigation before changing files.
 - If the user provides a template, use it. If not, use the integrated default template. Never silently fall back to an unrelated old report.
 - If the template is good, adapt it instead of rebuilding it. For the integrated default template, preserve the visible cover by default and clear only sample body content, stale static TOC entries, old media, and placeholders. Use a blank/no-cover document only when explicitly requested.
+- If using the integrated default template, unnumbered body headings and a references section that continues on the previous page are blocking defects.
 - If the assignment is strict, create a visible requirement-to-evidence mapping inside the report.
 - If a result is required item-by-item, the report itself must show direct evidence.
 - If source code or runtime evidence is missing, make the experiment runnable before writing final results.

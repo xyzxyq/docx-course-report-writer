@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import re
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,23 @@ SOURCE_PREFIX = "图片来源："
 WIDTH_PREFIX = "图片宽度："
 DEFAULT_TEMPLATE_PATH = Path(__file__).resolve().parents[1] / "skill-assets" / "default-course-report-template.docx"
 DEFAULT_COVER_PARAGRAPHS = 16
+CHAPTER_NUMERALS = {
+    1: "一",
+    2: "二",
+    3: "三",
+    4: "四",
+    5: "五",
+    6: "六",
+    7: "七",
+    8: "八",
+    9: "九",
+    10: "十",
+    11: "十一",
+    12: "十二",
+    13: "十三",
+    14: "十四",
+    15: "十五",
+}
 
 
 def set_run_font(
@@ -273,6 +291,17 @@ def add_body_paragraph(doc: Document, text: str, indent: bool = True) -> None:
     set_run_font(run, size=10.5)
 
 
+def add_reference_paragraph(doc: Document, text: str) -> None:
+    paragraph = doc.add_paragraph(style="Normal")
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    paragraph.paragraph_format.line_spacing = 1.05
+    paragraph.paragraph_format.space_after = Pt(4)
+    paragraph.paragraph_format.left_indent = Cm(0.72)
+    paragraph.paragraph_format.first_line_indent = Cm(-0.72)
+    run = paragraph.add_run(text)
+    set_run_font(run, size=10.0)
+
+
 def add_heading(doc: Document, text: str, level: int) -> None:
     style = {1: "Heading 1", 2: "Heading 2", 3: "Heading 3"}[level]
     paragraph = doc.add_paragraph(style=style)
@@ -282,6 +311,50 @@ def add_heading(doc: Document, text: str, level: int) -> None:
     paragraph.paragraph_format.space_after = Pt({1: 6, 2: 4, 3: 4}[level])
     run = paragraph.add_run(text)
     set_run_font(run, east_asia="黑体", size={1: 16, 2: 14, 3: 12}[level], bold=True)
+
+
+def is_reference_heading(text: str) -> bool:
+    normalized = re.sub(r"\s+", "", text)
+    normalized = re.sub(r"^(第[一二三四五六七八九十]+章|\d+(?:\.\d+)*)", "", normalized)
+    return normalized in {"参考文献", "参考资料", "References"}
+
+
+class HeadingNumbering:
+    def __init__(self) -> None:
+        self.chapter = 0
+        self.section = 0
+        self.subsection = 0
+
+    def format(self, text: str, level: int) -> str:
+        if is_reference_heading(text):
+            return "参考文献"
+
+        stripped = re.sub(
+            r"^(第[一二三四五六七八九十]+章\s*|\d+(?:\.\d+){0,2}\s*)",
+            "",
+            text.strip(),
+        )
+
+        if level == 1:
+            self.chapter += 1
+            self.section = 0
+            self.subsection = 0
+            chinese = CHAPTER_NUMERALS.get(self.chapter, str(self.chapter))
+            return f"第{chinese}章 {stripped}"
+        if level == 2:
+            if self.chapter == 0:
+                self.chapter = 1
+            self.section += 1
+            self.subsection = 0
+            return f"{self.chapter}.{self.section} {stripped}"
+        if level == 3:
+            if self.chapter == 0:
+                self.chapter = 1
+            if self.section == 0:
+                self.section = 1
+            self.subsection += 1
+            return f"{self.chapter}.{self.section}.{self.subsection} {stripped}"
+        return stripped
 
 
 def add_toc_field(doc: Document) -> None:
@@ -302,6 +375,65 @@ def add_toc_field(doc: Document) -> None:
     run_el.append(text_el)
     fld.append(run_el)
     paragraph._p.append(fld)
+
+
+def infer_report_title(draft_text: str, output: Path, explicit_title: str = "") -> str:
+    if explicit_title.strip():
+        return explicit_title.strip()
+    for line in draft_text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("# ") and not is_reference_heading(stripped[2:].strip()):
+            title = stripped[2:].strip()
+            if not re.match(r"^(绪论|引言|实验名称|第一章|第[一二三四五六七八九十]+章)\b", title):
+                return title
+    return output.stem
+
+
+def current_date_text() -> str:
+    today = date.today()
+    return f"{today.year} 年 {today.month} 月 {today.day} 日"
+
+
+def populate_default_cover(doc: Document, args: argparse.Namespace, report_title: str) -> None:
+    values = [
+        "",
+        "",
+        f"《{args.course.strip() or '课程名称'}》",
+        "课程报告",
+        f"报告题目    {report_title}",
+        f"学院系别    {args.college.strip() or '________________________________'}",
+        f"专业名称    {args.major.strip() or '________________________________'}",
+        f"学生姓名    {args.student_name.strip() or '________________________________'}",
+        f"学生学号    {args.student_id.strip() or '________________________________'}",
+        f"任课教师    {args.teacher.strip() or '________________________________'}",
+        "",
+        "",
+        "",
+        "",
+        "",
+        args.date.strip() or current_date_text(),
+    ]
+
+    for index, text in enumerate(values):
+        if index >= len(doc.paragraphs):
+            break
+        paragraph = doc.paragraphs[index]
+        paragraph.text = ""
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        paragraph.paragraph_format.space_after = Pt(6)
+        run = paragraph.add_run(text)
+        if index == 2:
+            set_run_font(run, east_asia="黑体", size=18, bold=True)
+        elif index == 3:
+            set_run_font(run, east_asia="黑体", size=22, bold=True)
+        elif index == 4:
+            set_run_font(run, east_asia="宋体", size=13)
+        elif 5 <= index <= 9:
+            set_run_font(run, east_asia="宋体", size=12)
+        elif index == 15:
+            set_run_font(run, east_asia="宋体", size=12)
+        else:
+            set_run_font(run, east_asia="宋体", size=12)
 
 
 def add_figure(doc: Document, payload: dict[str, Any], root: Path) -> None:
@@ -372,15 +504,20 @@ def add_code_block(doc: Document, payload: dict[str, str]) -> None:
     doc.add_paragraph()
 
 
-def add_references(doc: Document, refs_path: Path) -> None:
+def add_references(doc: Document, refs_path: Path, include_heading: bool = True) -> None:
     if not refs_path.exists():
         return
+    if include_heading:
+        doc.add_page_break()
+        add_heading(doc, "参考文献", 1)
     for line in refs_path.read_text(encoding="utf-8").splitlines():
         if line.strip():
-            add_body_paragraph(doc, line.strip(), indent=False)
+            add_reference_paragraph(doc, line.strip())
 
 
 def build(args: argparse.Namespace) -> None:
+    draft_text = args.draft.read_text(encoding="utf-8")
+    report_title = infer_report_title(draft_text, args.output, args.title)
     template_path, used_default_template = resolve_template(args)
     if template_path:
         doc = Document(str(template_path))
@@ -390,6 +527,7 @@ def build(args: argparse.Namespace) -> None:
             preserve_template_opening(doc, args.preserve_cover_paragraphs)
         elif used_default_template and not args.drop_template_cover:
             preserve_template_opening(doc, DEFAULT_COVER_PARAGRAPHS)
+            populate_default_cover(doc, args, report_title)
         else:
             clear_document_body(doc)
     else:
@@ -403,31 +541,48 @@ def build(args: argparse.Namespace) -> None:
             or args.preserve_cover_paragraphs > 0
             or (used_default_template and not args.drop_template_cover)
         )
-        if preserved_opening and not (used_default_template and not args.drop_template_cover):
+        if preserved_opening:
             doc.add_page_break()
         add_toc_field(doc)
         doc.add_page_break()
 
-    tokens = parse_tokens(args.draft.read_text(encoding="utf-8"))
+    tokens = parse_tokens(draft_text)
+    numbering = HeadingNumbering()
+    reference_heading_added = False
     for kind, payload in tokens:
         if kind == "h1":
-            add_heading(doc, str(payload), 1)
+            text = str(payload)
+            if is_reference_heading(text):
+                doc.add_page_break()
+                add_heading(doc, "参考文献", 1)
+                reference_heading_added = True
+            else:
+                add_heading(doc, numbering.format(text, 1) if args.number_headings else text, 1)
+                reference_heading_added = False
         elif kind == "h2":
-            add_heading(doc, str(payload), 2)
+            add_heading(doc, numbering.format(str(payload), 2) if args.number_headings else str(payload), 2)
+            reference_heading_added = False
         elif kind == "h3":
-            add_heading(doc, str(payload), 3)
+            add_heading(doc, numbering.format(str(payload), 3) if args.number_headings else str(payload), 3)
+            reference_heading_added = False
         elif kind == "p":
             add_body_paragraph(doc, str(payload))
+            reference_heading_added = False
         elif kind == "figure":
             add_figure(doc, payload, args.root)
+            reference_heading_added = False
         elif kind == "table":
             add_table(doc, payload)
+            reference_heading_added = False
         elif kind == "code":
             add_code_block(doc, payload)
+            reference_heading_added = False
         elif kind == "references":
-            add_references(doc, args.refs)
+            add_references(doc, args.refs, include_heading=not reference_heading_added)
+            reference_heading_added = False
         elif kind == "pagebreak":
             doc.add_page_break()
+            reference_heading_added = False
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(args.output))
@@ -449,6 +604,21 @@ def main() -> None:
         help="When using the integrated default template, discard its visible cover and build only from styles/page setup.",
     )
     parser.add_argument("--no-toc", action="store_true")
+    parser.add_argument("--title", default="", help="Report title used for the default template cover.")
+    parser.add_argument("--course", default="", help="Course name used for the default template cover.")
+    parser.add_argument("--college", default="", help="College/department used for the default template cover.")
+    parser.add_argument("--major", default="", help="Major name used for the default template cover.")
+    parser.add_argument("--student-name", default="", help="Student name used for the default template cover.")
+    parser.add_argument("--student-id", default="", help="Student ID used for the default template cover.")
+    parser.add_argument("--teacher", default="", help="Teacher name used for the default template cover.")
+    parser.add_argument("--date", default="", help="Date text used for the default template cover.")
+    parser.add_argument(
+        "--no-heading-numbering",
+        dest="number_headings",
+        action="store_false",
+        help="Disable automatic Chinese chapter and decimal section numbering.",
+    )
+    parser.set_defaults(number_headings=True)
     build(parser.parse_args())
 
 

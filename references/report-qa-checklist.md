@@ -9,6 +9,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Topic matches the assignment.
 - Chapter structure matches the requested report type.
 - Cover metadata and filename match the assignment or are explicitly pending.
+- Default-template cover placeholders such as `放置`, `校徽`, `《XXXX》`, and `实验题目` are replaced or removed; the cover must look like a formal course-report cover, not a partially preserved template.
 - No old experiment names, old topic words, old screenshots, old TOC entries, `{{...}}`, `[[TOC]]`, `待补`, `待确认`, or mojibake strings such as `鐩綍` remain.
 - If the task is item-by-item, the report contains visible requirement coverage.
 - Run record exists or equivalent notes are present, including scope lock, AI-image permission/count, fact ledger, figure ledger, and final gates.
@@ -40,9 +41,11 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 ### TOC And Fields
 
 - Word heading styles are used for TOC-relevant headings.
+- Default-template body headings use formal chapter/section text such as `第一章`, `1.1`, and `1.1.1`; a flat set of unnumbered headings is blocking.
 - Automatic TOC field is inserted or preserved.
 - TOC and fields are updated in Word when available.
 - Page numbers and headings remain consistent after the final field update.
+- `参考文献` starts on a new page and appears as a TOC-relevant section heading.
 - A static hand-typed TOC is not used when an automatic TOC is expected.
 - The rendered TOC page was inspected after final export. It must not contain only "please update in Word" placeholder text.
 - Later report-script reruns preserve or rebuild the TOC update/export step; fixing the current DOCX by hand is not enough when a generator exists.

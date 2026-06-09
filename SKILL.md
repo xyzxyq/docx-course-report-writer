@@ -26,6 +26,7 @@ These rules apply every time this skill is active:
 8. **Plan screenshots as first-class evidence.** When a browser page, terminal, GUI, or external source should be visually proven, decide the screenshot target during intake, capture the real visible page/window when required, keep raw screenshots, create annotated copies when useful, and inspect the image content before treating it as evidence. Browser screenshots must show the intended page, not a login, 403, CAPTCHA, blank page, or error page. Terminal screenshots must show enough command/result context.
 9. **Use real Word mechanisms.** Use Word heading styles and automatic TOC fields when a TOC is expected. On Windows, prefer Word COM for field update, TOC update, save, and PDF export; use an ASCII temp path fallback for path/encoding failures.
 10. **Use the correct report template visibly.** If the user provides a DOCX template, use the user's template. If the user does not provide one, use the integrated default template at `skill-assets/default-course-report-template.docx`. The default template is not merely a style source: preserve its visible cover/page setup/heading/table/TOC styling unless the user explicitly requests a blank document or no cover. Remove sample body content, stale static TOC entries, old screenshots, and placeholders without discarding the default cover.
+10a. **Default DOCX builder must produce formal report structure.** When using `scripts/build_report.py` with the integrated default template, populate the cover metadata instead of leaving `放置`, `校徽`, `《XXXX》`, `实验题目`, or similar placeholders; use real Word heading styles with chapter numbering such as `第一章` and section numbering such as `1.1`; keep the automatic TOC visually hierarchical; and put `参考文献` on a new page before inserting references.
 11. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
 12. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
 
@@ -79,6 +80,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
    No stale previous topic text, old screenshots, old TOC entries, placeholders, garbled update prompts, or unrelated template media remain.
 4. **Word field and TOC gate**
    Heading styles are real Word headings. TOC is automatic. TOC styles are readable, hierarchical, and visually checked in the exported PDF. Fields/page numbers are updated through Word COM or an equivalent documented process.
+   Default-template reports must use formal chapter/section heading text such as `第一章` and `1.1`, not only unnumbered Markdown headings.
 5. **Fact ledger gate**
    Numeric results, scores, dataset sizes, filenames, class names, model names, dates, and final-vs-intermediate claims match the latest approved evidence across DOCX text, PDF text, figure sources, captions, tables, and image specs.
 6. **Linux runtime gate**
@@ -93,6 +95,8 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
    PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, and code-block pages before claiming layout is verified.
 11. **Default-template visual gate**
    When no user template is supplied, the generated DOCX/PDF preserves the integrated default template's visible cover and professional report styling. A plain white document with only generic margins/headings fails this gate unless the user explicitly requested a blank document.
+12. **References pagination gate**
+   The `参考文献` section must start on a new page. If `{{REFERENCES}}` is used, the builder should insert the page break and `参考文献` heading automatically unless an immediately preceding reference heading already exists.
 
 ## Working Defaults
 

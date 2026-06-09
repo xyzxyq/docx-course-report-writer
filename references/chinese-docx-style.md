@@ -22,6 +22,7 @@ Use the template or user-polished report as the source of truth. Use these defau
 ## Headings
 
 - Use real Word `Heading 1`, `Heading 2`, and `Heading 3` styles so the automatic TOC works.
+- For Chinese course reports built from the integrated default template, use formal chapter numbering by default: `第一章 标题`, `第二章 标题`; use decimal section numbers under chapters: `1.1 标题`, `1.1.1 标题`. Do not leave major body sections as plain unnumbered Markdown-style headings unless the user template explicitly uses another numbering scheme.
 - Heading 1: bold Chinese heading font such as 黑体, chapter-level spacing, centered if the template uses chapter-style headings.
 - Heading 2/3: bold, left aligned unless the template says otherwise.
 - Keep spacing stable: headings should not collide with previous body text or float alone at the bottom of a page.
@@ -31,6 +32,7 @@ Use the template or user-polished report as the source of truth. Use these defau
 
 - The TOC must be an automatic Word field, not hand-typed text.
 - TOC page title should be centered, bold, and visually separated from entries.
+- The TOC must reflect the formal heading hierarchy. A flat list of unnumbered headings is not acceptable for default-template course reports.
 - TOC entries must show a clear hierarchy:
   - level 1: no left indent, larger/bolder than sublevels
   - level 2: modest left indent
@@ -46,6 +48,12 @@ Use the template or user-polished report as the source of truth. Use these defau
 - Table caption format: `表X ...`
 - Captions should be centered and close to the figure/table they describe.
 - Avoid isolated captions on a separate page from their figure/table.
+
+## References
+
+- `参考文献` starts on a new page.
+- References use a hanging indent when possible: about 0.72 cm left indent and -0.72 cm first-line indent.
+- The references heading uses the same formal chapter heading style as the template, but it is not assigned a chapter number unless the user's template explicitly requires numbered references.
 
 ## Tables
 
