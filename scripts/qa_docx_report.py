@@ -63,6 +63,37 @@ def heading_counts(doc: Document) -> dict[str, int]:
     return counts
 
 
+def section_signature(doc: Document) -> list[dict[str, int]]:
+    values = []
+    for section in doc.sections:
+        values.append(
+            {
+                "page_width": int(section.page_width),
+                "page_height": int(section.page_height),
+                "top_margin": int(section.top_margin),
+                "bottom_margin": int(section.bottom_margin),
+                "left_margin": int(section.left_margin),
+                "right_margin": int(section.right_margin),
+            }
+        )
+    return values
+
+
+def style_names(doc: Document) -> set[str]:
+    return {style.name for style in doc.styles}
+
+
+def section_header_footer_text(doc: Document) -> str:
+    parts: list[str] = []
+    for section in doc.sections:
+        for container in (section.header, section.footer):
+            parts.extend(p.text for p in container.paragraphs if p.text.strip())
+            for table in container.tables:
+                for row in table.rows:
+                    parts.extend(cell.text for cell in row.cells if cell.text.strip())
+    return "\n".join(parts)
+
+
 def find_terms(text: str, terms: list[str]) -> dict[str, int]:
     return {term: text.count(term) for term in terms if term and term in text}
 
@@ -101,6 +132,10 @@ def main() -> int:
     parser.add_argument("--require-formal-figure-captions", action="store_true")
     parser.add_argument("--stale-term", action="append", default=[])
     parser.add_argument("--allow-placeholder", action="append", default=[])
+    parser.add_argument("--template-fidelity-template", type=Path, help="Compare final DOCX against this user-provided template.")
+    parser.add_argument("--template-marker", action="append", default=[], help="Template marker text expected to remain in final DOCX.")
+    parser.add_argument("--allow-style-loss", action="store_true", help="Do not block when styles from the template are absent.")
+    parser.add_argument("--allow-section-drift", action="store_true", help="Do not block when page setup differs from the template.")
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON.")
     args = parser.parse_args()
 
@@ -121,6 +156,7 @@ def main() -> int:
     table_count = len(doc.tables)
     toc_field = has_toc_field(xml)
     reference_pagebreak = has_page_break_before_reference(xml)
+    template_fidelity: dict[str, object] = {}
 
     placeholder_terms = [t for t in DEFAULT_PLACEHOLDERS if t not in set(args.allow_placeholder)]
     placeholder_hits = find_terms(text, placeholder_terms)
@@ -155,6 +191,33 @@ def main() -> int:
     if not headings:
         warnings.append("No Word heading styles detected; automatic TOC may not work.")
 
+    for marker in args.template_marker:
+        if marker and marker not in text:
+            failures.append(f"Template marker not preserved in final DOCX: {marker}")
+
+    if args.template_fidelity_template:
+        template_doc = Document(str(args.template_fidelity_template.resolve()))
+        template_sections = section_signature(template_doc)
+        final_sections = section_signature(doc)
+        template_styles = style_names(template_doc)
+        final_styles = style_names(doc)
+        missing_styles = sorted(template_styles - final_styles)
+        template_hf_text = section_header_footer_text(template_doc)
+        final_hf_text = section_header_footer_text(doc)
+        template_fidelity = {
+            "template": str(args.template_fidelity_template.resolve()),
+            "section_match": template_sections == final_sections[: len(template_sections)],
+            "missing_style_count": len(missing_styles),
+            "missing_styles_sample": missing_styles[:20],
+            "header_footer_preserved": (not template_hf_text.strip()) or template_hf_text.strip() in final_hf_text,
+        }
+        if not args.allow_section_drift and not template_fidelity["section_match"]:
+            failures.append("Template page setup/section signature changed; pass --allow-section-drift only for approved fallback.")
+        if not args.allow_style_loss and missing_styles:
+            failures.append(f"Template styles missing from final DOCX: {missing_styles[:20]}")
+        if not template_fidelity["header_footer_preserved"]:
+            failures.append("Template header/footer text was not preserved in final DOCX.")
+
     result = {
         "docx": str(docx_path),
         "paragraphs": len(doc.paragraphs),
@@ -168,6 +231,7 @@ def main() -> int:
         "placeholder_hits": placeholder_hits,
         "stale_hits": stale_hits,
         "mojibake_hits": mojibake_hits,
+        "template_fidelity": template_fidelity,
         "warnings": warnings,
         "failures": failures,
         "status": "PASS" if not failures else "BLOCK",

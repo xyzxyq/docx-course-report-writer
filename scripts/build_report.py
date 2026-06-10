@@ -135,7 +135,28 @@ def set_cell_shading(cell, fill: str) -> None:
     shd.set(qn("w:fill"), fill)
 
 
-def configure_document(doc: Document) -> None:
+def configure_document(doc: Document, preserve_template_formatting: bool = False) -> None:
+    """Configure generated report defaults.
+
+    User-provided templates are authoritative layout artifacts. When preserving
+    one, do not rewrite its page geometry or existing style definitions.
+    """
+
+    if preserve_template_formatting:
+        for level in (1, 2, 3):
+            name = f"Heading {level}"
+            try:
+                doc.styles[name]
+            except KeyError:
+                style = doc.styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
+                style.base_style = doc.styles["Normal"]
+                set_style_font(style, east_asia="黑体", size={1: 16, 2: 14, 3: 12}[level], bold=True)
+                ppr = style._element.get_or_add_pPr()
+                outline = OxmlElement("w:outlineLvl")
+                outline.set(qn("w:val"), str(level - 1))
+                ppr.append(outline)
+        return
+
     for section in doc.sections:
         section.top_margin = Cm(2.54)
         section.bottom_margin = Cm(2.54)
@@ -268,7 +289,106 @@ def preserve_template_opening(doc: Document, keep_paragraphs: int) -> None:
             seen += 1
             if seen <= keep_paragraphs:
                 continue
-        body.remove(child)
+        if element_has_section_properties(child):
+            clear_element_text(child)
+        else:
+            body.remove(child)
+
+
+def element_text(element) -> str:
+    return "".join(node.text or "" for node in element.iter() if node.tag.endswith("}t"))
+
+
+def element_has_section_properties(element) -> bool:
+    return any(node.tag.endswith("}sectPr") for node in element.iter())
+
+
+def clear_element_text(element) -> None:
+    for node in element.iter():
+        if node.tag.endswith("}t"):
+            node.text = ""
+
+
+def normalized_text(text: str) -> str:
+    return re.sub(r"\s+", "", text or "")
+
+
+def looks_like_toc_title(text: str) -> bool:
+    return normalized_text(text) in {"目录", "目錄"}
+
+
+def looks_like_body_start(text: str) -> bool:
+    stripped = text.strip()
+    compact = normalized_text(stripped)
+    if re.match(r"^第[一二三四五六七八九十]+章", compact):
+        return not re.search(r"\d+$", compact)
+    if re.match(r"^\d+(?:\.\d+){0,2}\s*\S+", stripped):
+        return not re.search(r"\s+\d+$", stripped)
+    return False
+
+
+def make_toc_field_paragraph(doc: Document):
+    paragraph = doc.add_paragraph()
+    paragraph.paragraph_format.space_after = Pt(8)
+    fld = OxmlElement("w:fldSimple")
+    fld.set(qn("w:instr"), 'TOC \\o "1-3" \\h \\z \\u')
+    run_el = OxmlElement("w:r")
+    text_el = OxmlElement("w:t")
+    text_el.text = "目录将在 Word 中更新。"
+    run_el.append(text_el)
+    fld.append(run_el)
+    paragraph._p.append(fld)
+    return paragraph._p
+
+
+def prepare_user_template_copy(doc: Document, fallback_opening_paragraphs: int, rebuild_toc: bool = True) -> dict[str, bool]:
+    """Preserve a user template's opening while replacing stale body samples.
+
+    The common report-template shape is cover -> TOC title/static TOC entries ->
+    sample body headed by 第一章/1.1. This function keeps the template opening,
+    removes old TOC entries and sample body, and inserts a real TOC field at the
+    original TOC position when possible.
+    """
+
+    body = doc._element.body
+    children = [child for child in list(body) if not child.tag.endswith("}sectPr")]
+    toc_index: int | None = None
+    body_start_index: int | None = None
+
+    for index, child in enumerate(children):
+        text = element_text(child)
+        if toc_index is None and looks_like_toc_title(text):
+            toc_index = index
+            continue
+        if toc_index is not None and looks_like_body_start(text):
+            body_start_index = index
+            break
+
+    if body_start_index is None:
+        preserve_template_opening(doc, fallback_opening_paragraphs)
+        return {"auto_body_start": False, "toc_rebuilt": False, "preserved_opening": True}
+
+    toc_rebuilt = False
+    if rebuild_toc and toc_index is not None and toc_index < body_start_index:
+        for child in children[toc_index + 1 : body_start_index]:
+            if child.getparent() is not None:
+                if element_has_section_properties(child):
+                    clear_element_text(child)
+                else:
+                    body.remove(child)
+        toc_field = make_toc_field_paragraph(doc)
+        body.remove(toc_field)
+        body.insert(toc_index + 1, toc_field)
+        toc_rebuilt = True
+
+    for child in children[body_start_index:]:
+        if child.getparent() is not None:
+            if element_has_section_properties(child):
+                clear_element_text(child)
+            else:
+                body.remove(child)
+
+    return {"auto_body_start": True, "toc_rebuilt": toc_rebuilt, "preserved_opening": True}
 
 
 def clear_document_body(doc: Document) -> None:
@@ -284,6 +404,86 @@ def resolve_template(args: argparse.Namespace) -> tuple[Path | None, bool]:
     if not args.no_default_template and DEFAULT_TEMPLATE_PATH.exists():
         return DEFAULT_TEMPLATE_PATH, True
     return None, False
+
+
+def parse_template_fields(raw_fields: list[str]) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for raw in raw_fields:
+        if "=" not in raw:
+            raise ValueError(f"--template-field must be KEY=VALUE, got: {raw}")
+        key, value = raw.split("=", 1)
+        fields[key.strip()] = value.strip()
+    return fields
+
+
+def template_value_map(args: argparse.Namespace, report_title: str) -> dict[str, str]:
+    mapping = {
+        "TITLE": report_title,
+        "REPORT_TITLE": report_title,
+        "实验题目": report_title,
+        "COURSE": args.course.strip(),
+        "课程名称": args.course.strip(),
+        "COLLEGE": args.college.strip(),
+        "学院系别": args.college.strip(),
+        "MAJOR": args.major.strip(),
+        "专业名称": args.major.strip(),
+        "STUDENT_NAME": args.student_name.strip(),
+        "学生姓名": args.student_name.strip(),
+        "STUDENT_ID": args.student_id.strip(),
+        "学生学号": args.student_id.strip(),
+        "TEACHER": args.teacher.strip(),
+        "任课教师": args.teacher.strip(),
+        "DATE": args.date.strip() or current_date_text(),
+        "完成日期": args.date.strip() or current_date_text(),
+    }
+    mapping.update(parse_template_fields(args.template_field))
+    return {key: value for key, value in mapping.items() if value}
+
+
+def replace_paragraph_text(paragraph, text: str) -> None:
+    for run in list(paragraph.runs):
+        run.text = ""
+    if paragraph.runs:
+        paragraph.runs[0].text = text
+    else:
+        paragraph.add_run(text)
+
+
+def replace_text_placeholders(doc: Document, mapping: dict[str, str]) -> None:
+    placeholder_variants = []
+    for key, value in mapping.items():
+        placeholder_variants.extend(
+            [
+                (f"{{{{{key}}}}}", value),
+                (f"[[{key}]]", value),
+                (f"【{key}】", value),
+            ]
+        )
+
+    for paragraph in doc.paragraphs:
+        text = paragraph.text
+        for marker, value in placeholder_variants:
+            if marker in text:
+                text = text.replace(marker, value)
+        compact = normalized_text(text)
+        if compact in mapping and mapping[compact] and text.strip() == paragraph.text.strip():
+            text = f"{paragraph.text}    {mapping[compact]}"
+        if text != paragraph.text:
+            replace_paragraph_text(paragraph, text)
+
+    for table in doc.tables:
+        for row in table.rows:
+            for cell_index, cell in enumerate(row.cells):
+                cell_text = normalized_text(cell.text)
+                if cell_index + 1 < len(row.cells) and cell_text in mapping:
+                    replace_paragraph_text(row.cells[cell_index + 1].paragraphs[0], mapping[cell_text])
+                for paragraph in cell.paragraphs:
+                    text = paragraph.text
+                    for marker, value in placeholder_variants:
+                        if marker in text:
+                            text = text.replace(marker, value)
+                    if text != paragraph.text:
+                        replace_paragraph_text(paragraph, text)
 
 
 def add_body_paragraph(doc: Document, text: str, indent: bool = True) -> None:
@@ -557,10 +757,22 @@ def build(args: argparse.Namespace) -> None:
     draft_text = args.draft.read_text(encoding="utf-8")
     report_title = infer_report_title(draft_text, args.output, args.title)
     template_path, used_default_template = resolve_template(args)
+    user_template = bool(template_path and not used_default_template)
+    user_template_status = {"auto_body_start": False, "toc_rebuilt": False, "preserved_opening": False}
     if template_path:
         doc = Document(str(template_path))
+        if user_template:
+            replace_text_placeholders(doc, template_value_map(args, report_title))
         if args.keep_template_body:
             pass
+        elif user_template and args.drop_template_body:
+            clear_document_body(doc)
+        elif user_template:
+            user_template_status = prepare_user_template_copy(
+                doc,
+                args.preserve_cover_paragraphs or args.user_template_opening_paragraphs,
+                rebuild_toc=not args.no_toc,
+            )
         elif args.preserve_cover_paragraphs > 0:
             preserve_template_opening(doc, args.preserve_cover_paragraphs)
         elif used_default_template and not args.drop_template_cover:
@@ -571,17 +783,20 @@ def build(args: argparse.Namespace) -> None:
     else:
         doc = Document()
 
-    configure_document(doc)
+    configure_document(doc, preserve_template_formatting=user_template and not args.drop_template_body)
 
     if not args.no_toc:
         preserved_opening = template_path and (
             args.keep_template_body
+            or (user_template and not args.drop_template_body)
             or args.preserve_cover_paragraphs > 0
             or (used_default_template and not args.drop_template_cover)
         )
-        if preserved_opening:
+        should_add_toc = not (user_template and user_template_status["toc_rebuilt"])
+        if preserved_opening and should_add_toc:
             doc.add_page_break()
-        add_toc_field(doc)
+        if should_add_toc:
+            add_toc_field(doc)
         doc.add_page_break()
 
     tokens = parse_tokens(draft_text)
@@ -649,8 +864,25 @@ def main() -> None:
     parser.add_argument("--template", type=Path)
     parser.add_argument("--no-default-template", action="store_true")
     parser.add_argument("--keep-template-body", action="store_true")
+    parser.add_argument(
+        "--template-field",
+        action="append",
+        default=[],
+        help="Extra user-template placeholder value as KEY=VALUE. Supports {{KEY}}, [[KEY]], 【KEY】 and table labels.",
+    )
+    parser.add_argument(
+        "--drop-template-body",
+        action="store_true",
+        help="Explicitly discard a user-provided template body. Without this, --template uses copy-first preservation.",
+    )
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--preserve-cover-paragraphs", type=int, default=0)
+    parser.add_argument(
+        "--user-template-opening-paragraphs",
+        type=int,
+        default=DEFAULT_COVER_PARAGRAPHS,
+        help="Leading paragraphs to preserve for user-provided templates when --drop-template-body is not set.",
+    )
     parser.add_argument(
         "--drop-template-cover",
         action="store_true",

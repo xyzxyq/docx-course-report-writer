@@ -216,6 +216,21 @@ Template precedence is fixed:
 1. Use the user-provided DOCX template when available.
 2. Otherwise use [`skill-assets/default-course-report-template.docx`](skill-assets/default-course-report-template.docx).
 
+### User-Template Fidelity
+
+When the user provides a DOCX template, the skill must treat that file as the layout source of truth rather than loose writing inspiration.
+
+Recommended workflow:
+
+1. Copy the user template to the target output path first.
+2. Inspect the copied template structure before writing: cover tables, section breaks, margins, styles, TOC position, placeholders, sample body, headers, footers, and media.
+3. Replace known placeholders and cover metadata in place.
+4. Insert new report content into the copied template without rebuilding page setup or styles from scratch.
+5. Remove only stale sample body, stale TOC entries, irrelevant old screenshots, and placeholder paragraphs that are proven to belong to template sample content.
+6. Run template-fidelity QA comparing the final DOCX against the source template.
+
+`scripts/build_report.py --template ...` defaults to this copy-first, write-in-place behavior. Destructive body replacement is opt-in through `--drop-template-body`; it must not be used for a user-specified template unless the user explicitly asks for it.
+
 The default builder preserves useful page setup, heading styles, table styling, cover style, and metadata while clearing stale body content, old screenshots, old TOC entries, and unrelated media.
 
 <a id="quality-gates"></a>

@@ -10,6 +10,8 @@ Ask or infer these before writing final deliverables:
 - Required deliverables:
 - Template/prior report to preserve:
 - Template decision: user-provided / integrated default / blank document by explicit request
+- Template fidelity mode: copy-first strict / integrated default / user-approved fallback
+- Template Fidelity Contract path or notes:
 - Required evidence:
 - Runtime environment:
 - Linux/WSL requirement and availability:
@@ -34,6 +36,8 @@ If the user already gave enough information, record the answer instead of asking
 - Deliverables:
 - Template/source files:
 - Template decision:
+- Template fidelity mode:
+- Template Fidelity Contract:
 - Evidence required:
 - Runtime plan:
 - Linux/WSL decision:
@@ -111,6 +115,7 @@ Use this section only when AI text-to-image is enabled. Each generated or attemp
 - Linux/WSL runtime:
 - Screenshot authenticity:
 - Template residue:
+- User-template fidelity:
 - Default-template visible cover/style:
 - Word fields/TOC:
 - Fact ledger scan:
