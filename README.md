@@ -128,6 +128,12 @@ Critic 审查的不是计划，而是实际产物。只要封面、目录、图�
 
 ## 快速开始
 
+### 先安装 Superpowers 插件（推荐）
+
+建议在使用本 Skill 前，先安装并启用 [Superpowers](https://github.com/obra/superpowers) 插件。`docx-course-report-writer` 的执行约束默认会优先调用 Superpowers 的规划、调试、测试和完成前验证流程；安装后更容易稳定执行 Actor/Critic 审查、文档质量门禁和复杂报告修复。
+
+如果当前环境没有 Superpowers，本 Skill 仍可运行，但会退回到 [`references/superpowers-adapter.md`](references/superpowers-adapter.md) 中的本地等价流程，并在运行记录中说明该限制。
+
 ### 安装
 
 将仓库放入 Codex skills 目录：
