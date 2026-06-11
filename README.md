@@ -82,6 +82,18 @@
   <img src="docs/deep-learning-demo-figure.png" width="680" alt="修订版报告第 11 页正式图注与页面级检查预览">
 </p>
 
+### AI 架构图：一次文生图合格示例
+
+2026-06-11 的实践暴露了一个关键问题：只写“深度学习、神经网络、科技感、未来感、发光线条”会生成很多视觉资产，但观众很难判断图到底在讲 CNN、Transformer、训练流程还是部署系统。Skill 现在要求先设计信息架构，再设计视觉风格。
+
+对于架构图、示意图、流程图、pipeline 图和模型结构图，最终 AI 生成图必须一次性直接包含可读文字、具名模块、方向箭头、图例和分层关系。不允许先生成无字底图，再用 Pillow/SVG/TikZ/PowerPoint 或其他工具补字、补箭头、补图例。如果文生图的文字、箭头或图例不合格，只能重新文生图绘制，或改用单独的非 AI 确定性图。
+
+<p align="center">
+  <img src="docs/ai-prompting-one-pass-attention-demo.png" width="760" alt="一次文生图直接生成的 Self-Attention Flow 架构示意图">
+</p>
+
+这张图是一次文生图直接生成的验收样例：它解释 `Self-Attention` 加权求和知识点，包含 `Input Tokens`、`Q Query`、`K Key`、`V Value`、`Scores QK^T`、`Softmax`、`Weighted Sum`、`Output Tokens` 等具名模块，并用箭头和图例表达方向关系与颜色语义。
+
 <a id="highlights"></a>
 
 ## 亮点

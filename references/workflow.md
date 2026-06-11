@@ -89,11 +89,11 @@ Use this branch only after blocking intake is resolved. AI generation is for con
 5. Validate the result against the prompt card:
    - academically appropriate
    - no watermark
-   - no accidental text
+   - exact required visible text for diagrams, or no accidental text for non-diagram concept images
    - not over-stylized
    - not generic, sparse, or stock-like
    - enough purposeful visual density for the report section
-6. If the result fails, regenerate with a narrower prompt or replace it with a deterministic diagram; do not keep weak AI art to satisfy a count.
+6. If the result fails, regenerate with a narrower text-to-image prompt or replace it with a separate non-AI deterministic diagram; do not keep weak AI art to satisfy a count and do not repair AI labels after generation.
 7. Record attribution metadata and accepted/rejected iteration notes.
 8. Insert with caption and nearby explanatory prose.
 9. Re-check the exported PDF after insertion.

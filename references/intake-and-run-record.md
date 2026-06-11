@@ -87,7 +87,8 @@ Use this section only when AI text-to-image is enabled. Each generated or attemp
 - Lighting/color/material:
 - Camera/framing/aspect ratio:
 - Allowed visible text:
-- Deterministic overlay plan:
+- One-pass text-to-image plan:
+- Text/arrow/legend regeneration triggers:
 - Positive prompt:
 - Negative prompt / avoid:
 - Rejection criteria:

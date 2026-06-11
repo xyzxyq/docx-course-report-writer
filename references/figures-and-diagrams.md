@@ -96,6 +96,11 @@ Before generating an AI figure, record:
 - the full prompt card from `references/ai-image-prompting.md`
 - figure role
 - prompt summary
+- the specific knowledge point being explained
+- the named modules that must appear
+- the directional relationships between modules
+- the label, arrow, legend, and layer plan
+- the semantic function of each decorative element
 - why AI is the right medium
 - why experiment output / TikZ / screenshot / paper crop was not chosen instead
 - allowed text, numbers, names, labels, and symbols
@@ -111,15 +116,17 @@ After generating it, ensure:
 - it contains no accidental text or watermark
 - nearby prose explains what it helps the reader understand
 - all visible text and numbers match the drawing spec exactly
+- architecture, schematic, flowchart, pipeline, and model-structure figures have readable final labels, arrows, and legends directly in the generated image
 - no unrelated school, company, logo, license plate, UI text, fake metric, or model name appears
 - the figure has enough purposeful visual density for a course report; mostly empty backgrounds and vague glowing networks fail
+- the figure explains the intended knowledge point through modules, arrows, grouping, labels, and legend rather than only through atmosphere
 - the Critic records accepted/rejected iteration notes, not only the final image path
 
-If accurate text is important, prefer one of these safer patterns:
+If accurate text is important, use one of these patterns:
 
-1. Generate a no-text or minimal-text visual background, then overlay all Chinese labels, numbers, and arrows with Python/Pillow, SVG, TikZ, or another deterministic renderer.
-2. Use AI only for a conceptual image and pair it with a deterministic caption/table for the factual content.
-3. Reject the AI figure and use TikZ/self-drawn/vector output when the task requires exact text.
+1. Keep the AI text whitelist short and require the text-to-image model to render the final labels directly.
+2. If the generated text is wrong, regenerate with fewer labels or simpler wording.
+3. If repeated generations fail, reject the AI figure and use TikZ/self-drawn/vector output as a separate non-AI figure. Do not repair the AI image by adding labels after generation.
 
 ## Recommended Source Choices
 
@@ -219,7 +226,7 @@ Do not accept a diagram by saying "the meaning is still understandable." The sta
 
 ## Mandatory Review And Revise Stage
 
-Every generated flowchart, pipeline, architecture diagram, timeline, mechanism figure, or process illustration must pass a final Review And Revise stage after rendering and before insertion or delivery. This applies to TikZ, Mermaid, SVG, Matplotlib annotations, AI-generated visuals with overlays, screenshots with arrows, and any other method used to draw process-like graphics.
+Every generated flowchart, pipeline, architecture diagram, timeline, mechanism figure, or process illustration must pass a final Review And Revise stage after rendering and before insertion or delivery. This applies to TikZ, Mermaid, SVG, Matplotlib annotations, one-pass AI-generated visuals, screenshots with arrows, and any other method used to draw process-like graphics.
 
 Arrow audit checklist:
 
