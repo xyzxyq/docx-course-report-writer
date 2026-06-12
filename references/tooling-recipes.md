@@ -172,7 +172,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
 
 Use `-KillExistingWord` only when stale Word processes block automation and it is safe to close them.
 
-Always inspect the rendered TOC page after export. If it still contains placeholder text such as "please update in Word", rerun field updates before exporting and patch the report generator so future reruns update fields automatically.
+Always inspect the rendered TOC page after export. Word COM update/export must happen before PDF page rendering so the reviewed pages reflect Word's real TOC, fields, and page numbers. If the rendered TOC still contains placeholder text such as "please update in Word", rerun field updates before exporting and patch the report generator so future reruns update fields automatically.
 
 ## LaTeX To DOCX Conversion
 
@@ -230,6 +230,22 @@ This is a gate, not a replacement for visual inspection. Still inspect exported 
 If AI text-to-image was enabled during intake, set `--min-images` high enough to include the generated AI figure plus other required figures, then verify `image-attributions.md` marks the AI figure as `explanatory` or `concept-enhancement`.
 
 ## PDF/Page Visual QA
+
+Preferred sequence:
+
+1. Run `scripts/update_word_fields.ps1 -ExportPdf -UseAsciiTemp` or equivalent Word COM automation.
+2. Run `scripts/render_pdf_review_pages.py` to render the final PDF pages to PNG.
+3. Inspect individual page PNGs for key pages and the generated review sheets for the full document.
+
+```powershell
+python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py `
+  --pdf report.pdf `
+  --pages-dir build\pdf-pages `
+  --sheets-dir build\pdf-review-sheets `
+  --dpi 150
+```
+
+The review sheets combine four pages per contact sheet to reduce repeated image opening. PDF page render images are not screenshots; do not call them terminal/browser screenshots or use them as execution evidence.
 
 Render or inspect pages around:
 

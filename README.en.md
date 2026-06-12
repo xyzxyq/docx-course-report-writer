@@ -78,7 +78,7 @@ The goal is not only to create a file that opens. The goal is to produce a repor
 | Chinese DOCX report generation | Supports common coursework, lab, paper, and review structures |
 | Template-first assembly | Uses the user template when provided, otherwise uses the integrated default template |
 | Word TOC and field update | Uses real heading styles and automatic Word fields |
-| PDF and page-level QA | Exports or renders pages when layout verification matters |
+| PDF and page-level QA | Exports from Word first, renders final PDF pages to PNG, and uses four-page contact sheets for review |
 | Evidence-first writing | Tracks logs, screenshots, data, scores, filenames, model names, and dates |
 | Linux/WSL runtime | Checks whether the host is Linux; otherwise verifies WSL on Windows; asks before installing WSL when missing |
 | Browser and terminal screenshots | Treats screenshots as first-class evidence, including browser pages, terminal windows, GUI states, and external source pages |
@@ -248,7 +248,7 @@ Before delivery, the run must pass or explicitly document limitations for:
 - Screenshot authenticity for browser and terminal captures.
 - Diagram semantics, arrows, labels, and layout.
 - Figure captions: every image has a formal `图x.x Title` caption, and raw `图片来源：` provenance lines do not leak into the report body.
-- Rendered PDF or page inspection when layout matters.
+- Rendered PDF/page inspection when layout matters. Prefer Word COM field update and PDF export first, then `scripts/render_pdf_review_pages.py` to create page PNGs and four-page review sheets.
 - Analysis depth for experiment-heavy reports.
 
 See [`references/report-qa-checklist.md`](references/report-qa-checklist.md).

@@ -34,7 +34,7 @@ These rules apply every time this skill is active:
 12. **Prefer deterministic structure diagrams before illustrative fallbacks.** For formal flowcharts, timelines, model architecture diagrams, module graphs, and pipeline figures, follow `references/figures-and-diagrams.md`: LaTeX TikZ > Python. Use Python only when TikZ is unsuitable, such as data-driven plots, heatmaps, charts, or image montages. When Chinese labels inside figures are needed on Windows, write UTF-8 source files, use XeLaTeX/CJK-capable fonts for TikZ or explicit Chinese fonts for Python, and inspect the rendered figure for mojibake before insertion.
 13. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
 14. **Use formal figure captions, not body source labels.** Every inserted image must have a formal caption immediately below the image, using chapter-scoped numbering such as `图2.1 概念图：从早期网络到现代基础模型的架构演化`. The numbering must match the current chapter and figure order. Do not render `图片来源：...`, `AI-generated, non-evidence`, or similar provenance/source lines in the report body by default; keep provenance, AI-generation status, prompt cards, and evidence boundaries in `image-attributions.md`, a figure ledger, or nearby prose when academically necessary.
-15. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
+15. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. Word COM update/export must happen before PDF page rendering so TOC, fields, and page numbers reflect Word's real layout. Prefer `scripts/render_pdf_review_pages.py` to render the final PDF pages to PNG and combine four pages per contact sheet for fast visual review. PDF page render images are not screenshots; label them as rendered PDF pages. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
 
 ## Run Card
 
@@ -53,7 +53,7 @@ Follow this compact sequence unless the user explicitly limits the task to analy
 6. **Critic cycle 2**
    Re-audit the regenerated artifact. If blocking issues remain, keep iterating without an artificial cap.
 7. **Final gates**
-   Update fields/TOC, export PDF when useful or required, inspect rendered pages, run focused QA scripts when helpful, and document any unavoidable limitation.
+   Update fields/TOC, export PDF when useful or required, render the final PDF pages to PNG, inspect the individual pages or four-page contact sheets, run focused QA scripts when helpful, and document any unavoidable limitation.
 
 ## Reference Routing
 
@@ -103,7 +103,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 9. **Analysis depth gate**
    Experiment/project reports include result analysis, interpretation, failure causes, limitations, and personal understanding, not only implementation description.
 10. **Rendered visual QA gate**
-   PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, and code-block pages before claiming layout is verified.
+   PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, code-block pages, and references before claiming layout is verified. The preferred route is Word COM update/export -> render final PDF pages to PNG -> inspect individual page PNGs or four pages per contact sheet.
 11. **Default-template visual gate**
    When no user template is supplied, the generated DOCX/PDF preserves the integrated default template's visible cover and professional report styling. The cover must occupy page 1 only; page 2 should begin the TOC or body, not a cover date or blank cover residue. A plain white document with only generic margins/headings fails this gate unless the user explicitly requested a blank document.
 12. **References pagination gate**

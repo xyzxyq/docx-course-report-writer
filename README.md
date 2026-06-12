@@ -256,6 +256,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -UseAsciiTemp
 ```
 
+PDF 页面渲染审查：
+
+```powershell
+python scripts\render_pdf_review_pages.py `
+  --pdf report.pdf `
+  --pages-dir build\pdf-pages `
+  --sheets-dir build\pdf-review-sheets `
+  --dpi 150
+```
+
+该脚本会把最终 PDF 渲染为逐页 PNG，并每四页合成一张审查拼图。它不是终端/浏览器截图，而是 PDF 页面渲染图，适合检查课程报告最终提交/打印时的真实版面。
+
 <a id="quality-gates"></a>
 
 ## 质量门
@@ -268,7 +280,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
 - 图注规范：所有插图都有正式 `图x.x 标题`。
 - 图像语义：箭头、标签、布局、缩放后的可读性通过审查。
 - 参考文献：写作前完成 DOI/权威元数据核验，正文为上标 `[1]` 顺序编码，文后按 GB/T 7714-2015 排版并检查字体字号。
-- PDF 渲染：检查目录页、图页、表格页、代码块页和参考文献页。
+- PDF 渲染：先用 Word COM 更新字段并导出最终 PDF，再渲染页面 PNG；中长报告优先检查每四页一张的审查拼图，同时重点打开目录页、图页、表格页、代码块页和参考文献页。
 - 分析深度：实验报告必须有结果分析、失败原因、局限和个人理解。
 
 完整清单见 [`references/report-qa-checklist.md`](references/report-qa-checklist.md)。

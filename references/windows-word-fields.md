@@ -18,6 +18,7 @@ On Windows, prefer Microsoft Word COM automation to update:
 6. Save the DOCX.
 7. Export PDF for verification.
 8. Render PDF pages or inspect the PDF visually if needed.
+9. For final layout QA, Word COM update/export must happen before PDF page rendering; otherwise TOC, fields, and page numbers may not reflect Word's real layout.
 
 Use `scripts/update_word_fields.ps1`.
 
@@ -30,6 +31,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -ExportPdf `
   -UseAsciiTemp
 ```
+
+After this succeeds, prefer page-image review:
+
+```powershell
+python scripts\render_pdf_review_pages.py `
+  --pdf report.pdf `
+  --pages-dir build\pdf-pages `
+  --sheets-dir build\pdf-review-sheets `
+  --dpi 150
+```
+
+The script will render the final PDF pages to PNG and combine four pages per contact sheet. PDF page render images are not screenshots; use them for layout review and describe them as rendered PDF pages.
 
 ## Important caveat
 
@@ -67,6 +80,7 @@ Do not trust visible TOC-looking text alone. Verify at least one of:
 - Word shows an updated TOC with page numbers.
 - Exported PDF shows the TOC entries and page numbers.
 - Page-rendered QA confirms the TOC and nearby pages are visually correct.
+- Four-page contact sheets or individual rendered pages were inspected when the report is long.
 
 For formal reports, also inspect whether TOC page numbers share one right edge. If the rightmost page numbers drift, reset TOC style tab stops to the usable page width and update the TOC again through Word COM before exporting PDF.
 
