@@ -26,11 +26,13 @@ These roles are not interchangeable.
 Choose the production method by what the figure must do:
 
 - real result, chart, or proof -> local experiment output
-- rigorous flow, structure, or pipeline -> TikZ or self-drawn figure
+- rigorous flow, structure, or pipeline -> LaTeX TikZ > Python
 - authoritative method illustration -> paper figure crop
 - interface context -> screenshot
 - abstract orientation or concept reinforcement -> AI-generated image may be appropriate
 - empty-looking page only -> do not add a figure
+
+For deterministic diagrams, the default priority is **LaTeX TikZ > Python**. In practice, prefer LaTeX TikZ before Python for formal flowcharts, timelines, model architecture diagrams, module graphs, and pipeline figures because TikZ keeps boxes, arrows, anchors, labels, and source-controlled layout explicit. Use Python only when TikZ is unsuitable, such as numeric charts, heatmaps, data-driven plots, image montages, or cases where the figure is primarily computed from data rather than laid out as a conceptual structure.
 
 ## Real Experiment Screenshot Rules
 
@@ -166,6 +168,8 @@ TikZ is recommended for clean, reproducible diagrams when the report needs:
 - architecture-like structures
 - layered concept diagrams
 
+For deterministic report diagrams, prefer LaTeX TikZ before Python unless the figure is a data plot or TikZ would make the output harder to maintain. Python remains appropriate for Matplotlib/Seaborn charts, image grids, confusion matrices from real data, or other data-derived figures.
+
 If TikZ is used:
 
 1. Keep the `.tex` source.
@@ -173,6 +177,22 @@ If TikZ is used:
 3. Convert to a DOCX-friendly format such as `.png`.
 4. Inspect the rendered image before insertion.
 5. Inspect the final PDF after insertion.
+
+## Windows Chinese Encoding For Figures
+
+Chinese text on Windows can fail in two separate ways: Chinese paths may be decoded incorrectly, and Chinese labels inside figures may become mojibake even when the file path is ASCII-safe. Treat both as rendering defects.
+
+When a TikZ, LaTeX, Python, SVG, or plotting source contains Chinese labels, titles, legends, captions, or node text:
+
+- write a UTF-8 source file first, then execute the compiler or interpreter from that file
+- do not pipe Chinese source code through a PowerShell pipeline, here-string, or command argument if the content will be parsed by LaTeX, Python, or another drawing tool
+- use XeLaTeX for TikZ sources that contain Chinese text
+- set an explicit CJK font, preferably a Windows font such as `Microsoft YaHei`, `SimSun`, or `Noto Sans CJK SC` when available
+- for Python plots, set an explicit Chinese-capable font before drawing text
+- keep Chinese labels short and manually wrapped
+- inspect the rendered figure, not just the source, before inserting it into DOCX/PDF
+
+If Chinese labels inside figures still render as boxes, question marks, missing glyphs, or mojibake, stop and fix the source encoding or font selection. Do not accept the figure and do not explain it away in the caption.
 
 For report-scale TikZ, the default should be conservative and spacious:
 

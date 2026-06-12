@@ -13,12 +13,16 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
 
         required_phrases = [
             "information architecture first, visual style second",
+            "knowledge-structure-driven",
+            "one core question",
             "specific knowledge point",
             "named modules",
+            "required knowledge modules",
             "directional relationships",
             "labels, arrows, legend, and layering",
             "decorative element must have a semantic function",
             "Generic tech aesthetic words are insufficient",
+            "teaching information graphic",
         ]
 
         for phrase in required_phrases:
@@ -65,15 +69,87 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
             with self.subTest(forbidden=phrase):
                 self.assertNotIn(phrase, text)
 
+    def test_prompting_reference_rejects_empty_ai_tech_poster_style(self) -> None:
+        text = (ROOT / "references" / "ai-image-prompting.md").read_text(encoding="utf-8")
+
+        required_phrases = [
+            "not a technology poster",
+            "Do not use futuristic AI artwork",
+            "Do not add meaningless glowing lines",
+            "Do not add random servers",
+            "Do not add random cubes",
+            "Do not pile up abstract neural-network decoration",
+            "Every visible element must map to a named concept",
+            "paper overview figure",
+            "system pipeline figure",
+        ]
+
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_prompting_reference_contains_training_flow_template(self) -> None:
+        text = (ROOT / "references" / "ai-image-prompting.md").read_text(encoding="utf-8")
+
+        required_modules = [
+            "Training Data",
+            "Preprocessing",
+            "Neural Network",
+            "Forward Pass",
+            "Prediction",
+            "Label",
+            "Loss Function",
+            "Backpropagation",
+            "Optimizer / Update Weights",
+            "Inference Output",
+        ]
+
+        for module in required_modules:
+            with self.subTest(module=module):
+                self.assertIn(module, text)
+
     def test_main_skill_blocks_empty_ai_concept_art(self) -> None:
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
 
         self.assertIn("information architecture", text)
+        self.assertIn("knowledge-structure-driven", text)
         self.assertIn("named modules", text)
         self.assertIn("directional relationships", text)
         self.assertIn("readable final text labels", text)
         self.assertIn("one-pass text-to-image", text)
         self.assertIn("must be regenerated", text)
+
+    def test_deterministic_diagrams_prioritize_tikz_before_python(self) -> None:
+        text = (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8")
+
+        required_phrases = [
+            "LaTeX TikZ > Python",
+            "prefer LaTeX TikZ before Python",
+            "Use Python only when TikZ is unsuitable",
+        ]
+
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_windows_chinese_encoding_fix_is_documented(self) -> None:
+        text = (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Chinese text on Windows",
+            "Chinese labels inside figures",
+            "PowerShell pipeline",
+            "mojibake",
+            "write a UTF-8 source file",
+            "do not pipe Chinese source code",
+            "XeLaTeX",
+            "CJK font",
+            "inspect the rendered figure",
+        ]
+
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
 
 
 if __name__ == "__main__":

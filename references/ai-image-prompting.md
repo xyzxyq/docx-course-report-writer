@@ -1,19 +1,25 @@
 # AI Image Prompting For Course Reports
 
-Use this reference whenever text-to-image figures are enabled. The goal is not to make decorative images; the goal is to create dense, purposeful, report-grade visual assets.
+Use this reference whenever text-to-image figures are enabled. The goal is not to make decorative images. The goal is to create dense, purposeful, report-grade visual assets that explain a concrete knowledge structure.
 
 ## Root Cause From Failed Runs
 
-Poor AI figures usually come from underspecified prompts:
+Poor AI figures usually come from a theme-driven prompt:
 
-- The prompt says the topic but not the visual job.
-- It asks for a broad "concept illustration" without a concrete focal object, foreground/midground/background, or information density.
-- It forbids text even when the requested artifact is a diagram that needs labels.
-- It lacks a negative prompt/avoid list, so the model fills space with empty gradients, vague nodes, random icons, or stock-art decoration.
-- The Critic only checks "no watermark/no text", not whether the image actually improves the report.
-- It assumes labels can be fixed later, which violates one-pass text-to-image delivery.
+```text
+Draw an advanced technology image about deep learning.
+```
 
-Treat any mostly empty, generic, or stock-looking AI image as a failed artifact, even if it is technically clean.
+That prompt produces a technology poster: glowing networks, chips, servers, data streams, transparent cubes, and dramatic lighting. The result may look complex, but the information is hollow. The reader can only say "this is related to AI"; they cannot explain which mechanism, workflow, model architecture, or system relation the image teaches.
+
+The corrected approach is knowledge-structure-driven:
+
+```text
+Draw a teaching information graphic that explains one core question.
+List the required knowledge modules, arrange them in a real data or gradient flow, and make every visible element correspond to a named concept.
+```
+
+Treat any mostly empty, generic, or stock-looking AI image as a failed artifact, even if it is visually polished.
 
 ## Information Architecture Gate
 
@@ -21,27 +27,35 @@ For AI figures in academic reports, use information architecture first, visual s
 
 Before any visual style words, specify:
 
-- the specific knowledge point the figure must explain
-- the named modules that must be visible
+- the one core question the figure answers
+- the specific knowledge point the figure explains
+- the required knowledge modules that must be visible
+- the named modules and their exact labels
 - the directional relationships between modules
 - the labels, arrows, legend, and layering plan
 - the semantic function of every decorative element
+- the rejection criteria for empty AI-tech-poster output
 
 A decorative element must have a semantic function. Cables mean data flow, stacked blocks mean layers or repeated modules, chips mean compute, colors mean categories, dotted boxes mean optional/auxiliary paths, and background grids mean coordinate/layer alignment. If an element has no meaning, remove it from the prompt.
 
-Use top-conference architecture figures as the reference style: clean module boxes, readable labels, arrows with a clear direction, compact legends, grouped layers, and minimal decoration. The reader should be able to answer "what mechanism is this explaining?" without relying on the caption.
+Every visible element must map to a named concept. If the element cannot be explained in the caption or nearby prose, it should not appear.
 
-Architecture, schematic, flowchart, pipeline, and model-structure figures must have readable final text labels in the generated image itself. For text-to-image figures, one-pass text-to-image is mandatory: the accepted PNG/JPEG must already contain the labels, arrows, and legend. No post-generation label overlay, manual text repair, Photoshop-style editing, Pillow/SVG/TikZ/PowerPoint label insertion, or other after-the-fact semantic correction is allowed. Final text labels are required. If generated text is wrong, reject and regenerate with a narrower prompt.
+Use top-conference architecture figures as the reference style: clean module boxes, readable labels, arrows with a clear direction, compact legends, grouped layers, and minimal decoration. The target style is a textbook figure, course handout diagram, paper overview figure, mechanism explanation figure, architecture diagram, or system pipeline figure, not a technology poster.
 
-## Patterns Borrowed From High-Star Prompting Projects
+## Anti-Poster Style Rules
 
-High-star image-generation projects and prompt collections converge on the same practical pattern:
+Do not use futuristic AI artwork as the style target for report diagrams.
 
-- `AUTOMATIC1111/stable-diffusion-webui` popularized explicit negative prompts: say what must not appear, not only what should appear.
-- `lllyasviel/Fooocus` emphasizes prompt-focused workflows and prompt processing rather than manual parameter tweaking; this supports writing a clear visual brief before generation.
-- AI prompt collections use complete visual briefs: subject, environment, composition, lighting, style, camera/framing, quality details, restrictions, and intended use.
+Do not add meaningless glowing lines.
+Do not add random servers.
+Do not add random cubes.
+Do not add random chips unless compute is a named module.
+Do not add floating neural-network nodes unless they represent a specific layer, token relation, attention graph, or model state.
+Do not pile up abstract neural-network decoration.
+Do not fill the background with generic data streams, glass panels, holograms, or blue sci-fi haze.
+Do not let every region look visually busy while no region has a clear teaching role.
 
-For this skill, convert those patterns into a mandatory report-figure prompt card.
+Allowed visual density must be semantic density: more labeled stages, clearer grouping, better arrows, useful comparison lanes, or a legend that explains color and line types.
 
 ## Mandatory Prompt Card
 
@@ -54,16 +68,20 @@ Before generating each AI figure, write a prompt card in the run record or `imag
 - Reader question answered:
 - Knowledge point explained:
 - Why AI is better than self-drawn/TikZ/screenshot/paper crop:
-- Visual density target: low / medium / high
+- One core question:
+- Required knowledge modules:
+- Visual density target: low / medium / high:
 - Focal subject:
 - Named modules:
 - Directional relationships:
 - Label/arrow/legend/layer plan:
 - Semantic decoration rule:
+- Forbidden decoration:
 - Foreground:
 - Midground:
 - Background:
-- Composition: e.g. centered hero, left-to-right process, radial hub, split comparison
+- Composition: e.g. left-to-right process, two-lane comparison, layered architecture, radial hub
+- Reference style: textbook figure / course handout / paper overview figure / mechanism explanation figure / system pipeline figure
 - Lighting/color/material:
 - Camera/framing/aspect ratio:
 - Allowed visible text: exact whitelist; required for architecture/schematic/flowchart/pipeline/model-structure figures
@@ -82,79 +100,105 @@ Use this structure for most course-report AI figures:
 Use case: academic course report figure.
 Figure role: <concept-enhancement/explanatory>.
 Reader question: <what the reader should understand after seeing it>.
+One core question: <only one mechanism/workflow/comparison>.
 Knowledge point: <CNN feature hierarchy / Transformer self-attention / MoE routing / training loop / deployment dataflow / loss optimization>.
-Subject: <specific focal object or system>.
-Scene: <concrete academic/technical visual environment>.
-Composition: <layout, visual hierarchy, focal point, amount of negative space>.
-Information density: <medium/high; specify number of modules/regions/paths>.
+Required knowledge modules: <complete module inventory>.
 Named modules: <module names that should appear as boxes/panels/layers>.
 Directional relationships: <A -> B -> C, skip connection, feedback loop, branching router, aggregation>.
 Label plan: <exact visible text whitelist, placement, font style, and legend placement in the generated image>.
 Layer plan: <lanes, stages, grouped blocks, hierarchy, legend categories>.
 Semantic decoration: <each non-structural object and what it means>.
+Composition: <layout, visual hierarchy, focal point, amount of negative space>.
+Information density: <medium/high; specify number of modules/regions/paths>.
+Reference style: teaching information graphic, textbook figure, course handout, paper overview figure, or system pipeline figure.
 Visual elements: <specific components, relationships, materials, icon families tied to meaning>.
-Style: <restrained scientific editorial / clean technical illustration / realistic lab photo>.
-Lighting and color: <palette and contrast>.
-Format: <landscape 16:9 or page-friendly ratio>.
-Text policy: exact visible text whitelist; the image model must render these labels directly; no post-generation label overlay.
-Constraints: <must include/must preserve>.
-Avoid: blank space, generic glowing network, random icons, stock illustration, decorative gradients, fake UI, fake logos, watermark, unreadable text, clutter, distorted anatomy, irrelevant objects.
+Lighting and color: <clean white background, restrained blue/gray, limited orange/red emphasis for loss/gradient/error>.
+Format: <landscape 16:9 or document-friendly ratio>.
+Avoid: <technology poster, futuristic AI artwork, random servers, random cubes, meaningless glowing lines, abstract neural-network decoration, unlabelled chips, empty gradients, stock-art style>.
+Rejection criteria: <wrong labels, missing modules, unclear arrows, decorative filler, low semantic density>.
 ```
+
+## Training Flow Prompt Template
+
+Use this template when the figure must explain how a deep learning model learns from data.
+
+```text
+Create a 16:9 landscape teaching information graphic for an academic course report.
+Topic: Deep learning model training workflow.
+Reader question: How does a model learn from data and then produce an inference output?
+One core question: the training loop from data input to weight update and final inference.
+
+Required knowledge modules, arranged left to right:
+1. Training Data: image, text, and audio samples.
+2. Preprocessing: normalization, tokenization/encoding, batching.
+3. Neural Network: input layer, hidden layers, output layer.
+4. Forward Pass: arrow from processed input to prediction.
+5. Prediction and Label: side-by-side comparison panel.
+6. Loss Function: loss box or small loss curve.
+7. Backpropagation: reverse arrow from loss to model parameters.
+8. Optimizer / Update Weights: gradient descent update step.
+9. Iteration Loop: circular arrow showing repeated training epochs.
+10. Inference Output: trained model produces classification, generation, or prediction result.
+
+Visible text whitelist:
+Training Data, Preprocessing, Neural Network, Forward Pass, Prediction, Label, Loss Function, Backpropagation, Optimizer / Update Weights, Inference Output, Epoch Loop.
+
+Visual style:
+teaching information graphic, textbook figure, course handout, paper overview figure, clean white background, module boxes, clear arrows, compact legend, high semantic density, restrained blue and gray with orange emphasis for loss and gradient.
+
+Negative prompt:
+not a technology poster, no futuristic AI artwork, no sci-fi data center, no meaningless glowing lines, no random servers, no random cubes, no abstract neural-network decoration, no empty gradient background, no decorative chips unless they represent compute.
+
+Acceptance criteria:
+Every visible element must map to a named concept. All listed modules must be present. Arrows must express data flow or gradient flow. Labels must be readable and match the whitelist.
+```
+
+## One-Pass Text-To-Image Label Policy
+
+Architecture, schematic, flowchart, pipeline, and model-structure figures must have readable final text labels in the generated image itself. For text-to-image figures, one-pass text-to-image is mandatory: the accepted PNG/JPEG must already contain the labels, arrows, and legend.
+
+No post-generation label overlay is allowed for AI diagram semantics. Final text labels are required.
+
+Do not create an unlabeled AI background and then repair the semantics later. If generated text is wrong, reject and regenerate with fewer labels, shorter labels, or simpler module names. If repeated generations fail, reject the AI figure and use TikZ/self-drawn/vector output as a separate non-AI figure.
+
+For text-heavy report diagrams, prefer short English labels in AI generation when the report can explain them in Chinese nearby. Use Chinese labels in AI generation only if the model reliably renders them and the rendered figure is inspected at final size.
 
 ## Density Requirements
 
-For DOCX course reports, an AI figure must pass at least one density rule:
+Choose visual density based on the job:
 
-- It has a strong central subject plus at least three meaningful supporting regions.
-- It shows a concrete process with at least four visually distinct stages.
-- It contrasts two or more technical ideas with clear spatial separation.
-- It explains one named mechanism with at least four named modules, three directional links, and one legend or layer grouping.
-- It provides a rich, inspectable scene relevant to the assignment.
+- `low`: only for cover-style conceptual orientation; not acceptable for mechanism diagrams.
+- `medium`: 4 to 7 named modules, 3 to 6 arrows, one legend or lane grouping.
+- `high`: 8 to 12 named modules, multiple lanes, feedback loops, or grouped submodules.
 
-Reject a figure if more than one third of the usable image area is empty without a layout reason, or if the page would be equally understandable after deleting the image.
-
-## Text And Label Policy
-
-For architecture, schematic, flowchart, pipeline, and model-structure figures, readable final labels are mandatory.
-
-Use this sequence:
-
-1. Write a short exact whitelist of visible labels before generation.
-2. Ask the image model to render only those labels, arrows, and legend directly in the image.
-3. Inspect the generated image at report scale.
-4. If any required label, arrow, legend, or module relationship is wrong, unreadable, missing, or hallucinated, reject the image and regenerate from text-to-image. Do not repair it after generation.
-
-Short English labels are often more reliable than long Chinese labels. If Chinese labels are required, keep them short and include a strict rejection rule for malformed characters.
-
-For chapter-opening mood images that are not diagrams, no final labels may be acceptable only if the prompt card explicitly says the image is a non-diagram concept background and the nearby caption/prose carries the explanation.
+A report-grade AI diagram should usually be `medium` or `high`. Sparse atmospheric output fails unless the user explicitly asked for a cover illustration.
 
 ## Critic Acceptance Gate
 
-The Critic must inspect the actual generated image and answer:
+The Critic must inspect the generated image and answer:
 
-- Does it answer the reader question from the prompt card?
-- Can a reader identify the specific knowledge point without the caption?
-- Are the named modules visible in the intended locations?
-- Are the directional relationships, arrows, lanes, or flows clear?
-- Are labels, arrows, legend, and layering present in the generated image itself, with readable text at report scale?
-- Does every decorative element have a semantic function recorded in the prompt card?
-- Is the focal subject clear within three seconds?
-- Is the visual density appropriate for a course report?
-- Is there any accidental text, logo, watermark, fake metric, fake UI, or irrelevant symbol?
-- Does it look like a purposeful academic figure rather than a generic stock background?
-- Would a self-drawn diagram be more informative? If yes, replace the AI figure with a non-AI deterministic diagram instead of repairing the AI image.
+- What is the one core question this figure answers?
+- Which required knowledge modules are visible?
+- Are all named modules readable and correctly spelled?
+- Do arrows encode true data flow, control flow, gradient flow, comparison, or hierarchy?
+- Does each non-structural visual element have a semantic purpose?
+- Is the figure a teaching information graphic rather than a technology poster?
+- Would the reader understand the mechanism without the caption?
+- Is there any meaningless glowing line, random server, random cube, or abstract decoration?
+- Does the figure remain readable after DOCX/PDF scaling?
 
-If any answer fails, regenerate with a narrower prompt or replace the figure. Do not keep a weak AI figure just because the required count was met.
+Reject the image if any required module is missing, any important label is wrong, any arrow is ambiguous, or the image relies on atmosphere rather than structure.
 
 ## Attribution Requirements
 
-For every accepted AI image, record:
+Every accepted AI image must be recorded in `image-attributions.md` or the run ledger with:
 
-- final prompt card
-- generation method/model/tool
-- output file path
-- original generated file path when copied
-- accepted/rejected iteration notes
-- explicit statement: `AI-generated, non-evidence`
+- final file path
+- prompt card
+- generation date
+- whether it is concept-enhancement or explanatory
+- note that it is not evidence
+- Critic acceptance notes
+- any rejected attempts and why they failed
 
-Do not deliver a report with AI images whose final prompt and rejection criteria are missing.
+Do not place raw provenance lines below figures in the report body unless the assignment or user explicitly requires visible provenance.

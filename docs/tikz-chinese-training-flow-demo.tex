@@ -1,0 +1,65 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{xeCJK}
+\setCJKmainfont{Microsoft YaHei}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
+
+\definecolor{mainblue}{HTML}{1D4E89}
+\definecolor{softblue}{HTML}{EAF3FF}
+\definecolor{softgreen}{HTML}{EAF7EA}
+\definecolor{softorange}{HTML}{FFF1E6}
+\definecolor{softgray}{HTML}{F5F7FA}
+\definecolor{linegray}{HTML}{6B7280}
+
+\tikzset{
+  box/.style={
+    draw=mainblue,
+    rounded corners=4pt,
+    line width=0.8pt,
+    fill=softblue,
+    minimum width=2.95cm,
+    minimum height=1.15cm,
+    align=center,
+    font=\small
+  },
+  orangebox/.style={box, draw=orange!80!black, fill=softorange},
+  greenbox/.style={box, draw=green!50!black, fill=softgreen},
+  note/.style={align=center, font=\footnotesize, text=linegray},
+  dataarrow/.style={-{Latex[length=3mm]}, line width=1.2pt, draw=mainblue},
+  gradarrow/.style={-{Latex[length=3mm]}, line width=1.1pt, draw=orange!85!black, dashed},
+}
+
+\begin{document}
+\begin{tikzpicture}[node distance=1.65cm and 1.15cm]
+  \node[box] (data) {训练数据\\图像 / 文本 / 音频};
+  \node[box, right=of data] (prep) {数据预处理\\归一化 / 编码 / 批量化};
+  \node[box, right=of prep] (model) {神经网络模型\\输入层 / 隐藏层 / 输出层};
+  \node[greenbox, right=of model] (pred) {预测结果\\Prediction};
+  \node[orangebox, right=of pred] (loss) {损失函数\\Loss Function};
+  \node[orangebox, minimum width=3.35cm, minimum height=1.25cm, below=1.9cm of model] (opt) {优化器更新\\参数更新};
+  \node[greenbox, minimum width=3.35cm, minimum height=1.25cm, below=1.9cm of pred] (infer) {推理输出\\分类 / 生成 / 预测};
+
+  \draw[dataarrow] (data) -- node[note, above] {输入样本} (prep);
+  \draw[dataarrow] (prep) -- node[note, above] {特征张量} (model);
+  \draw[dataarrow] (model) -- node[note, above] {前向传播} (pred);
+  \draw[dataarrow] (pred) -- node[note, above] {与标签比较} (loss);
+  \draw[dataarrow] (model.south east) |- ($(infer.west)+(-0.35,0)$) -- (infer.west);
+  \node[note, above=0.08cm of infer] {训练完成后};
+
+  \coordinate (gradbottom) at ($(infer.south)+(0,-0.68cm)$);
+  \draw[gradarrow]
+    (loss.south) -- node[note, right, pos=0.38] {反向传播梯度} (loss.south |- gradbottom)
+    -- (opt.south |- gradbottom)
+    -- (opt.south);
+  \draw[gradarrow] (opt.north) -- node[note, right] {更新权重} (model.south);
+  \draw[gradarrow] (opt.west) .. controls +(-1.7,-0.95) and +(0,-1.25) .. node[note, left] {多轮迭代} (prep.south);
+
+  \node[draw=linegray, rounded corners=4pt, fill=softgray, align=left, font=\footnotesize, below=2.95cm of prep, text width=11.6cm] (legend) {
+    蓝色实线：数据流与前向传播\quad
+    橙色虚线：梯度流与参数更新\quad
+    绿色模块：模型输出阶段
+  };
+
+  \node[font=\bfseries\large, text=mainblue, above=0.65cm of model] {深度学习训练流程确定性示意图};
+  \node[note, below=0.1cm of legend] {每个模块均对应明确概念；中文标签由 UTF-8 TikZ 源文件和 XeLaTeX 渲染。};
+\end{tikzpicture}
+\end{document}

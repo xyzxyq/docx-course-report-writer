@@ -95,6 +95,24 @@
 
 这张图是一次文生图直接生成的验收样例：它解释 `Self-Attention` 加权求和知识点，包含 `Input Tokens`、`Q Query`、`K Key`、`V Value`、`Scores QK^T`、`Softmax`、`Weighted Sum`、`Output Tokens` 等具名模块，并用箭头和图例表达方向关系与颜色语义。
 
+### 新绘图策略：知识结构驱动，而不是科技海报
+
+2026-06-12 的深度学习课程报告实践进一步暴露了文生图 prompt 的根本问题：主题驱动 prompt 会自动滑向“神经网络节点、蓝色发光线路、服务器、芯片、数据流、透明模块”的 AI 视觉模板，画面复杂但信息空心。现在 Skill 将文生图 prompt 重构为知识结构驱动：先定义一张图只回答的一个核心问题，再列出必须出现的知识模块、方向关系、标签、图例和禁止装饰。
+
+下面是新策略生成的训练流程教学信息图。它不是“关于深度学习的高级科技图”，而是明确解释训练数据、预处理、神经网络、前向传播、预测与标签、损失函数、反向传播、优化器更新、训练循环和推理输出之间的关系。
+
+<p align="center">
+  <img src="docs/ai-prompting-training-flow-demo.png" width="860" alt="知识结构驱动 prompt 生成的深度学习训练流程教学信息图">
+</p>
+
+对于确定性图，Skill 现在明确采用 `LaTeX TikZ > Python` 的优先级：流程图、时间线、模型架构、模块关系图和 pipeline 图优先使用 TikZ；Python 主要用于真实数据图表、热力图、图像拼接和数值驱动可视化。中文图中文字则要求 UTF-8 源文件、XeLaTeX 与中文字体，并在渲染后检查是否乱码。
+
+<p align="center">
+  <img src="docs/tikz-chinese-training-flow-demo.png" width="860" alt="使用 XeLaTeX 和 TikZ 绘制的中文深度学习训练流程确定性示意图">
+</p>
+
+这两张图的验收重点不同：文生图示例检查“是否摆脱空泛科技海报、是否具备知识模块和语义密度”；TikZ 示例检查“确定性结构图是否优先 TikZ、中文标签是否正常、箭头和文本是否通过 Review And Revise”。
+
 <a id="highlights"></a>
 
 ## 亮点
