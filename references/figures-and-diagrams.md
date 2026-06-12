@@ -68,7 +68,7 @@ Before any report drafting, figure generation, or DOCX assembly, ask the user:
 
 This is a blocking intake question. Do not treat silence as `off`. If the user enables AI images but gives no count, stop and ask for the count. For nontrivial creation reports where AI images are enabled, generate and insert at least one conceptual or explanatory AI figure unless the assignment or user forbids it.
 
-After intake is resolved, load `references/ai-image-prompting.md` before every text-to-image call. The prompt-card workflow in that file is mandatory, not optional.
+After intake is resolved, load `references/ai-image-prompting.md` before every text-to-image call. The prompt-card workflow in that file is mandatory, not optional. For the actual text-to-image call, use the user-installed top-level `imagegen` skill, resolved by skill name or by a portable skills-root path such as `$CODEX_HOME/skills/imagegen/SKILL.md` or the platform-equivalent user skills directory. Do not hard-code a developer's local absolute path, and do not route course-report AI figures through the bundled/internal `.system/imagegen` skill unless the user explicitly requests that fallback.
 
 Use AI image generation only when:
 

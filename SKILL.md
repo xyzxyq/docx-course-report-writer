@@ -128,7 +128,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 
 - Use `doc` / `documents` for low-level DOCX editing, rendering, and OOXML details.
 - Use `pdf` when PDF rendering or page-level visual QA matters.
-- Use `imagegen` only for explanatory or conceptual figures that are not evidence, after the blocking AI-image intake and recorded count.
+- Use the user-installed top-level `imagegen` skill for explanatory or conceptual figures that are not evidence, after the blocking AI-image intake and recorded count. Resolve this by skill name or by the portable skills-root location such as `$CODEX_HOME/skills/imagegen/SKILL.md` or the platform-equivalent user skills directory. Do not hard-code a developer's local absolute path, and do not route report text-to-image work through the bundled/internal `.system/imagegen` skill unless the user explicitly requests that fallback.
 - Use Browser/Playwright/browser tools for web-page screenshot evidence when available; use Computer Use or visible terminal capture for real terminal screenshots when required by the assignment.
 - On Windows, prefer Word COM for Word-specific fidelity.
 - For Linux/POSIX/socket/file-system assignments on Windows, verify and use WSL unless the user asks for native Windows. If WSL is missing, ask before installing or enabling it.

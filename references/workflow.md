@@ -86,7 +86,7 @@ Use this branch only after blocking intake is resolved. AI generation is for con
 1. Load `references/ai-image-prompting.md`.
 2. Identify the reader question and why AI is the right medium instead of self-drawn/TikZ/screenshot/paper crop.
 3. Write the full AI Figure Prompt Card, including visual density target, focal subject, foreground/midground/background, composition, positive prompt, negative/avoid prompt, and rejection criteria.
-4. Use the system `imagegen` skill.
+4. Use the user-installed top-level `imagegen` skill, resolved by skill name or by a portable skills-root path such as `$CODEX_HOME/skills/imagegen/SKILL.md` or the platform-equivalent user skills directory. Do not hard-code a developer's local absolute path. Do not use the bundled/internal `.system/imagegen` skill for report text-to-image generation unless the user explicitly requests that fallback.
 5. Validate the result against the prompt card:
    - academically appropriate
    - no watermark
