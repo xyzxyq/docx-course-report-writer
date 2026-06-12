@@ -17,6 +17,7 @@ Ask or infer these before writing final deliverables:
 - Linux/WSL requirement and availability:
 - Screenshot requirements and capture targets:
 - PDF/export requirement:
+- PDF page render QA requirement:
 - Naming/metadata requirements:
 - References required: yes/no
 - Citation standard: GB/T 7714-2015 unless assignment/template says otherwise
@@ -141,6 +142,10 @@ Use this section only when AI text-to-image is enabled. Each generated or attemp
 - Fact ledger scan:
 - Figure arrow/text-layout review:
 - PDF/rendered visual QA:
+- Every rendered page inspected:
+- Blank/near-blank page detection:
+- Contact sheets used only as index:
+- Failed QA from user feedback:
 - Remaining limitations:
 ```
 

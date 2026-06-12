@@ -24,6 +24,7 @@
     When using `scripts/build_report.py` with the integrated default template, pass known cover metadata such as `--title`, `--course`, `--student-name`, `--student-id`, `--teacher`, and `--date`. The builder should produce a formal cover, automatic TOC, chapter numbering (`第一章`, `1.1`), body page numbering restarted at 1 after the cover/TOC front matter, and a new-page references section by default.
 16. Update TOC and fields in Word when available.
 17. Export PDF or render page images for QA.
+    For layout-sensitive reports, render every PDF page to PNG and generate contact sheets only as an index. Inspect individual page renders before claiming visual QA passed.
 18. Fix blocking defects at the source of truth and regenerate.
 19. Use `superpowers:verification-before-completion` when installed, or run the equivalent fresh verification gate.
 20. Deliver final DOCX/PDF plus reusable source files unless the user asked for only the final artifact.
@@ -131,3 +132,5 @@ Every TikZ, flowchart, pipeline, architecture diagram, timeline, mechanism diagr
 - If a diagram arrow audit is not recorded, the report is not ready.
 - If a diagram label-overlap audit is not recorded, the report is not ready.
 - If fresh completion verification has not run, the report is not ready.
+- If user feedback exposed a defect, treat it as a failed QA test, fix the source of truth, regenerate derived artifacts, and record the prevention check before delivering again.
+- If PDF/page visual QA used only a contact sheet and did not inspect every rendered page, the report is not ready.

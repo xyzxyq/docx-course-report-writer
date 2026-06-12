@@ -329,6 +329,7 @@ docx-course-report-writer/
 ├─ scripts/
 │  ├─ build_report.py
 │  ├─ qa_docx_report.py
+│  ├─ render_pdf_review_pages.py
 │  ├─ update_word_fields.ps1
 │  └─ annotate_screenshot.py
 └─ docs/

@@ -9,7 +9,7 @@ description: Use when Codex handles Chinese coursework/report DOCX deliverables,
 
 Use this skill to create, repair, polish, or verify Chinese academic `.docx` reports. Read this file first, then open only the routed references needed for the current task.
 
-The Orchestrator owns scope, file ownership, final integration, DOCX/PDF verification, and the final response.
+The Orchestrator owns scope, file ownership, final integration, DOCX/PDF verification, and the final response. For nontrivial runs, treat `references/experience-lessons.md` as history-derived experience: it summarizes real failures and prevention checks from prior uses of this skill.
 
 ## Mandatory Run Contract
 
@@ -34,7 +34,7 @@ These rules apply every time this skill is active:
 12. **Prefer deterministic structure diagrams before illustrative fallbacks.** For formal flowcharts, timelines, model architecture diagrams, module graphs, and pipeline figures, follow `references/figures-and-diagrams.md`: LaTeX TikZ > Python. Use Python only when TikZ is unsuitable, such as data-driven plots, heatmaps, charts, or image montages. When Chinese labels inside figures are needed on Windows, write UTF-8 source files, use XeLaTeX/CJK-capable fonts for TikZ or explicit Chinese fonts for Python, and inspect the rendered figure for mojibake before insertion.
 13. **Review And Revise every diagram.** Every flowchart, pipeline, architecture diagram, timeline, mechanism diagram, TikZ drawing, self-drawn figure, or similar visual must enter a final `Review And Revise` stage after rendering. Focus especially on arrows and text layout: no arrow may be crossed, hidden, clipped, ambiguous, pointed at the wrong target, or overlapped with text/modules; no label may collide with a box, border, arrow, legend, caption, or another label in a way that weakens readability or aesthetics.
 14. **Use formal figure captions, not body source labels or production-process claims.** Every inserted image must have a formal caption immediately below the image, using chapter-scoped numbering such as `图2.1 概念图：从早期网络到现代基础模型的架构演化`. The numbering must match the current chapter and figure order. Do not render `图片来源：...`, `AI-generated, non-evidence`, or similar provenance/source lines in the report body by default; keep provenance, AI-generation status, prompt cards, and evidence boundaries in `image-attributions.md`, a figure ledger, or nearby prose when academically necessary. Do not place implementation/process statements inside report-visible images, captions, or body prose, including claims about source encoding, rendering engines, drawing tools, prompt mechanics, or QA mechanics. A report page or image that says a module is clear because of a particular file encoding, drawing language, compiler, renderer, image model, or QA script fails this gate; move that information to the run record or sidecar attribution file.
-15. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. Word COM update/export must happen before PDF page rendering so TOC, fields, and page numbers reflect Word's real layout. Prefer `scripts/render_pdf_review_pages.py` to render the final PDF pages to PNG, run blank-page detection for every page, and combine four pages per contact sheet for fast visual review. A near-blank page is blocking unless the template/assignment explicitly requires it and the run record names the page and reason. PDF page render images are not screenshots; label them as rendered PDF pages. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
+15. **Audit the actual artifact.** Final QA must inspect the generated DOCX text/package and the rendered PDF or pages when layout matters. Word COM update/export must happen before PDF page rendering so TOC, fields, and page numbers reflect Word's real layout. Prefer `scripts/render_pdf_review_pages.py` to render the final PDF pages to PNG, run blank-page detection for every page, and combine four pages per contact sheet for fast visual review. Inspect every rendered page; contact sheets are an index, not the proof. A blank or near-blank page is blocking unless the template/assignment explicitly requires it and the run record names the page and reason. PDF page render images are not screenshots; label them as rendered PDF pages. User feedback after delivery becomes a failed QA test and must be fixed at the source of truth before regeneration.
 
 ## Run Card
 
@@ -53,7 +53,7 @@ Follow this compact sequence unless the user explicitly limits the task to analy
 6. **Critic cycle 2**
    Re-audit the regenerated artifact. If blocking issues remain, keep iterating without an artificial cap.
 7. **Final gates**
-   Update fields/TOC, export PDF when useful or required, render the final PDF pages to PNG, inspect the individual pages or four-page contact sheets, run focused QA scripts when helpful, and document any unavoidable limitation.
+   Update fields/TOC, export PDF when useful or required, render the final PDF pages to PNG, inspect every rendered page and use contact sheets only as an index, run focused QA scripts when helpful, and document any unavoidable limitation.
 
 ## Reference Routing
 
@@ -65,6 +65,7 @@ Open these only when needed:
 - Multi-agent role contracts and delegation gates: `references/multi-agent-workflow.md`
 - Ready-to-copy specialist prompts: `references/specialist-prompts.md`
 - End-to-end source-first workflow: `references/workflow.md`
+- History-derived experience and regression lessons: `references/experience-lessons.md`
 - User-provided DOCX template fidelity workflow: `references/template-fidelity.md`
 - Figure, screenshot, AI-image, TikZ, and arrow QA rules: `references/figures-and-diagrams.md`
 - AI image prompt-card and rejection rules: `references/ai-image-prompting.md`
@@ -103,7 +104,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 9. **Analysis depth gate**
    Experiment/project reports include result analysis, interpretation, failure causes, limitations, and personal understanding, not only implementation description.
 10. **Rendered visual QA gate**
-   PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, code-block pages, and references before claiming layout is verified. The preferred route is Word COM update/export -> render final PDF pages to PNG -> inspect individual page PNGs or four pages per contact sheet. Blank-page detection must pass, and any allowed near-blank page must be explicitly documented.
+   PDF or page renders were checked around TOC pages, figure pages, table-heavy pages, code-block pages, references, and every suspect page before claiming layout is verified. The preferred route is Word COM update/export -> render final PDF pages to PNG -> inspect every rendered page PNG; contact sheets are an index, not the proof. Blank-page detection must pass, and any allowed near-blank page must be explicitly documented.
 11. **Default-template visual gate**
    When no user template is supplied, the generated DOCX/PDF preserves the integrated default template's visible cover and professional report styling. The cover must occupy page 1 only; page 2 should begin the TOC or body, not a cover date or blank cover residue. A plain white document with only generic margins/headings fails this gate unless the user explicitly requested a blank document.
 12. **References pagination gate**
@@ -122,6 +123,7 @@ Do not deliver until these gates pass or the limitation is explicitly stated:
 - Put proof inside the report body when the assignment requires proof, not only in side folders.
 - Use `scripts/qa_docx_report.py` for DOCX text/package checks when useful.
 - Use `scripts/update_word_fields.ps1` or Word COM for TOC/field/PDF workflows.
+- Use `scripts/render_pdf_review_pages.py` to render final PDF pages to PNG, create contact sheets, and detect blank or near-blank pages when visual QA matters.
 - Use `scripts/annotate_screenshot.py` for repeatable red-box annotations when coordinates are known.
 
 ## Companion Skills And Tools

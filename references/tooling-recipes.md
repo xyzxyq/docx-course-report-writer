@@ -235,9 +235,10 @@ If AI text-to-image was enabled during intake, set `--min-images` high enough to
 Preferred sequence:
 
 1. Run `scripts/update_word_fields.ps1 -ExportPdf -UseAsciiTemp` or equivalent Word COM automation.
-2. Run `scripts/render_pdf_review_pages.py` to render the final PDF pages to PNG.
-3. Treat any `BLANK_PAGE` output as blocking unless a deliberate blank page is documented.
-4. Inspect individual page PNGs for key pages and the generated review sheets for the full document.
+2. Render every PDF page to PNG.
+3. Generate contact sheets for navigation.
+4. Inspect every rendered page PNG; contact sheets are an index, not the proof.
+5. Treat any blank or near-blank page as blocking unless explicitly allowed by the template or assignment and documented in the run record.
 
 ```powershell
 python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py `
@@ -247,7 +248,18 @@ python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf
   --dpi 150
 ```
 
-The review sheets combine four pages per contact sheet to reduce repeated image opening. The script also runs blank-page detection before drawing page labels. PDF page render images are not screenshots; do not call them terminal/browser screenshots or use them as execution evidence.
+Or use the compact equivalent:
+
+```powershell
+python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py `
+  --pdf report.pdf `
+  --out-dir report-rendered-pages `
+  --contact-sheet-cols 2 `
+  --contact-sheet-rows 2 `
+  --fail-on-blank
+```
+
+The review sheets combine four pages per contact sheet to reduce repeated image opening, but contact sheets are an index, not the proof. The script also runs blank-page detection before drawing page labels. PDF page render images are not screenshots; do not call them terminal/browser screenshots or use them as execution evidence.
 
 If a template deliberately contains a blank separator page, rerun with `--allow-blank-pages` only after recording the page number and reason in the run record.
 
@@ -258,6 +270,8 @@ Render or inspect pages around:
 - result screenshots
 - tables
 - code blocks
+- references
+- every rendered page that looks blank, sparse, or suspicious in the contact sheet
 
 Typical checks:
 
@@ -270,3 +284,4 @@ Typical checks:
 - no table overflow
 - no clipped text
 - no isolated captions
+- no blank or near-blank page is missed because only the contact sheet was skimmed

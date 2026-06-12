@@ -57,13 +57,14 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - PDF or page renders were inspected, not only DOCX XML/text.
 - Word COM update/export must happen before PDF page rendering unless an explicit limitation is documented.
 - The final PDF pages were rendered to PNG when layout matters.
-- Blank-page detection passed for every rendered page; each near-blank page is either fixed or documented as intentional.
-- For medium/long reports, review sheets combine four pages per contact sheet and were inspected to reduce missed pages.
+- Every rendered page PNG was inspected when layout matters; contact sheets are an index, not the proof.
+- Blank or near-blank page detection was run for every rendered page; each blank or near-blank page is either fixed or documented as intentional.
+- For medium/long reports, review sheets combine four pages per contact sheet and were inspected only as navigation aids.
 - PDF page render images are not screenshots and are not described as browser/terminal proof.
 - TOC pages render correctly.
 - The rendered first visible page number 1 is on the first body/chapter page, not on the cover or TOC page.
 - The first rendered page is not accidentally blank. A pre-TOC page break is allowed only when a real cover/template opening is preserved.
-- No accidental blank page appears between cover, TOC, body, figures, or references.
+- No blank or near-blank page appears anywhere unless the template/assignment explicitly requires it and the run record names the page and reason.
 - If no user template was supplied, the rendered report shows the integrated default template's visible cover/style unless the user explicitly requested a blank or no-cover document.
 - Figure-heavy pages render correctly.
 - Table-heavy pages render correctly.
@@ -77,6 +78,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Body pages were inspected for superscript bracketed numeric citations; plain body-sized `[1]` citations are blocking.
 - If PDF export or page rendering failed, the final response states that limitation instead of implying visual QA passed.
 - Fresh completion verification was run after the latest DOCX/PDF regeneration.
+- User feedback after delivery was converted into a failed QA test, fixed at the source of truth, regenerated, and rechecked.
 
 ## Polish Checks
 
