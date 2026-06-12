@@ -41,6 +41,7 @@ Use it for:
 ## Contents
 
 - [Why Use It](#why)
+- [Demo](#demo)
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [Workflow](#workflow)
@@ -65,9 +66,55 @@ Many generated reports fail in ways that are easy to miss:
 | The report looks complete but lacks real evidence | Builds a requirement-to-evidence checklist and fact ledger |
 | Word TOC, page numbers, or fields are not actually updated | Uses real Word heading styles and prefers Word COM on Windows |
 | Old template content leaks into the new report | Runs template residue checks and clears stale body content |
+| References look complete but contain weak or unverifiable metadata | Locks a reference metadata ledger before drafting; uses sequential numeric references by default and strictly follows GB/T 7714-2015 after DOI or authoritative-source verification |
 | Flowchart or TikZ arrows overlap text or modules | Requires a final Review And Revise pass for every diagram |
 
 The goal is not only to create a file that opens. The goal is to produce a report package that is closer to submission quality.
+
+<a id="demo"></a>
+
+## Demo: Deep Learning Architecture Course Report
+
+This demo comes from a complete report run with two Actor/Critic review cycles. It shows the details this Skill treats as delivery gates: a one-page cover, right-aligned TOC page numbers, formal figure numbering, references that strictly follow GB/T 7714-2015 by default, no raw source or production-process lines in the body, and page-level PDF rendering for every final page.
+
+| File | Description |
+| --- | --- |
+| [`deep-learning-architecture-report-demo.docx`](docs/deep-learning-architecture-report-demo.docx) | Current Word demo output |
+| [`deep-learning-architecture-report-demo.pdf`](docs/deep-learning-architecture-report-demo.pdf) | Current Word COM exported PDF |
+| [`deep-learning-report-page-01.png`](docs/deep-learning-report-page-01.png) - [`deep-learning-report-page-11.png`](docs/deep-learning-report-page-11.png) | Current report page-by-page PDF renders |
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-01.png" alt="Deep learning report page 1"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-02.png" alt="Deep learning report page 2"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-03.png" alt="Deep learning report page 3"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-04.png" alt="Deep learning report page 4"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-05.png" alt="Deep learning report page 5"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-06.png" alt="Deep learning report page 6"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-07.png" alt="Deep learning report page 7"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-08.png" alt="Deep learning report page 8"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-09.png" alt="Deep learning report page 9"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-10.png" alt="Deep learning report page 10"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-11.png" alt="Deep learning report page 11"></td>
+    <td width="50%"></td>
+  </tr>
+</table>
+
+The deterministic figure showcase now uses the current report's architecture trade-off map:
+
+<p align="center">
+  <img src="docs/deep-learning-architecture-tradeoff-map.png" width="860" alt="Figure 3.2 architecture trade-off map from dense perception to selective foundation models">
+</p>
 
 <a id="features"></a>
 
@@ -80,10 +127,11 @@ The goal is not only to create a file that opens. The goal is to produce a repor
 | Word TOC and field update | Uses real heading styles and automatic Word fields |
 | PDF and page-level QA | Exports from Word first, renders final PDF pages to PNG, and uses four-page contact sheets for review |
 | Evidence-first writing | Tracks logs, screenshots, data, scores, filenames, model names, and dates |
+| GB/T 7714-2015 references | Uses sequential numeric citations and strictly follows GB/T 7714-2015 by default for course-report references |
 | Linux/WSL runtime | Checks whether the host is Linux; otherwise verifies WSL on Windows; asks before installing WSL when missing |
 | Browser and terminal screenshots | Treats screenshots as first-class evidence, including browser pages, terminal windows, GUI states, and external source pages |
 | Diagram and TikZ review | Audits arrows, labels, spacing, semantics, and final scaling |
-| Controlled AI images | Always asks whether text-to-image is enabled and how many images may be generated, default 3 |
+| Controlled AI images | Always asks whether text-to-image is enabled and the exact maximum number of images that may be generated or inserted |
 | Actor/Critic loop | Creates Actor and Critic roles, runs at least two full iterations, and continues while blockers remain |
 
 <a id="quick-start"></a>
@@ -111,6 +159,7 @@ Recommended inputs:
 - Code, logs, screenshots, data tables, references, or an existing draft.
 - Cover metadata such as name, student ID, course name, teacher, and date.
 - Whether PDF, proof screenshots, charts, appendix, or citations are required.
+- If citations are required, expect sequential numeric references that strictly follow GB/T 7714-2015 unless the assignment or template explicitly requires another standard.
 
 <a id="workflow"></a>
 
@@ -204,6 +253,7 @@ Required checks:
 - Labels do not overflow boxes or collide with borders and other labels.
 - The final DOCX/PDF-scaled image remains readable, clean, and semantically correct.
 - AI-generated images never replace real experimental results, screenshots, or data plots.
+- Report-visible figures, captions, paragraphs, and tables do not contain production-process claims about how a figure was made, generated, rendered, or checked. Keep those details in the run record or attribution sidecar.
 
 See [`references/figures-and-diagrams.md`](references/figures-and-diagrams.md).
 
@@ -244,10 +294,11 @@ Before delivery, the run must pass or explicitly document limitations for:
 - Linux/WSL runtime verification when Linux/POSIX behavior matters.
 - Word TOC, page numbers, references, and fields.
 - Cover and TOC layout: the default cover occupies page 1 only, and TOC page numbers are right-aligned with formal dot leaders.
+- References: metadata is verified before drafting; in-text citations are superscript numeric references; the final bibliography strictly follows GB/T 7714-2015 by default; if a course requires another standard, the run record must say so explicitly.
 - Fact consistency across text, captions, tables, and figures.
 - Screenshot authenticity for browser and terminal captures.
 - Diagram semantics, arrows, labels, and layout.
-- Figure captions: every image has a formal `图x.x Title` caption, and raw `图片来源：` provenance lines do not leak into the report body.
+- Figure captions: every image has a formal `Figure x.x Title` style caption in the target language, and raw provenance/source lines do not leak into the report body.
 - Rendered PDF/page inspection when layout matters. Prefer Word COM field update and PDF export first, then `scripts/render_pdf_review_pages.py` to create page PNGs and four-page review sheets. Treat `BLANK_PAGE` output as blocking unless the blank page is intentional and documented.
 - Analysis depth for experiment-heavy reports.
 
@@ -281,8 +332,12 @@ docx-course-report-writer/
 │  ├─ update_word_fields.ps1
 │  └─ annotate_screenshot.py
 └─ docs/
-   ├─ sample-report.docx
-   ├─ sample-report.pdf
+   ├─ deep-learning-architecture-report-demo.docx
+   ├─ deep-learning-architecture-report-demo.pdf
+   ├─ deep-learning-report-page-01.png
+   ├─ ...
+   ├─ deep-learning-report-page-11.png
+   ├─ deep-learning-architecture-tradeoff-map.png
    └─ testing-report.md
 ```
 
@@ -305,7 +360,7 @@ The Skill uses [`skill-assets/default-course-report-template.docx`](skill-assets
 
 ### Can it insert AI-generated images?
 
-Yes, but it must first ask whether text-to-image is enabled and how many images may be generated. The default maximum is 3. AI images are only for explanatory or conceptual use.
+Yes, but it must first ask whether text-to-image is enabled and the exact maximum number of images that may be generated or inserted. AI images are only for explanatory or conceptual use.
 
 ### Why require at least two Actor/Critic cycles?
 

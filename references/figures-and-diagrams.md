@@ -159,6 +159,8 @@ Every image inserted into the final report needs a formal figure caption immedia
 
 Do not place raw provenance lines such as `图片来源：Codex image tool 生成；AI-generated, non-evidence...` below figures in the report body by default. They make the report look like a draft and compete with the formal caption. Put source/provenance details in `image-attributions.md`, the figure ledger, or the references/evidence prose. Only render visible source lines when the user, template, publisher, or assignment explicitly requires them.
 
+Also keep production-process claims out of report-visible content. A figure, caption, nearby paragraph, or table cell should not explain itself by naming source encoding, drawing languages, compilers, rendering engines, image-generation tools, prompt mechanics, screenshot scripts, or QA scripts. Those details are useful engineering evidence, but they belong in the run record, figure ledger, source comments, or attribution sidecar. The report-visible page should explain the subject matter, not the toolchain used to create the page.
+
 ## TikZ Guidance
 
 TikZ is recommended for clean, reproducible diagrams when the report needs:
@@ -268,6 +270,7 @@ Text-layout audit checklist:
 - font size is large enough after DOCX/PDF scaling
 - node padding is large enough that text does not look squeezed
 - explanatory prose is moved out of boxes when it makes the box crowded
+- visible figure text does not contain production-process claims about encoding, drawing tools, generation tools, renderers, prompts, or QA mechanics
 
 Revision rule: if any arrow or label weakens clarity or aesthetics, revise the source layout and regenerate. Do not deliver with a note saying the reader can infer the direction or tolerate the overlap.
 

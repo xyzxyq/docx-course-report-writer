@@ -45,7 +45,7 @@
 | 内容看似完整，但没有证据链 | 先建立事实台账，再写结论；运行日志、截图、引用和数据必须可追踪 |
 | Word 目录、页码、字段没更新 | 使用真实 Word 标题样式，Windows 下优先 Word COM 更新字段并导出 PDF |
 | 封面、模板、旧内容残留 | 使用模板优先策略，并检查占位符、旧主题、旧截图和乱码 |
-| 参考文献看似完整但信息不准 | 写作前建立引用元数据台账； DOI/权威来源核验后按 GB/T 7714-2015 排版 |
+| 参考文献看似完整但信息不准 | 写作前建立引用元数据台账；默认使用并严格遵循 GB/T 7714-2015 顺序编码制，完成 DOI/权威来源核验后再排版 |
 | 图表插进去后不专业 | 强制正式图注、图号顺序、箭头/文字布局审查和 PDF 页面级 QA |
 | AI 图片被误当证据 | AI 图只作概念解释；来源、prompt 和非证据属性写入旁路记录 |
 
@@ -55,33 +55,42 @@
 
 ## 示例展示：深度学习架构课程报告
 
-下面的示例来自一次真实调试后的修订版 DOCX。它展示了这个 Skill 现在会强制关注的细节：封面只占第一页、目录页码右对齐、图注使用 `图x.x` 正式编号，正文不泄漏原始 `图片来源：` 元数据。
+下面的示例来自一次完整生成并经过两轮 Actor/Critic 审查的课程报告。它展示了这个 Skill 现在会强制关注的细节：封面只占第一页、目录页码右对齐、图注使用 `图x.x` 正式编号，参考文献默认并严格遵循 GB/T 7714-2015，正文不泄漏原始制图来源或工艺说明，最终 PDF 每一页都经过页面级渲染检查。
 
 | 文件 | 说明 |
 | --- | --- |
 | [`deep-learning-architecture-report-demo.docx`](docs/deep-learning-architecture-report-demo.docx) | 已上传到 GitHub 的修订版 Word 示例产出 |
 | [`deep-learning-architecture-report-demo.pdf`](docs/deep-learning-architecture-report-demo.pdf) | 已上传到 GitHub 的 Word COM 导出 PDF 示例产出 |
-| [`deep-learning-demo-cover.png`](docs/deep-learning-demo-cover.png) | 封面页渲染预览 |
-| [`deep-learning-demo-toc.png`](docs/deep-learning-demo-toc.png) | 目录页渲染预览 |
-| [`deep-learning-demo-figure.png`](docs/deep-learning-demo-figure.png) | 第 11 页正式图注与页面级检查预览 |
+| [`deep-learning-report-page-01.png`](docs/deep-learning-report-page-01.png) - [`deep-learning-report-page-11.png`](docs/deep-learning-report-page-11.png) | 当前报告逐页 PDF 渲染预览 |
 
-### 封面：只占第一页
+### 当前报告逐页预览
 
-<p align="center">
-  <img src="docs/deep-learning-demo-cover.png" width="680" alt="修订版报告封面预览">
-</p>
-
-### 目录：页码右对齐
-
-<p align="center">
-  <img src="docs/deep-learning-demo-toc.png" width="680" alt="修订版报告目录预览">
-</p>
-
-### 图表：正式图注与页面级检查（第 11 页）
-
-<p align="center">
-  <img src="docs/deep-learning-demo-figure.png" width="680" alt="修订版报告第 11 页正式图注与页面级检查预览">
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-01.png" alt="深度学习架构课程报告第 1 页"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-02.png" alt="深度学习架构课程报告第 2 页"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-03.png" alt="深度学习架构课程报告第 3 页"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-04.png" alt="深度学习架构课程报告第 4 页"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-05.png" alt="深度学习架构课程报告第 5 页"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-06.png" alt="深度学习架构课程报告第 6 页"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-07.png" alt="深度学习架构课程报告第 7 页"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-08.png" alt="深度学习架构课程报告第 8 页"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-09.png" alt="深度学习架构课程报告第 9 页"></td>
+    <td width="50%"><img src="docs/deep-learning-report-page-10.png" alt="深度学习架构课程报告第 10 页"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/deep-learning-report-page-11.png" alt="深度学习架构课程报告第 11 页"></td>
+    <td width="50%"></td>
+  </tr>
+</table>
 
 ### AI 架构图：一次文生图合格示例
 
@@ -105,13 +114,13 @@
   <img src="docs/ai-prompting-training-flow-demo.png" width="860" alt="知识结构驱动 prompt 生成的深度学习训练流程教学信息图">
 </p>
 
-对于确定性图，Skill 现在明确采用 `LaTeX TikZ > Python` 的优先级：流程图、时间线、模型架构、模块关系图和 pipeline 图优先使用 TikZ；Python 主要用于真实数据图表、热力图、图像拼接和数值驱动可视化。中文图中文字则要求 UTF-8 源文件、XeLaTeX 与中文字体，并在渲染后检查是否乱码。
+对于确定性图，Skill 现在要求先判断图的任务：流程、时间线、模型架构和模块关系图应优先选择可控、可复现、可审查的绘图方式；真实数据图表、热力图、图像拼接和数值驱动可视化则优先使用数据绘图工具。无论采用哪种方式，最终报告中只保留帮助读者理解内容的图形、标签和正式图注，不在正文或图中写入制图过程、编码方式、渲染工具等工艺说明。
 
 <p align="center">
-  <img src="docs/tikz-chinese-training-flow-demo.png" width="860" alt="使用 XeLaTeX 和 TikZ 绘制的中文深度学习训练流程确定性示意图">
+  <img src="docs/deep-learning-architecture-tradeoff-map.png" width="860" alt="图3.2 架构取舍图：从稠密感知到选择性基础模型">
 </p>
 
-这两张图的验收重点不同：文生图示例检查“是否摆脱空泛科技海报、是否具备知识模块和语义密度”；TikZ 示例检查“确定性结构图是否优先 TikZ、中文标签是否正常、箭头和文本是否通过 Review And Revise”。
+这两张图的验收重点不同：文生图示例检查“是否摆脱空泛科技海报、是否具备知识模块和语义密度”；确定性图示例检查“位置关系是否解释架构取舍、标签是否清晰、缩放后是否仍然可读”。
 
 <a id="highlights"></a>
 
@@ -175,7 +184,7 @@ C:\Users\<用户名>\.codex\skills\docx-course-report-writer
 | 课程要求 / rubric | 锁定评分点和报告结构 |
 | DOCX 模板 | 保留学校或课程格式；未提供时使用内置默认模板 |
 | 代码、日志、截图、数据 | 形成证据链，避免编造实验结果 |
-| 参考文献或论文链接 | 支撑综述、课程论文和技术事实 |
+| 参考文献或论文链接 | 支撑综述、课程论文和技术事实；默认采用并严格遵循 GB/T 7714-2015 |
 | 姓名、学号、课程名、教师名 | 生成正式封面 |
 | 是否允许 AI 图片及数量 | AI 图像是阻塞式 intake 问题，不能静默默认 |
 
@@ -227,7 +236,7 @@ flowchart LR
 - 将封面压缩到第一页，避免日期或空白封面内容溢出到第二页。
 - 生成真实 Word Heading 和自动 TOC 字段。
 - 使用 `图<章号>.<序号>` 形式生成正式图注。
-- 默认不把 `图片来源：...` 渲染进正文，来源信息放入 sidecar 文件。
+- 默认不把原始来源行渲染进正文，来源信息放入 sidecar 文件。
 - 在 `参考文献` 前插入分页。
 
 ## QA 命令示例
@@ -281,7 +290,7 @@ python scripts\render_pdf_review_pages.py `
 - 封面与目录：封面只占第一页，目录页码右对齐，字段已更新。
 - 图注规范：所有插图都有正式 `图x.x 标题`。
 - 图像语义：箭头、标签、布局、缩放后的可读性通过审查。
-- 参考文献：写作前完成 DOI/权威元数据核验，正文为上标 `[1]` 顺序编码，文后按 GB/T 7714-2015 排版并检查字体字号。
+- 参考文献：写作前完成 DOI/权威元数据核验，正文为上标 `[1]` 顺序编码，文后默认并严格遵循 GB/T 7714-2015 排版并检查字体字号；如课程另有标准，必须在运行记录中明确说明。
 - PDF 渲染：先用 Word COM 更新字段并导出最终 PDF，再渲染页面 PNG；中长报告优先检查每四页一张的审查拼图，同时重点打开目录页、图页、表格页、代码块页和参考文献页。
 - 分析深度：实验报告必须有结果分析、失败原因、局限和个人理解。
 
@@ -317,9 +326,10 @@ docx-course-report-writer/
 └─ docs/
    ├─ deep-learning-architecture-report-demo.docx
    ├─ deep-learning-architecture-report-demo.pdf
-   ├─ deep-learning-demo-cover.png
-   ├─ deep-learning-demo-toc.png
-   └─ deep-learning-demo-figure.png
+   ├─ deep-learning-report-page-01.png
+   ├─ ...
+   ├─ deep-learning-report-page-11.png
+   └─ deep-learning-architecture-tradeoff-map.png
 ```
 
 ## 常见问题

@@ -117,6 +117,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - The figure ledger records text-layout audit status for every TikZ/self-drawn/process diagram used in the report.
 - AI-generated figures have a pre-generation drawing spec and post-generation text check. Reject figures with unrelated names, fake logos, wrong numbers, or hallucinated labels.
 - If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. If AI images were enabled for a nontrivial creation report, at least one AI-generated conceptual/explanatory figure is inserted unless the assignment or user forbids it.
+- Report-visible figures, captions, paragraphs, and tables do not contain production-process claims about source encoding, drawing tools, renderers, image models, prompt mechanics, screenshot scripts, or QA scripts. Keep those details in the run record, figure ledger, or attribution sidecar.
 - External screenshots show the intended source content. 403/CAPTCHA/login/error pages are replaced with verifiable metadata cards or source tables.
 - Browser screenshots were inspected for wrong page, blank page, loading state, login wall, 403, CAPTCHA, and error pages.
 - Terminal screenshots include command/result context and remain readable at final DOCX/PDF scale.
