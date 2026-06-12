@@ -30,7 +30,7 @@ Before any visual style words, specify:
 - the one core question the figure answers
 - the specific knowledge point the figure explains
 - the required knowledge modules that must be visible
-- the named modules and their exact labels
+- the named modules and likely labels
 - the directional relationships between modules
 - the labels, arrows, legend, and layering plan
 - the semantic function of every decorative element
@@ -84,7 +84,7 @@ Before generating each AI figure, write a prompt card in the run record or `imag
 - Reference style: textbook figure / course handout / paper overview figure / mechanism explanation figure / system pipeline figure
 - Lighting/color/material:
 - Camera/framing/aspect ratio:
-- Allowed visible text: exact whitelist; required for architecture/schematic/flowchart/pipeline/model-structure figures
+- Visible text plan: expected core labels and useful explanatory text; this is not a strict whitelist
 - One-pass text-to-image plan: how the prompt will make the generated image itself contain the labels/arrows/legend
 - Regeneration trigger: exact text, arrow, legend, or layout errors that force a new generation
 - Positive prompt:
@@ -105,7 +105,7 @@ Knowledge point: <CNN feature hierarchy / Transformer self-attention / MoE routi
 Required knowledge modules: <complete module inventory>.
 Named modules: <module names that should appear as boxes/panels/layers>.
 Directional relationships: <A -> B -> C, skip connection, feedback loop, branching router, aggregation>.
-Label plan: <exact visible text whitelist, placement, font style, and legend placement in the generated image>.
+Label plan: <expected core labels, optional explanatory text, placement, font style, and legend placement in the generated image>.
 Layer plan: <lanes, stages, grouped blocks, hierarchy, legend categories>.
 Semantic decoration: <each non-structural object and what it means>.
 Composition: <layout, visual hierarchy, focal point, amount of negative space>.
@@ -140,8 +140,8 @@ Required knowledge modules, arranged left to right:
 9. Iteration Loop: circular arrow showing repeated training epochs.
 10. Inference Output: trained model produces classification, generation, or prediction result.
 
-Visible text whitelist:
-Training Data, Preprocessing, Neural Network, Forward Pass, Prediction, Label, Loss Function, Backpropagation, Optimizer / Update Weights, Inference Output, Epoch Loop.
+Visible text plan:
+Core labels should include Training Data, Preprocessing, Neural Network, Forward Pass, Prediction, Label, Loss Function, Backpropagation, Optimizer / Update Weights, Inference Output, and Epoch Loop. Reasonable extra text is allowed when it clarifies a module, legend, axis, or flow direction.
 
 Visual style:
 teaching information graphic, textbook figure, course handout, paper overview figure, clean white background, module boxes, clear arrows, compact legend, high semantic density, restrained blue and gray with orange emphasis for loss and gradient.
@@ -150,7 +150,7 @@ Negative prompt:
 not a technology poster, no futuristic AI artwork, no sci-fi data center, no meaningless glowing lines, no random servers, no random cubes, no abstract neural-network decoration, no empty gradient background, no decorative chips unless they represent compute.
 
 Acceptance criteria:
-Every visible element must map to a named concept. All listed modules must be present. Arrows must express data flow or gradient flow. Labels must be readable and match the whitelist.
+Every visible element must map to a named concept. All listed modules must be present. Arrows must express data flow or gradient flow. Visible text must be readable, accurate, relevant, and non-garbled.
 ```
 
 ## One-Pass Text-To-Image Label Policy
@@ -159,9 +159,20 @@ Architecture, schematic, flowchart, pipeline, and model-structure figures must h
 
 No post-generation label overlay is allowed for AI diagram semantics. Final text labels are required.
 
-Do not create an unlabeled AI background and then repair the semantics later. If generated text is wrong, reject and regenerate with fewer labels, shorter labels, or simpler module names. If repeated generations fail, reject the AI figure and use TikZ/self-drawn/vector output as a separate non-AI figure.
+Do not create an unlabeled AI background and then repair the semantics later. The visible text plan guides generation and review, but it is not a strict whitelist. Do not reject a figure only because it contains useful text outside the initial plan. Reject or regenerate when visible text is unreadable, garbled, factually wrong, misleading, irrelevant, or visually disruptive. If repeated generations fail, reject the AI figure and use TikZ/self-drawn/vector output as a separate non-AI figure.
 
 For text-heavy report diagrams, prefer short English labels in AI generation when the report can explain them in Chinese nearby. Use Chinese labels in AI generation only if the model reliably renders them and the rendered figure is inspected at final size.
+
+## Actor/Critic Text Review
+
+Use Actor/Critic text review after generation instead of enforcing a closed vocabulary. The Actor records the intended visible text plan before generation. The Critic then reviews all visible text in the generated image and classifies it:
+
+- `required and correct`: core labels that support the figure's knowledge structure
+- `useful extra text`: reasonable extra text that clarifies a module, legend, axis, or flow direction
+- `harmless extra text`: minor text that does not affect meaning or professionalism
+- `blocking text defect`: unreadable, misspelled, garbled, hallucinated, irrelevant, misleading, or visually disruptive text
+
+Accepted AI figures may contain reasonable extra text when it improves explanation. Blocking text defects require regeneration, replacement with a deterministic diagram, or removal of the AI figure from the report.
 
 ## Density Requirements
 
@@ -179,7 +190,8 @@ The Critic must inspect the generated image and answer:
 
 - What is the one core question this figure answers?
 - Which required knowledge modules are visible?
-- Are all named modules readable and correctly spelled?
+- Is visible text readable, accurate, relevant, and non-garbled?
+- Does any reasonable extra text improve explanation rather than create noise?
 - Do arrows encode true data flow, control flow, gradient flow, comparison, or hierarchy?
 - Does each non-structural visual element have a semantic purpose?
 - Is the figure a teaching information graphic rather than a technology poster?

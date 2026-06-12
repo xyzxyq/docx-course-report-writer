@@ -52,7 +52,7 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
             "one-pass text-to-image",
             "No post-generation label overlay",
             "Final text labels are required",
-            "If generated text is wrong, reject and regenerate",
+            "Reject or regenerate when visible text is unreadable",
         ]
 
         for phrase in required_phrases:
@@ -108,6 +108,35 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
             with self.subTest(module=module):
                 self.assertIn(module, text)
 
+    def test_prompting_reference_uses_text_review_not_whitelist(self) -> None:
+        text = (ROOT / "references" / "ai-image-prompting.md").read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Visible text plan",
+            "not a strict whitelist",
+            "reasonable extra text",
+            "Actor/Critic text review",
+            "readable, accurate, relevant, and non-garbled",
+            "Do not reject a figure only because it contains useful text outside the initial plan",
+        ]
+
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+        forbidden_phrases = [
+            "exact whitelist",
+            "text whitelist",
+            "Visible text whitelist",
+            "Allowed visible text",
+            "match the whitelist",
+            "must render only those labels",
+        ]
+
+        for phrase in forbidden_phrases:
+            with self.subTest(forbidden=phrase):
+                self.assertNotIn(phrase, text)
+
     def test_main_skill_blocks_empty_ai_concept_art(self) -> None:
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
 
@@ -118,6 +147,9 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
         self.assertIn("readable final text labels", text)
         self.assertIn("one-pass text-to-image", text)
         self.assertIn("must be regenerated", text)
+        self.assertIn("visible text plan", text)
+        self.assertIn("Actor/Critic text review", text)
+        self.assertNotIn("text whitelist", text)
 
     def test_deterministic_diagrams_prioritize_tikz_before_python(self) -> None:
         text = (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8")
