@@ -20,12 +20,13 @@ The Actor builds or repairs the artifact:
 1. Read assignment, template/prior report, source files, available evidence, and user constraints.
 2. For reported defects, inspect the actual DOCX/PDF/source/log/figure first and identify the root cause before changing files.
 3. Lock report archetype, chapter structure, metadata, naming, citation style, and final deliverables.
-4. Decide what evidence must be visible inside the report.
-5. Make missing runtime evidence real before writing final result claims.
-6. Draft source files and assemble DOCX.
-7. Insert required tables, code snippets, screenshots, diagrams, captions, and attributions.
-8. Update TOC/fields when Word is available.
-9. Export PDF or render pages for visual QA.
+4. If citations are used, build the `Reference Metadata Ledger` before drafting: verify each source's authors, title, venue/source, year, pages, DOI or canonical URL, GB/T 7714-2015 type marker, and intended citation number.
+5. Decide what evidence must be visible inside the report.
+6. Make missing runtime evidence real before writing final result claims.
+7. Draft source files and assemble DOCX.
+8. Insert required tables, code snippets, screenshots, diagrams, captions, and attributions.
+9. Update TOC/fields when Word is available.
+10. Export PDF or render pages for visual QA.
 
 ## Critic Pass
 
@@ -37,6 +38,10 @@ The Critic evaluates the actual artifact, not the plan:
 - evidence authenticity and visibility
 - screenshot identity and annotation quality
 - content depth, design explanation, testing analysis, and reflection
+- reference hallucination: every citation maps to a verified ledger entry; no invented DOI, title, author, venue, page, date, publisher, or URL
+- GB/T 7714-2015 citation and bibliography compliance
+- superscript bracketed numeric citations in the body, including `[1]`, `[2-3]`, and `[1,3]`
+- reference list typography, including bracketed sequence number, reference information font/size, hanging indent, and order by first citation appearance
 - figure roles, captions, attribution, and readability
 - table and code-block layout
 - TOC, fields, page numbers, and PDF/page-render state
@@ -67,6 +72,9 @@ For short edits, the record may be brief, but the two-cycle loop still runs.
 ## Common Blocking Findings
 
 - required evidence missing or not visible in the report
+- reference hallucination or unverified reference metadata
+- citations not formatted as superscript bracketed numeric citations
+- final references not in GB/T 7714-2015 order, punctuation, type-marker, DOI/URL, or reference list typography
 - fake or mislabeled screenshot evidence
 - AI image used as experimental proof
 - static TOC pretending to be automatic

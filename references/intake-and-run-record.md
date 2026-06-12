@@ -18,6 +18,10 @@ Ask or infer these before writing final deliverables:
 - Screenshot requirements and capture targets:
 - PDF/export requirement:
 - Naming/metadata requirements:
+- References required: yes/no
+- Citation standard: GB/T 7714-2015 unless assignment/template says otherwise
+- Reference Metadata Ledger status: not needed / pending / locked before drafting
+- GB/T 7714-2015 format source: provided standard file / assignment rule / template rule / default skill rule
 - Superpowers installed/available: yes/no
 - Superpowers skills invoked:
 - AI text-to-image enabled: yes/no, must be answered explicitly before artifact creation unless already specified by the user
@@ -65,6 +69,17 @@ If the user already gave enough information, record the answer instead of asking
 | model/class/name |  |  |  |
 | date/version |  |  |  |
 | final-vs-intermediate claim |  |  |  |
+
+## Reference Metadata Ledger
+No cited prose may be drafted until this ledger is complete for every intended citation.
+
+| Citation no. | GB/T 7714-2015 type marker | Verified authors/organization | Verified title | Venue/source/publisher | Year/volume/issue/pages | Verified DOI or canonical URL | Metadata source checked | Used in section |
+|---|---|---|---|---|---|---|---|---|
+| [1] |  |  |  |  |  |  |  |  |
+
+- In-text citation style: superscript bracketed numeric citations, e.g. `[1]`, `[2-3]`, `[1,3]`.
+- Reference-list style: GB/T 7714-2015 sequential numeric order by first citation appearance.
+- Missing metadata decision: do not cite / ask user / replace source.
 
 ## Figure Ledger
 | Figure | Role | Method | Source/evidence | Review And Revise status |
@@ -115,6 +130,10 @@ Use this section only when AI text-to-image is enabled. Each generated or attemp
 - Evidence authenticity:
 - Linux/WSL runtime:
 - Screenshot authenticity:
+- Reference hallucination audit:
+- GB/T 7714-2015 citation and bibliography audit:
+- In-text citation superscript audit:
+- Reference typography audit:
 - Template residue:
 - User-template fidelity:
 - Default-template visible cover/style:

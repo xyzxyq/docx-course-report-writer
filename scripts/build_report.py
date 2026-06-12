@@ -23,6 +23,7 @@ WIDTH_PREFIX = "图片宽度："
 DEFAULT_TEMPLATE_PATH = Path(__file__).resolve().parents[1] / "skill-assets" / "default-course-report-template.docx"
 DEFAULT_COVER_PARAGRAPHS = 11
 TOC_RIGHT_TAB_CM = 15.35
+CITATION_PATTERN = re.compile(r"\[(?:\d+(?:\s*[-,，]\s*\d+)*)\]")
 CHAPTER_NUMERALS = {
     1: "一",
     2: "二",
@@ -493,8 +494,22 @@ def add_body_paragraph(doc: Document, text: str, indent: bool = True) -> None:
     paragraph.paragraph_format.space_after = Pt(6)
     if indent:
         paragraph.paragraph_format.first_line_indent = Pt(21)
-    run = paragraph.add_run(text)
-    set_run_font(run, size=10.5)
+    add_runs_with_citation_formatting(paragraph, text)
+
+
+def add_runs_with_citation_formatting(paragraph, text: str) -> None:
+    cursor = 0
+    for match in CITATION_PATTERN.finditer(text):
+        if match.start() > cursor:
+            run = paragraph.add_run(text[cursor : match.start()])
+            set_run_font(run, size=10.5)
+        citation_run = paragraph.add_run(match.group(0))
+        set_run_font(citation_run, size=9.0)
+        citation_run.font.superscript = True
+        cursor = match.end()
+    if cursor < len(text):
+        run = paragraph.add_run(text[cursor:])
+        set_run_font(run, size=10.5)
 
 
 def add_reference_paragraph(doc: Document, text: str) -> None:

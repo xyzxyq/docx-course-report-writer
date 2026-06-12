@@ -13,6 +13,7 @@ from docx import Document
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "scripts" / "build_report.py"
+QA = ROOT / "scripts" / "qa_docx_report.py"
 ONE_PIXEL_PNG = b64decode(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII="
 )
@@ -141,6 +142,107 @@ class BuildReportFormatTest(unittest.TestCase):
             text = "\n".join(p.text for p in doc.paragraphs)
             self.assertIn("图2.1 概念图：结构演化", text)
             self.assertNotIn("图片来源：不应写入正文。", text)
+
+    def test_inline_numeric_citations_are_superscript_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            draft = work / "report-draft.md"
+            refs = work / "references.md"
+            out = work / "report.docx"
+
+            draft.write_text(
+                "\n".join(
+                    [
+                        "# 引言",
+                        "深度学习模型研究需要严格引用已有文献[1]，并区分事实与推断[2-3]。",
+                        "{{REFERENCES}}",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            refs.write_text(
+                "\n".join(
+                    [
+                        "[1] 作者. 题名[J]. 期刊, 2025, 1(1): 1-2. DOI: 10.0000/example.",
+                        "[2] 作者. 题名[J]. 期刊, 2025, 1(1): 3-4.",
+                        "[3] 作者. 题名[J]. 期刊, 2025, 1(1): 5-6.",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(BUILD),
+                    "--draft",
+                    str(draft),
+                    "--refs",
+                    str(refs),
+                    "--output",
+                    str(out),
+                    "--title",
+                    "引用上标测试",
+                    "--course",
+                    "深度学习",
+                ],
+                cwd=ROOT,
+                check=True,
+            )
+
+            doc = Document(str(out))
+            citation_runs = [
+                run
+                for paragraph in doc.paragraphs
+                for run in paragraph.runs
+                if run.text in {"[1]", "[2-3]"}
+            ]
+            self.assertEqual(["[1]", "[2-3]"], [run.text for run in citation_runs])
+            self.assertTrue(all(run.font.superscript for run in citation_runs))
+            self.assertTrue(all(run.font.size.pt == 9 for run in citation_runs))
+
+    def test_qa_blocks_plain_numeric_citations_when_superscript_required(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            bad = work / "bad.docx"
+            good = work / "good.docx"
+
+            bad_doc = Document()
+            bad_doc.add_paragraph("正文普通引用[1]。")
+            bad_doc.save(str(bad))
+
+            good_doc = Document()
+            paragraph = good_doc.add_paragraph("正文上标引用")
+            run = paragraph.add_run("[1]")
+            run.font.superscript = True
+            good_doc.save(str(good))
+
+            bad_result = subprocess.run(
+                [
+                    sys.executable,
+                    str(QA),
+                    "--docx",
+                    str(bad),
+                    "--require-superscript-citations",
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+            )
+            self.assertNotEqual(0, bad_result.returncode)
+            self.assertIn("Plain body-sized citation markers", bad_result.stdout)
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(QA),
+                    "--docx",
+                    str(good),
+                    "--require-superscript-citations",
+                ],
+                cwd=ROOT,
+                check=True,
+            )
 
 
 if __name__ == "__main__":

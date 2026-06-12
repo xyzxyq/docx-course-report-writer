@@ -45,6 +45,7 @@
 | 内容看似完整，但没有证据链 | 先建立事实台账，再写结论；运行日志、截图、引用和数据必须可追踪 |
 | Word 目录、页码、字段没更新 | 使用真实 Word 标题样式，Windows 下优先 Word COM 更新字段并导出 PDF |
 | 封面、模板、旧内容残留 | 使用模板优先策略，并检查占位符、旧主题、旧截图和乱码 |
+| 参考文献看似完整但信息不准 | 写作前建立引用元数据台账； DOI/权威来源核验后按 GB/T 7714-2015 排版 |
 | 图表插进去后不专业 | 强制正式图注、图号顺序、箭头/文字布局审查和 PDF 页面级 QA |
 | AI 图片被误当证据 | AI 图只作概念解释；来源、prompt 和非证据属性写入旁路记录 |
 
@@ -222,6 +223,7 @@ python scripts\qa_docx_report.py `
   --min-tables 3 `
   --min-heading1 6 `
   --require-reference-pagebreak `
+  --require-superscript-citations `
   --require-formal-figure-captions `
   --forbid-image-source-lines
 ```
@@ -247,7 +249,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
 - 封面与目录：封面只占第一页，目录页码右对齐，字段已更新。
 - 图注规范：所有插图都有正式 `图x.x 标题`。
 - 图像语义：箭头、标签、布局、缩放后的可读性通过审查。
-- 参考文献：单独分页，事实与引用一致。
+- 参考文献：写作前完成 DOI/权威元数据核验，正文为上标 `[1]` 顺序编码，文后按 GB/T 7714-2015 排版并检查字体字号。
 - PDF 渲染：检查目录页、图页、表格页、代码块页和参考文献页。
 - 分析深度：实验报告必须有结果分析、失败原因、局限和个人理解。
 

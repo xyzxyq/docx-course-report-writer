@@ -13,6 +13,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - No old experiment names, old topic words, old screenshots, old TOC entries, `{{...}}`, `[[TOC]]`, `待补`, `待确认`, or mojibake strings such as `鐩綍` remain.
 - If the task is item-by-item, the report contains visible requirement coverage.
 - Run record exists or equivalent notes are present, including scope lock, AI-image permission/count, fact ledger, figure ledger, and final gates.
+- If citations are used, the run record includes a locked `Reference Metadata Ledger` created before drafting, with verified DOI or canonical URL, metadata source, GB/T 7714-2015 type marker, and intended citation number for every cited source.
 - AI-image intake was answered explicitly before report drafting/DOCX assembly. User silence is not recorded as `off`.
 - Superpowers availability and invoked workflow skills are recorded; if unavailable, the fallback process from `superpowers-adapter.md` was used.
 - Actor and Critic agents/roles were created or activated. The loop record exists for at least two complete cycles, has no artificial iteration cap, and the Critic audited the current artifact, not only the plan.
@@ -64,6 +65,8 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - No text is clipped.
 - No caption is isolated from its figure/table.
 - PDF/page text was scanned for obsolete scores, forbidden result claims, LaTeX residue, and stale template phrases.
+- Reference pages were inspected in DOCX/PDF render for GB/T 7714-2015 punctuation/order, hanging indent, bracketed sequence numbers, and reference list typography.
+- Body pages were inspected for superscript bracketed numeric citations; plain body-sized `[1]` citations are blocking.
 - If PDF export or page rendering failed, the final response states that limitation instead of implying visual QA passed.
 - Fresh completion verification was run after the latest DOCX/PDF regeneration.
 
@@ -78,8 +81,15 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 
 ### References
 
-- Every citation maps to a real source.
-- Citation style is consistent.
+- Every citation maps to a real source and verified `Reference Metadata Ledger` entry.
+- No reference hallucination is present: no invented DOI, URL, title, author, year, pages, venue, publisher, or access date.
+- Citation style is GB/T 7714-2015 unless the assignment/template explicitly requires another style.
+- In-text citations use superscript bracketed numeric citations such as `[1]`, `[2-3]`, and `[1,3]`.
+- Final references are ordered by first citation appearance under sequential numeric GB/T 7714-2015 rules.
+- The reference list uses GB/T 7714-2015 item order, punctuation, reference type marker, DOI/URL treatment, and required access dates for online sources.
+- The reference list typography is checked: sequence number font/size, reference information font/size, line spacing, and hanging indent match the template or the skill default.
+- Every reference-list entry is cited in the body, unless the report explicitly separates "reading references" and records why uncited entries remain.
+- Every in-text citation has a corresponding reference-list entry; dangling citation numbers are blocking.
 - Central claims are backed by actual reading, not abstract-level padding.
 - Recent sources are used when the topic requires current information.
 

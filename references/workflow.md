@@ -9,28 +9,29 @@
 5. Lock report archetype, deliverables, metadata, naming, chapter structure, required evidence, Linux/WSL need, screenshot targets, and AI-image permission/count.
 6. Create or activate the mandatory Actor and Critic roles.
 7. Build a requirement-to-evidence checklist before writing long prose.
-8. Verify or create real runtime evidence when the report depends on program behavior. If Linux/POSIX behavior matters, use native Linux or verified WSL and record the environment facts.
-9. Run a Figure Decision Pass chapter by chapter.
-10. Create working source files:
+8. If citations are used, build and lock the `Reference Metadata Ledger` before drafting: verify DOI values or canonical URLs through DOI resolver/Crossref, publisher page, official paper page, library/standard metadata, or another authoritative source; then map each source to a GB/T 7714-2015 citation number.
+9. Verify or create real runtime evidence when the report depends on program behavior. If Linux/POSIX behavior matters, use native Linux or verified WSL and record the environment facts.
+10. Run a Figure Decision Pass chapter by chapter.
+11. Create working source files:
    - `report-draft.md`
    - `references.md`
    - `image-attributions.md`
    - helper scripts, raw logs, raw screenshots, annotated screenshots as needed
-11. Complete Actor -> Critic cycle 1 on the current draft/source/artifacts.
-12. Complete Actor -> Critic cycle 2 after source-level fixes and regeneration.
-13. Continue extra cycles while the Critic finds blocking defects.
-14. Generate or update the DOCX.
+12. Complete Actor -> Critic cycle 1 on the current draft/source/artifacts, including reference hallucination and GB/T 7714-2015 format review when citations exist.
+13. Complete Actor -> Critic cycle 2 after source-level fixes and regeneration, including the same reference and typography audit on the current DOCX/PDF.
+14. Continue extra cycles while the Critic finds blocking defects.
+15. Generate or update the DOCX.
     When using `scripts/build_report.py` with the integrated default template, pass known cover metadata such as `--title`, `--course`, `--student-name`, `--student-id`, `--teacher`, and `--date`. The builder should produce a formal cover, automatic TOC, chapter numbering (`第一章`, `1.1`), and a new-page references section by default.
-15. Update TOC and fields in Word when available.
-16. Export PDF or render page images for QA.
-17. Fix blocking defects at the source of truth and regenerate.
-18. Use `superpowers:verification-before-completion` when installed, or run the equivalent fresh verification gate.
-19. Deliver final DOCX/PDF plus reusable source files unless the user asked for only the final artifact.
+16. Update TOC and fields in Word when available.
+17. Export PDF or render page images for QA.
+18. Fix blocking defects at the source of truth and regenerate.
+19. Use `superpowers:verification-before-completion` when installed, or run the equivalent fresh verification gate.
+20. Deliver final DOCX/PDF plus reusable source files unless the user asked for only the final artifact.
 
 ## Why Source-First Matters
 
 - It keeps revisions reproducible.
-- It prevents citation and attribution drift.
+- It prevents citation and attribution drift by locking verified reference metadata before prose drafting.
 - It makes DOCX regeneration cheap after content changes.
 - It reduces stale template residue.
 - It makes figure role tracking and AI image attribution manageable.
@@ -121,6 +122,8 @@ Every TikZ, flowchart, pipeline, architecture diagram, timeline, mechanism diagr
 - If the assignment is strict, create a visible requirement-to-evidence mapping inside the report.
 - If a result is required item-by-item, the report itself must show direct evidence.
 - If source code or runtime evidence is missing, make the experiment runnable before writing final results.
+- If reference metadata is unverified, do not cite the source and do not draft the dependent claim.
+- If body citations are not superscript bracketed numeric citations or the reference list is not GB/T 7714-2015 compliant, the report is not ready.
 - If the TOC looks blank in a renderer, verify the field in DOCX XML, Word, or exported PDF before declaring failure.
 - If the run record does not show two Actor -> Critic cycles, the report is not ready.
 - If no user template was supplied and the rendered report does not show the integrated default cover/style, the report is not ready unless the user explicitly requested a blank document.

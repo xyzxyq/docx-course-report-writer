@@ -52,7 +52,12 @@ Use the template or user-polished report as the source of truth. Use these defau
 ## References
 
 - `参考文献` starts on a new page.
+- Course-report references use GB/T 7714-2015 sequential numeric style by default.
+- In-text citations use superscript bracketed numeric citations such as `[1]`, `[2-3]`, and `[1,3]`; do not leave them as ordinary body-size text.
+- Citation superscript default for generated DOCX: Song/Times-consistent font, 9 pt, superscript. Preserve a stricter user template if present.
 - References use a hanging indent when possible: about 0.72 cm left indent and -0.72 cm first-line indent.
+- Reference-list default font: Song/Times-consistent font, about 10 pt for both bracketed sequence numbers and reference information, unless the template requires another size.
+- Reference-list order follows first citation appearance, not alphabetical order, when sequential numeric style is used.
 - The references heading uses the same formal chapter heading style as the template, but it is not assigned a chapter number unless the user's template explicitly requires numbered references.
 
 ## Tables

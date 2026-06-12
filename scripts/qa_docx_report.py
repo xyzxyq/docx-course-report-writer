@@ -38,6 +38,7 @@ DEFAULT_MOJIBAKE_TERMS = [
 
 COVER_MARKERS = ["课程报告", "实验题目", "学生姓名", "任课教师"]
 SOURCE_PREFIX = "图片来源："
+CITATION_PATTERN = re.compile(r"\[(?:\d+(?:\s*[-,，]\s*\d+)*)\]")
 
 
 def read_document_xml(docx_path: Path) -> str:
@@ -119,6 +120,30 @@ def formal_figure_captions(text: str) -> list[str]:
     return captions
 
 
+def is_reference_list_paragraph(text: str, in_references: bool) -> bool:
+    stripped = text.strip()
+    if stripped in {"参考文献", "参考资料", "References"}:
+        return True
+    return in_references and bool(re.match(r"^\[\d+\]\s*\S+", stripped))
+
+
+def plain_body_citation_markers(doc: Document) -> list[str]:
+    plain: list[str] = []
+    in_references = False
+    for paragraph in doc.paragraphs:
+        stripped = paragraph.text.strip()
+        if stripped in {"参考文献", "参考资料", "References"}:
+            in_references = True
+            continue
+        if is_reference_list_paragraph(stripped, in_references):
+            continue
+        for run in paragraph.runs:
+            if run.font.superscript:
+                continue
+            plain.extend(match.group(0) for match in CITATION_PATTERN.finditer(run.text))
+    return plain
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="QA a Chinese course-report DOCX.")
     parser.add_argument("--docx", type=Path, required=True)
@@ -128,6 +153,7 @@ def main() -> int:
     parser.add_argument("--min-tables", type=int, default=0)
     parser.add_argument("--min-heading1", type=int, default=0)
     parser.add_argument("--require-reference-pagebreak", action="store_true")
+    parser.add_argument("--require-superscript-citations", action="store_true")
     parser.add_argument("--forbid-image-source-lines", action="store_true")
     parser.add_argument("--require-formal-figure-captions", action="store_true")
     parser.add_argument("--stale-term", action="append", default=[])
@@ -156,6 +182,7 @@ def main() -> int:
     table_count = len(doc.tables)
     toc_field = has_toc_field(xml)
     reference_pagebreak = has_page_break_before_reference(xml)
+    plain_citations = plain_body_citation_markers(doc)
     template_fidelity: dict[str, object] = {}
 
     placeholder_terms = [t for t in DEFAULT_PLACEHOLDERS if t not in set(args.allow_placeholder)]
@@ -176,6 +203,8 @@ def main() -> int:
         failures.append("Required default/template cover markers not found.")
     if args.require_reference_pagebreak and not reference_pagebreak:
         failures.append("Required page break before 参考文献 not found.")
+    if args.require_superscript_citations and plain_citations:
+        failures.append(f"Plain body-sized citation markers found; expected superscript citations: {plain_citations}")
     if args.forbid_image_source_lines and SOURCE_PREFIX in text:
         failures.append("Image source lines are present in report body; keep provenance in sidecar files instead.")
     if args.require_formal_figure_captions and inline_shapes and len(captions) < inline_shapes:
@@ -227,6 +256,7 @@ def main() -> int:
         "heading_counts": headings,
         "toc_field": toc_field,
         "reference_pagebreak": reference_pagebreak,
+        "plain_body_citation_markers": plain_citations,
         "cover_marker_hits": cover_marker_hits,
         "placeholder_hits": placeholder_hits,
         "stale_hits": stale_hits,
