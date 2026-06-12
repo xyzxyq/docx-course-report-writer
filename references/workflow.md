@@ -21,7 +21,7 @@
 13. Complete Actor -> Critic cycle 2 after source-level fixes and regeneration, including the same reference and typography audit on the current DOCX/PDF.
 14. Continue extra cycles while the Critic finds blocking defects.
 15. Generate or update the DOCX.
-    When using `scripts/build_report.py` with the integrated default template, pass known cover metadata such as `--title`, `--course`, `--student-name`, `--student-id`, `--teacher`, and `--date`. The builder should produce a formal cover, automatic TOC, chapter numbering (`第一章`, `1.1`), and a new-page references section by default.
+    When using `scripts/build_report.py` with the integrated default template, pass known cover metadata such as `--title`, `--course`, `--student-name`, `--student-id`, `--teacher`, and `--date`. The builder should produce a formal cover, automatic TOC, chapter numbering (`第一章`, `1.1`), body page numbering restarted at 1 after the cover/TOC front matter, and a new-page references section by default.
 16. Update TOC and fields in Word when available.
 17. Export PDF or render page images for QA.
 18. Fix blocking defects at the source of truth and regenerate.

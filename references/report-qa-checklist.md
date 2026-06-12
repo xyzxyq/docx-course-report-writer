@@ -46,6 +46,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Automatic TOC field is inserted or preserved.
 - TOC and fields are updated in Word when available.
 - Page numbers and headings remain consistent after the final field update.
+- Cover and TOC pages are front matter and are not counted as body pages. The body/chapter section starts on a new Word section with page numbering restarted at 1.
 - `参考文献` starts on a new page and appears as a TOC-relevant section heading.
 - A static hand-typed TOC is not used when an automatic TOC is expected.
 - The rendered TOC page was inspected after final export. It must not contain only "please update in Word" placeholder text.
@@ -60,6 +61,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - For medium/long reports, review sheets combine four pages per contact sheet and were inspected to reduce missed pages.
 - PDF page render images are not screenshots and are not described as browser/terminal proof.
 - TOC pages render correctly.
+- The rendered first body/chapter page is page 1, not page 2/3 after the cover or TOC.
 - The first rendered page is not accidentally blank. A pre-TOC page break is allowed only when a real cover/template opening is preserved.
 - No accidental blank page appears between cover, TOC, body, figures, or references.
 - If no user template was supplied, the rendered report shows the integrated default template's visible cover/style unless the user explicitly requested a blank or no-cover document.

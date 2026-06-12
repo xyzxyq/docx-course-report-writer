@@ -86,9 +86,26 @@ class BuildReportFormatTest(unittest.TestCase):
             self.assertIn("TOC \\o", xml)
             self.assertIn("1-3", xml)
             self.assertIn("\\h \\z \\u", xml)
+            self.assertRegex(xml, r'<w:pgNumType[^>]+w:start="1"')
+            self.assertLess(xml.index('<w:pgNumType'), xml.index("第一章 绪论"))
             reference_pos = xml.index("参考文献")
             before_reference = xml[max(0, reference_pos - 1200) : reference_pos]
             self.assertRegex(before_reference, r'<w:br w:type="page"|<w:lastRenderedPageBreak')
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(QA),
+                    "--docx",
+                    str(out),
+                    "--require-toc",
+                    "--require-cover",
+                    "--require-body-page-start-1",
+                    "--require-reference-pagebreak",
+                ],
+                cwd=ROOT,
+                check=True,
+            )
 
     def test_figures_are_numbered_and_source_lines_hidden_by_default(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

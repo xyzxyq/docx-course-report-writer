@@ -27,6 +27,7 @@ On 2026-06-12, PDF render review was regression-tested from a real course-report
 - Near-blank page detection so a non-empty contact sheet cannot hide an empty quadrant.
 - Windows Chinese-path and PowerShell encoding hazards.
 - Accidental blank first page before TOC when no cover/template opening is preserved.
+- Body page numbering accidentally counting cover/TOC front matter; the body must start in a new section with page numbering restarted at 1.
 
 ## Commands Run
 
@@ -46,6 +47,7 @@ python scripts\build_report.py `
 python scripts\qa_docx_report.py `
   --docx artifacts\docx-course-report-writer-release-audit\sample-report\docx-course-report-writer-sample.docx `
   --require-toc `
+  --require-body-page-start-1 `
   --min-images 1 `
   --min-tables 2 `
   --min-heading1 1 `
@@ -127,6 +129,8 @@ Release-package re-run from `examples/sample-report/`:
 ## Fixes Made During Testing
 
 - `scripts/build_report.py` no longer inserts an unconditional page break before TOC. A pre-TOC page break is now inserted only when a template cover/opening is preserved.
+- `scripts/build_report.py` now starts the body in a new section after the TOC and restarts body page numbering at 1, so cover and TOC pages are not counted as body pages.
+- `scripts/qa_docx_report.py` now supports `--require-body-page-start-1` to block DOCX outputs where the first body page is not page 1.
 - `scripts/build_report.py` now uses `skill-assets/default-course-report-template.docx` when no user template is supplied, while clearing stale template body content by default.
 - `scripts/build_report.py` now creates missing `Heading 1/2/3` paragraph styles when a DOCX template does not contain them, preserving automatic TOC compatibility.
 - `references/report-qa-checklist.md` now includes a first-rendered-page blank check.

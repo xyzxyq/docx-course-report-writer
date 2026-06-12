@@ -196,7 +196,7 @@ If Pandoc or subprocess output fails with a `gbk`/Unicode encode/decode error, r
 2. `skill-assets/default-course-report-template.docx` when the user did not supply one.
 3. A blank Word document only when `--no-default-template` is explicitly passed.
 
-By default, when the integrated default template is used, the script preserves the visible default cover and page setup, then removes sample body content and stale static TOC entries before inserting a fresh automatic TOC field and report body. This prevents a plain white document while still avoiding old sample chapters and placeholders.
+By default, when the integrated default template is used, the script preserves the visible default cover and page setup, then removes sample body content and stale static TOC entries before inserting a fresh automatic TOC field and report body. The body starts in a new Word section with page numbering restarted at 1, so cover and TOC pages are front matter rather than body-page count. This prevents a plain white document while still avoiding old sample chapters and placeholders.
 
 The default cover must fit entirely on page 1. If rendered PDF page 2 contains only a cover date, blank cover residue, or other cover metadata, fix the cover spacing/source template and regenerate before delivery.
 
@@ -217,6 +217,7 @@ python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\qa_docx_re
   --docx report.docx `
   --require-toc `
   --require-cover `
+  --require-body-page-start-1 `
   --min-images 4 `
   --min-tables 3 `
   --require-formal-figure-captions `
@@ -261,6 +262,7 @@ Render or inspect pages around:
 Typical checks:
 
 - TOC page numbers share a single right edge and dot leaders reach that edge
+- the first body/chapter page is page 1 after cover/TOC front matter
 - figure captions use formal `图x.x` numbering
 - raw `图片来源：` provenance lines did not leak into the report body
 - no missing images
