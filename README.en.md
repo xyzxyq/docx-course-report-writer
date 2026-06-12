@@ -281,7 +281,7 @@ Recommended workflow:
 
 `scripts/build_report.py --template ...` defaults to this copy-first, write-in-place behavior. Destructive body replacement is opt-in through `--drop-template-body`; it must not be used for a user-specified template unless the user explicitly asks for it.
 
-The default builder preserves useful page setup, heading styles, table styling, cover style, and metadata while clearing stale body content, old screenshots, old TOC entries, and unrelated media.
+The default builder preserves useful page setup, heading styles, table styling, cover style, and metadata while clearing stale body content, old screenshots, old TOC entries, and unrelated media. After the cover and TOC, it starts the body in a new Word section with page numbering restarted at 1.
 
 <a id="quality-gates"></a>
 
@@ -293,7 +293,7 @@ Before delivery, the run must pass or explicitly document limitations for:
 - Template residue.
 - Linux/WSL runtime verification when Linux/POSIX behavior matters.
 - Word TOC, page numbers, references, and fields.
-- Cover and TOC layout: the default cover occupies page 1 only, and TOC page numbers are right-aligned with formal dot leaders.
+- Cover and TOC layout: the default cover occupies page 1 only, TOC page numbers are right-aligned with formal dot leaders, and cover/TOC pages do not count as body pages or display the body `PAGE` field; the first visible page number 1 must be on the first chapter/body page.
 - References: metadata is verified before drafting; in-text citations are superscript numeric references; the final bibliography strictly follows GB/T 7714-2015 by default; if a course requires another standard, the run record must say so explicitly.
 - Fact consistency across text, captions, tables, and figures.
 - Screenshot authenticity for browser and terminal captures.

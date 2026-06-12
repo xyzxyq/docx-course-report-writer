@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from docx import Document
+from docx.enum.section import WD_SECTION
 from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT, WD_TAB_LEADER
@@ -342,6 +343,48 @@ def make_toc_field_paragraph(doc: Document):
     return paragraph._p
 
 
+def set_section_page_number_start(section, start: int = 1) -> None:
+    sect_pr = section._sectPr
+    pg_num_type = sect_pr.find(qn("w:pgNumType"))
+    if pg_num_type is None:
+        pg_num_type = OxmlElement("w:pgNumType")
+        sect_pr.append(pg_num_type)
+    pg_num_type.set(qn("w:start"), str(start))
+
+
+def reset_footer_paragraphs(footer):
+    for child in list(footer._element):
+        footer._element.remove(child)
+    return footer.add_paragraph()
+
+
+def clear_section_footer(section) -> None:
+    section.footer.is_linked_to_previous = False
+    reset_footer_paragraphs(section.footer)
+
+
+def add_page_number_footer(section) -> None:
+    section.footer.is_linked_to_previous = False
+    paragraph = reset_footer_paragraphs(section.footer)
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    fld = OxmlElement("w:fldSimple")
+    fld.set(qn("w:instr"), "PAGE")
+    run_el = OxmlElement("w:r")
+    text_el = OxmlElement("w:t")
+    text_el.text = "1"
+    run_el.append(text_el)
+    fld.append(run_el)
+    paragraph._p.append(fld)
+
+
+def start_body_section_at_page_one(doc: Document) -> None:
+    for section in doc.sections:
+        clear_section_footer(section)
+    body_section = doc.add_section(WD_SECTION.NEW_PAGE)
+    set_section_page_number_start(body_section, 1)
+    add_page_number_footer(body_section)
+
+
 def prepare_user_template_copy(doc: Document, fallback_opening_paragraphs: int, rebuild_toc: bool = True) -> dict[str, bool]:
     """Preserve a user template's opening while replacing stale body samples.
 
@@ -397,6 +440,15 @@ def clear_document_body(doc: Document) -> None:
     for child in list(body):
         if not child.tag.endswith("}sectPr"):
             body.remove(child)
+
+
+def document_ends_with_section_break(doc: Document) -> bool:
+    body = doc._element.body
+    for child in reversed(list(body)):
+        if child.tag.endswith("}sectPr"):
+            continue
+        return element_has_section_properties(child)
+    return False
 
 
 def resolve_template(args: argparse.Namespace) -> tuple[Path | None, bool]:
@@ -808,11 +860,11 @@ def build(args: argparse.Namespace) -> None:
             or (used_default_template and not args.drop_template_cover)
         )
         should_add_toc = not (user_template and user_template_status["toc_rebuilt"])
-        if preserved_opening and should_add_toc:
+        if preserved_opening and should_add_toc and not document_ends_with_section_break(doc):
             doc.add_page_break()
         if should_add_toc:
             add_toc_field(doc)
-        doc.add_page_break()
+        start_body_section_at_page_one(doc)
 
     tokens = parse_tokens(draft_text)
     numbering = HeadingNumbering()

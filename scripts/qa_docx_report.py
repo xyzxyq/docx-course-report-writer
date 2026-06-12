@@ -9,6 +9,7 @@ import re
 import sys
 import zipfile
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 from docx import Document
 
@@ -39,6 +40,10 @@ DEFAULT_MOJIBAKE_TERMS = [
 COVER_MARKERS = ["课程报告", "实验题目", "学生姓名", "任课教师"]
 SOURCE_PREFIX = "图片来源："
 CITATION_PATTERN = re.compile(r"\[(?:\d+(?:\s*[-,，]\s*\d+)*)\]")
+W_NS = {
+    "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+    "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+}
 
 
 def read_document_xml(docx_path: Path) -> str:
@@ -99,6 +104,10 @@ def find_terms(text: str, terms: list[str]) -> dict[str, int]:
     return {term: text.count(term) for term in terms if term and term in text}
 
 
+def normalized_text(text: str) -> str:
+    return re.sub(r"\s+", "", text or "")
+
+
 def has_toc_field(xml: str) -> bool:
     return bool(re.search(r"TOC\s+\\o|TOC\\o|TOC ", xml))
 
@@ -109,6 +118,70 @@ def has_page_break_before_reference(xml: str) -> bool:
         return False
     before_reference = xml[max(0, reference_pos - 1500) : reference_pos]
     return bool(re.search(r'<w:br w:type="page"|<w:lastRenderedPageBreak', before_reference))
+
+
+def has_body_page_number_restart(xml: str, doc: Document) -> bool:
+    if not re.search(r'<w:pgNumType[^>]*w:start="1"', xml):
+        return False
+
+    try:
+        root = ET.fromstring(xml)
+    except ET.ParseError:
+        return False
+
+    body = root.find("w:body", W_NS)
+    if body is None:
+        return False
+
+    body_paragraphs = [child for child in list(body) if child.tag.endswith("}p")]
+    toc_seen = False
+    section_break_after_toc = False
+
+    for element, paragraph in zip(body_paragraphs, doc.paragraphs):
+        text = paragraph.text.strip()
+        style_name = paragraph.style.name if paragraph.style is not None else ""
+        has_toc_field = any("TOC" in (field.get(f"{{{W_NS['w']}}}instr") or "") for field in element.findall(".//w:fldSimple", W_NS))
+        has_section_break = element.find("./w:pPr/w:sectPr", W_NS) is not None
+        style_lower = style_name.lower()
+        is_toc_content = has_toc_field or normalized_text(text) in {"目录", "目錄"} or style_lower.startswith("toc")
+        is_body_heading = style_name.startswith("Heading") and text not in {"参考文献", "参考资料", "References"}
+
+        if toc_seen and has_section_break:
+            section_break_after_toc = True
+        if toc_seen and is_body_heading:
+            return section_break_after_toc
+        if is_toc_content:
+            toc_seen = True
+
+    return False
+
+
+def front_matter_has_page_fields(docx_path: Path) -> bool:
+    try:
+        with zipfile.ZipFile(docx_path) as zf:
+            document_xml = zf.read("word/document.xml")
+            rels_xml = zf.read("word/_rels/document.xml.rels")
+            root = ET.fromstring(document_xml)
+            rels_root = ET.fromstring(rels_xml)
+            relmap = {rel.get("Id"): rel.get("Target") for rel in rels_root}
+            sect_prs = root.findall(".//w:sectPr", W_NS)
+            if len(sect_prs) <= 1:
+                return False
+            for sect_pr in sect_prs[:-1]:
+                for footer_ref in sect_pr.findall("w:footerReference", W_NS):
+                    rel_id = footer_ref.get(f"{{{W_NS['r']}}}id") if "r" in W_NS else None
+                    if rel_id is None:
+                        rel_id = footer_ref.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id")
+                    target = relmap.get(rel_id or "")
+                    if not target:
+                        continue
+                    footer_name = target if target.startswith("word/") else f"word/{target}"
+                    footer_xml = zf.read(footer_name).decode("utf-8", errors="ignore")
+                    if "PAGE" in footer_xml:
+                        return True
+    except (KeyError, ET.ParseError, zipfile.BadZipFile):
+        return False
+    return False
 
 
 def formal_figure_captions(text: str) -> list[str]:
@@ -153,6 +226,7 @@ def main() -> int:
     parser.add_argument("--min-tables", type=int, default=0)
     parser.add_argument("--min-heading1", type=int, default=0)
     parser.add_argument("--require-reference-pagebreak", action="store_true")
+    parser.add_argument("--require-body-page-start-1", action="store_true")
     parser.add_argument("--require-superscript-citations", action="store_true")
     parser.add_argument("--forbid-image-source-lines", action="store_true")
     parser.add_argument("--require-formal-figure-captions", action="store_true")
@@ -182,6 +256,8 @@ def main() -> int:
     table_count = len(doc.tables)
     toc_field = has_toc_field(xml)
     reference_pagebreak = has_page_break_before_reference(xml)
+    body_page_start_1 = has_body_page_number_restart(xml, doc)
+    front_matter_page_fields = front_matter_has_page_fields(docx_path)
     plain_citations = plain_body_citation_markers(doc)
     template_fidelity: dict[str, object] = {}
 
@@ -203,6 +279,10 @@ def main() -> int:
         failures.append("Required default/template cover markers not found.")
     if args.require_reference_pagebreak and not reference_pagebreak:
         failures.append("Required page break before 参考文献 not found.")
+    if args.require_body_page_start_1 and not body_page_start_1:
+        failures.append("Body page numbering does not restart at 1 after cover/TOC front matter.")
+    if args.require_body_page_start_1 and front_matter_page_fields:
+        failures.append("Cover/TOC front matter contains PAGE fields; the first visible page number must belong to the body.")
     if args.require_superscript_citations and plain_citations:
         failures.append(f"Plain body-sized citation markers found; expected superscript citations: {plain_citations}")
     if args.forbid_image_source_lines and SOURCE_PREFIX in text:
@@ -256,6 +336,8 @@ def main() -> int:
         "heading_counts": headings,
         "toc_field": toc_field,
         "reference_pagebreak": reference_pagebreak,
+        "body_page_start_1": body_page_start_1,
+        "front_matter_page_fields": front_matter_page_fields,
         "plain_body_citation_markers": plain_citations,
         "cover_marker_hits": cover_marker_hits,
         "placeholder_hits": placeholder_hits,
@@ -278,6 +360,8 @@ def main() -> int:
         print(f"Headings: {headings}")
         print(f"TOC field: {toc_field}")
         print(f"Reference page break: {reference_pagebreak}")
+        print(f"Body page start 1: {body_page_start_1}")
+        print(f"Front matter PAGE fields: {front_matter_page_fields}")
         print(f"Cover markers: {cover_marker_hits}")
         for warning in warnings:
             print(f"WARN: {warning}")
