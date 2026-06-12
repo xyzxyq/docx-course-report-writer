@@ -248,7 +248,7 @@ Before delivery, the run must pass or explicitly document limitations for:
 - Screenshot authenticity for browser and terminal captures.
 - Diagram semantics, arrows, labels, and layout.
 - Figure captions: every image has a formal `图x.x Title` caption, and raw `图片来源：` provenance lines do not leak into the report body.
-- Rendered PDF/page inspection when layout matters. Prefer Word COM field update and PDF export first, then `scripts/render_pdf_review_pages.py` to create page PNGs and four-page review sheets.
+- Rendered PDF/page inspection when layout matters. Prefer Word COM field update and PDF export first, then `scripts/render_pdf_review_pages.py` to create page PNGs and four-page review sheets. Treat `BLANK_PAGE` output as blocking unless the blank page is intentional and documented.
 - Analysis depth for experiment-heavy reports.
 
 See [`references/report-qa-checklist.md`](references/report-qa-checklist.md).

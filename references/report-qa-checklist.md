@@ -56,10 +56,12 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - PDF or page renders were inspected, not only DOCX XML/text.
 - Word COM update/export must happen before PDF page rendering unless an explicit limitation is documented.
 - The final PDF pages were rendered to PNG when layout matters.
+- Blank-page detection passed for every rendered page; each near-blank page is either fixed or documented as intentional.
 - For medium/long reports, review sheets combine four pages per contact sheet and were inspected to reduce missed pages.
 - PDF page render images are not screenshots and are not described as browser/terminal proof.
 - TOC pages render correctly.
 - The first rendered page is not accidentally blank. A pre-TOC page break is allowed only when a real cover/template opening is preserved.
+- No accidental blank page appears between cover, TOC, body, figures, or references.
 - If no user template was supplied, the rendered report shows the integrated default template's visible cover/style unless the user explicitly requested a blank or no-cover document.
 - Figure-heavy pages render correctly.
 - Table-heavy pages render correctly.

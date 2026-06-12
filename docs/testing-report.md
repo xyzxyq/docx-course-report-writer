@@ -14,7 +14,7 @@ The release repository was also re-run from `examples/sample-report/` after pack
 
 On 2026-06-08, the default template integration was regression-tested. `scripts/build_report.py` was run without `--template`; it selected `skill-assets/default-course-report-template.docx`, cleared stale template body content, generated DOCX successfully, passed DOCX QA with stale terms such as `XXXX`, `图3-1`, and `宋体，小四号`, and exported PDF through Word COM.
 
-On 2026-06-12, PDF render review was regression-tested from a real course-report PDF in `X:\PROJECT\DOCX-COURSE-SKILLS\TEST7`. `scripts/render_pdf_review_pages.py` rendered 11 page PNGs and 3 four-page review sheets. The first review sheet was visually inspected and showed a nonblank cover, TOC, and body start in one image.
+On 2026-06-12, PDF render review was regression-tested from a real course-report PDF in `X:\PROJECT\DOCX-COURSE-SKILLS\TEST7`. The first implementation rendered 11 page PNGs and 3 four-page review sheets but allowed an accidental near-blank second page to be missed during manual sheet inspection. The script was then hardened with per-page ink-ratio blank-page detection, `BLANK_PAGE` output, nonzero default exit on near-blank pages, page labels, and red borders for near-blank sheet cells.
 
 ## Historical Issues Covered
 
@@ -24,6 +24,7 @@ On 2026-06-12, PDF render review was regression-tested from a real course-report
 - DOCX conversion requiring real Word heading styles and automatic TOC fields.
 - Visual QA needing rendered PDF/page inspection.
 - Four-page PDF review sheets for faster post-export layout inspection.
+- Near-blank page detection so a non-empty contact sheet cannot hide an empty quadrant.
 - Windows Chinese-path and PowerShell encoding hazards.
 - Accidental blank first page before TOC when no cover/template opening is preserved.
 

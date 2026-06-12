@@ -268,6 +268,8 @@ python scripts\render_pdf_review_pages.py `
 
 该脚本会把最终 PDF 渲染为逐页 PNG，并每四页合成一张审查拼图。它不是终端/浏览器截图，而是 PDF 页面渲染图，适合检查课程报告最终提交/打印时的真实版面。
 
+默认情况下，脚本还会输出每页墨迹率并进行近空白页检测；出现 `BLANK_PAGE` 会以非零状态退出。只有模板或任务明确需要空白页时，才应记录页码和原因后使用 `--allow-blank-pages`。
+
 <a id="quality-gates"></a>
 
 ## 质量门

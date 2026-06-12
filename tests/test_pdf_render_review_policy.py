@@ -1,15 +1,27 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "render_pdf_review_pages.py"
+
+
+def load_render_module():
+    spec = importlib.util.spec_from_file_location("render_pdf_review_pages", SCRIPT)
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 class PdfRenderReviewPolicyTest(unittest.TestCase):
@@ -28,6 +40,8 @@ class PdfRenderReviewPolicyTest(unittest.TestCase):
             "render the final PDF pages to PNG",
             "four pages per contact sheet",
             "PDF page render images are not screenshots",
+            "near-blank page",
+            "blank-page detection",
             "scripts/render_pdf_review_pages.py",
         ]
 
@@ -36,11 +50,7 @@ class PdfRenderReviewPolicyTest(unittest.TestCase):
                 self.assertIn(phrase, combined)
 
     def test_contact_sheet_groups_four_pages_without_resizing_layout(self) -> None:
-        spec = importlib.util.spec_from_file_location("render_pdf_review_pages", SCRIPT)
-        self.assertIsNotNone(spec)
-        self.assertIsNotNone(spec.loader)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        module = load_render_module()
 
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp)
@@ -60,6 +70,61 @@ class PdfRenderReviewPolicyTest(unittest.TestCase):
                 self.assertEqual((240, 320), second.size)
             self.assertEqual("review-sheet-01.png", sheets[0].name)
             self.assertEqual("review-sheet-02.png", sheets[1].name)
+
+    def test_detects_near_blank_pages_before_contact_sheet_labels(self) -> None:
+        module = load_render_module()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            blank = work / "page-01.png"
+            content = work / "page-02.png"
+
+            blank_image = Image.new("RGB", (300, 400), "white")
+            ImageDraw.Draw(blank_image).text((150, 380), "2", fill="black")
+            blank_image.save(blank)
+
+            content_image = Image.new("RGB", (300, 400), "white")
+            draw = ImageDraw.Draw(content_image)
+            for y in range(50, 300, 20):
+                draw.rectangle((40, y, 260, y + 8), fill="black")
+            content_image.save(content)
+
+            reports = module.analyze_pages([blank, content], blank_threshold=0.003)
+
+            self.assertTrue(reports[0].is_blank)
+            self.assertFalse(reports[1].is_blank)
+            self.assertLess(reports[0].ink_ratio, 0.003)
+            self.assertGreater(reports[1].ink_ratio, 0.003)
+
+    def test_cli_fails_on_near_blank_pages_by_default(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            pages_dir = work / "pages"
+            sheets_dir = work / "sheets"
+            pages_dir.mkdir()
+
+            blank = Image.new("RGB", (300, 400), "white")
+            ImageDraw.Draw(blank).text((150, 380), "2", fill="black")
+            blank.save(pages_dir / "page-01.png")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--from-pages-dir",
+                    str(pages_dir),
+                    "--sheets-dir",
+                    str(sheets_dir),
+                    "--blank-threshold",
+                    "0.003",
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+            )
+
+            self.assertNotEqual(0, result.returncode)
+            self.assertIn("BLANK_PAGE", result.stdout)
 
 
 if __name__ == "__main__":

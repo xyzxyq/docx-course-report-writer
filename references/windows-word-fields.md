@@ -42,7 +42,7 @@ python scripts\render_pdf_review_pages.py `
   --dpi 150
 ```
 
-The script will render the final PDF pages to PNG and combine four pages per contact sheet. PDF page render images are not screenshots; use them for layout review and describe them as rendered PDF pages.
+The script will render the final PDF pages to PNG, run blank-page detection, and combine four pages per contact sheet. A near-blank page is blocking unless it is deliberate and documented. PDF page render images are not screenshots; use them for layout review and describe them as rendered PDF pages.
 
 ## Important caveat
 

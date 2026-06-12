@@ -235,7 +235,8 @@ Preferred sequence:
 
 1. Run `scripts/update_word_fields.ps1 -ExportPdf -UseAsciiTemp` or equivalent Word COM automation.
 2. Run `scripts/render_pdf_review_pages.py` to render the final PDF pages to PNG.
-3. Inspect individual page PNGs for key pages and the generated review sheets for the full document.
+3. Treat any `BLANK_PAGE` output as blocking unless a deliberate blank page is documented.
+4. Inspect individual page PNGs for key pages and the generated review sheets for the full document.
 
 ```powershell
 python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py `
@@ -245,7 +246,9 @@ python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf
   --dpi 150
 ```
 
-The review sheets combine four pages per contact sheet to reduce repeated image opening. PDF page render images are not screenshots; do not call them terminal/browser screenshots or use them as execution evidence.
+The review sheets combine four pages per contact sheet to reduce repeated image opening. The script also runs blank-page detection before drawing page labels. PDF page render images are not screenshots; do not call them terminal/browser screenshots or use them as execution evidence.
+
+If a template deliberately contains a blank separator page, rerun with `--allow-blank-pages` only after recording the page number and reason in the run record.
 
 Render or inspect pages around:
 
