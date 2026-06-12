@@ -13,7 +13,7 @@ On Windows, prefer Microsoft Word COM automation to update:
 1. Build or edit the DOCX.
 2. Apply real Word heading styles to all TOC-relevant headings.
 3. Insert a TOC field such as `TOC \o "1-3" \h \z \u` or preserve an existing automatic TOC field.
-4. End cover/TOC front matter with a Word section break and restart page numbering at 1 for the body section. The cover page and TOC page are not body pages, so the first chapter/body page must be page 1.
+4. End cover/TOC front matter with a Word section break, remove body `PAGE` fields from front matter footers, and restart page numbering at 1 for the body section. The cover page and TOC page are not body pages, so the first visible page number 1 must be on the first chapter/body page.
 5. Open the DOCX in Word through COM.
 6. Update TOC and fields.
 7. Save the DOCX.
@@ -85,7 +85,7 @@ Do not trust visible TOC-looking text alone. Verify at least one of:
 
 For formal reports, also inspect whether TOC page numbers share one right edge. If the rightmost page numbers drift, reset TOC style tab stops to the usable page width and update the TOC again through Word COM before exporting PDF.
 
-Also inspect whether the first body/chapter page is numbered 1 after Word updates the fields. If the TOC page itself is page 1 or the first chapter starts at page 2/3, repair the section break and page-number restart before delivery.
+Also inspect whether the first body/chapter page is numbered 1 after Word updates the fields. If the TOC page itself visibly shows page 1, or the first chapter starts at page 2/3, repair the front matter footer, section break, and page-number restart before delivery.
 
 Treat these as blocking issues unless the user accepts the limitation:
 

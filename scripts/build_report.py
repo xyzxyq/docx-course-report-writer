@@ -352,9 +352,37 @@ def set_section_page_number_start(section, start: int = 1) -> None:
     pg_num_type.set(qn("w:start"), str(start))
 
 
+def reset_footer_paragraphs(footer):
+    for child in list(footer._element):
+        footer._element.remove(child)
+    return footer.add_paragraph()
+
+
+def clear_section_footer(section) -> None:
+    section.footer.is_linked_to_previous = False
+    reset_footer_paragraphs(section.footer)
+
+
+def add_page_number_footer(section) -> None:
+    section.footer.is_linked_to_previous = False
+    paragraph = reset_footer_paragraphs(section.footer)
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    fld = OxmlElement("w:fldSimple")
+    fld.set(qn("w:instr"), "PAGE")
+    run_el = OxmlElement("w:r")
+    text_el = OxmlElement("w:t")
+    text_el.text = "1"
+    run_el.append(text_el)
+    fld.append(run_el)
+    paragraph._p.append(fld)
+
+
 def start_body_section_at_page_one(doc: Document) -> None:
+    for section in doc.sections:
+        clear_section_footer(section)
     body_section = doc.add_section(WD_SECTION.NEW_PAGE)
     set_section_page_number_start(body_section, 1)
+    add_page_number_footer(body_section)
 
 
 def prepare_user_template_copy(doc: Document, fallback_opening_paragraphs: int, rebuild_toc: bool = True) -> dict[str, bool]:

@@ -40,7 +40,10 @@ DEFAULT_MOJIBAKE_TERMS = [
 COVER_MARKERS = ["课程报告", "实验题目", "学生姓名", "任课教师"]
 SOURCE_PREFIX = "图片来源："
 CITATION_PATTERN = re.compile(r"\[(?:\d+(?:\s*[-,，]\s*\d+)*)\]")
-W_NS = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+W_NS = {
+    "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+    "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+}
 
 
 def read_document_xml(docx_path: Path) -> str:
@@ -153,6 +156,34 @@ def has_body_page_number_restart(xml: str, doc: Document) -> bool:
     return False
 
 
+def front_matter_has_page_fields(docx_path: Path) -> bool:
+    try:
+        with zipfile.ZipFile(docx_path) as zf:
+            document_xml = zf.read("word/document.xml")
+            rels_xml = zf.read("word/_rels/document.xml.rels")
+            root = ET.fromstring(document_xml)
+            rels_root = ET.fromstring(rels_xml)
+            relmap = {rel.get("Id"): rel.get("Target") for rel in rels_root}
+            sect_prs = root.findall(".//w:sectPr", W_NS)
+            if len(sect_prs) <= 1:
+                return False
+            for sect_pr in sect_prs[:-1]:
+                for footer_ref in sect_pr.findall("w:footerReference", W_NS):
+                    rel_id = footer_ref.get(f"{{{W_NS['r']}}}id") if "r" in W_NS else None
+                    if rel_id is None:
+                        rel_id = footer_ref.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id")
+                    target = relmap.get(rel_id or "")
+                    if not target:
+                        continue
+                    footer_name = target if target.startswith("word/") else f"word/{target}"
+                    footer_xml = zf.read(footer_name).decode("utf-8", errors="ignore")
+                    if "PAGE" in footer_xml:
+                        return True
+    except (KeyError, ET.ParseError, zipfile.BadZipFile):
+        return False
+    return False
+
+
 def formal_figure_captions(text: str) -> list[str]:
     captions: list[str] = []
     for line in text.splitlines():
@@ -226,6 +257,7 @@ def main() -> int:
     toc_field = has_toc_field(xml)
     reference_pagebreak = has_page_break_before_reference(xml)
     body_page_start_1 = has_body_page_number_restart(xml, doc)
+    front_matter_page_fields = front_matter_has_page_fields(docx_path)
     plain_citations = plain_body_citation_markers(doc)
     template_fidelity: dict[str, object] = {}
 
@@ -249,6 +281,8 @@ def main() -> int:
         failures.append("Required page break before 参考文献 not found.")
     if args.require_body_page_start_1 and not body_page_start_1:
         failures.append("Body page numbering does not restart at 1 after cover/TOC front matter.")
+    if args.require_body_page_start_1 and front_matter_page_fields:
+        failures.append("Cover/TOC front matter contains PAGE fields; the first visible page number must belong to the body.")
     if args.require_superscript_citations and plain_citations:
         failures.append(f"Plain body-sized citation markers found; expected superscript citations: {plain_citations}")
     if args.forbid_image_source_lines and SOURCE_PREFIX in text:
@@ -303,6 +337,7 @@ def main() -> int:
         "toc_field": toc_field,
         "reference_pagebreak": reference_pagebreak,
         "body_page_start_1": body_page_start_1,
+        "front_matter_page_fields": front_matter_page_fields,
         "plain_body_citation_markers": plain_citations,
         "cover_marker_hits": cover_marker_hits,
         "placeholder_hits": placeholder_hits,
@@ -326,6 +361,7 @@ def main() -> int:
         print(f"TOC field: {toc_field}")
         print(f"Reference page break: {reference_pagebreak}")
         print(f"Body page start 1: {body_page_start_1}")
+        print(f"Front matter PAGE fields: {front_matter_page_fields}")
         print(f"Cover markers: {cover_marker_hits}")
         for warning in warnings:
             print(f"WARN: {warning}")

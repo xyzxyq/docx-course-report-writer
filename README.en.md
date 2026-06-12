@@ -293,7 +293,7 @@ Before delivery, the run must pass or explicitly document limitations for:
 - Template residue.
 - Linux/WSL runtime verification when Linux/POSIX behavior matters.
 - Word TOC, page numbers, references, and fields.
-- Cover and TOC layout: the default cover occupies page 1 only, TOC page numbers are right-aligned with formal dot leaders, and cover/TOC pages do not count as body pages; the first chapter/body page must start at page 1.
+- Cover and TOC layout: the default cover occupies page 1 only, TOC page numbers are right-aligned with formal dot leaders, and cover/TOC pages do not count as body pages or display the body `PAGE` field; the first visible page number 1 must be on the first chapter/body page.
 - References: metadata is verified before drafting; in-text citations are superscript numeric references; the final bibliography strictly follows GB/T 7714-2015 by default; if a course requires another standard, the run record must say so explicitly.
 - Fact consistency across text, captions, tables, and figures.
 - Screenshot authenticity for browser and terminal captures.
