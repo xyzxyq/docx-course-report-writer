@@ -164,6 +164,51 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
+    def test_report_ai_images_must_use_user_top_level_imagegen_not_system_skill(self) -> None:
+        combined_text = "\n".join(
+            [
+                (ROOT / "SKILL.md").read_text(encoding="utf-8"),
+                (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8"),
+                (ROOT / "references" / "workflow.md").read_text(encoding="utf-8"),
+            ]
+        )
+
+        required_phrases = [
+            "C:\\Users\\20795\\.codex\\skills\\imagegen\\SKILL.md",
+            "C:\\Users\\20795\\.codex\\skills\\.system\\imagegen\\SKILL.md",
+            "two different skills",
+            "does not require `OPENAI_API_KEY`",
+            "Do not check `OPENAI_API_KEY`",
+            "Never route report text-to-image work through `.system/imagegen`",
+            "unless the user explicitly requests `.system/imagegen`",
+        ]
+
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined_text)
+
+    def test_tikz_figure_is_mandatory_for_nontrivial_reports(self) -> None:
+        combined_text = "\n".join(
+            [
+                (ROOT / "SKILL.md").read_text(encoding="utf-8"),
+                (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8"),
+                (ROOT / "references" / "intake-and-run-record.md").read_text(encoding="utf-8"),
+                (ROOT / "references" / "report-qa-checklist.md").read_text(encoding="utf-8"),
+            ]
+        )
+
+        required_phrases = [
+            "at least one LaTeX TikZ figure",
+            "mandatory unless the user explicitly forbids TikZ",
+            "Minimum LaTeX TikZ figures to insert: 1",
+            "TikZ minimum gate",
+            "A nontrivial report with zero TikZ figures fails this gate",
+        ]
+
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined_text)
+
     def test_windows_chinese_encoding_fix_is_documented(self) -> None:
         text = (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8")
 

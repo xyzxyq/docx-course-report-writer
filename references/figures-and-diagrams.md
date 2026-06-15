@@ -34,6 +34,12 @@ Choose the production method by what the figure must do:
 
 For deterministic diagrams, the default priority is **LaTeX TikZ > Python**. In practice, prefer LaTeX TikZ before Python for formal flowcharts, timelines, model architecture diagrams, module graphs, and pipeline figures because TikZ keeps boxes, arrows, anchors, labels, and source-controlled layout explicit. Use Python only when TikZ is unsuitable, such as numeric charts, heatmaps, data-driven plots, image montages, or cases where the figure is primarily computed from data rather than laid out as a conceptual structure.
 
+## Mandatory TikZ Minimum
+
+For every nontrivial course-report creation task, plan, render, insert, and QA at least one LaTeX TikZ figure. This is mandatory unless the user explicitly forbids TikZ or the assignment explicitly forbids self-drawn/LaTeX figures. Minimum LaTeX TikZ figures to insert: 1.
+
+The TikZ minimum gate is separate from the AI-image gate. AI figures may supplement the report, but they do not satisfy the required deterministic TikZ figure. A nontrivial report with zero TikZ figures fails this gate unless the run record documents the user's explicit TikZ prohibition.
+
 ## Real Experiment Screenshot Rules
 
 Use these rules when screenshots are evidence:
@@ -68,7 +74,7 @@ Before any report drafting, figure generation, or DOCX assembly, ask the user:
 
 This is a blocking intake question. Do not treat silence as `off`. If the user enables AI images but gives no count, stop and ask for the count. For nontrivial creation reports where AI images are enabled, generate and insert at least one conceptual or explanatory AI figure unless the assignment or user forbids it.
 
-After intake is resolved, load `references/ai-image-prompting.md` before every text-to-image call. The prompt-card workflow in that file is mandatory, not optional. For the actual text-to-image call, use the user-installed top-level `imagegen` skill, resolved by skill name or by a portable skills-root path such as `$CODEX_HOME/skills/imagegen/SKILL.md` or the platform-equivalent user skills directory. Do not hard-code a developer's local absolute path, and do not route course-report AI figures through the bundled/internal `.system/imagegen` skill unless the user explicitly requests that fallback.
+After intake is resolved, load `references/ai-image-prompting.md` before every text-to-image call. The prompt-card workflow in that file is mandatory, not optional. For the actual text-to-image call, use the user-installed top-level `imagegen` skill, resolved by skill name or by a portable skills-root path such as `$CODEX_HOME/skills/imagegen/SKILL.md` or the platform-equivalent user skills directory. On this machine, the correct report image skill is `C:\Users\20795\.codex\skills\imagegen\SKILL.md`. There is also a bundled/internal skill at `C:\Users\20795\.codex\skills\.system\imagegen\SKILL.md`; these are two different skills. Never route report text-to-image work through `.system/imagegen` or `C:\Users\20795\.codex\skills\.system\imagegen\SKILL.md` unless the user explicitly requests `.system/imagegen`. The user top-level report `imagegen` skill does not require `OPENAI_API_KEY` in this Codex environment. Do not check `OPENAI_API_KEY`, and do not block AI figure generation because that environment variable is absent.
 
 Use AI image generation only when:
 

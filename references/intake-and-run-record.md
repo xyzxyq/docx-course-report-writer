@@ -28,6 +28,7 @@ Ask or infer these before writing final deliverables:
 - AI text-to-image enabled: yes/no, must be answered explicitly before artifact creation unless already specified by the user
 - Maximum AI-generated images to generate/insert: integer, must be answered explicitly when AI text-to-image is enabled
 - Minimum AI-generated images to insert: 1 for nontrivial creation reports when enabled, unless the assignment or user forbids AI images
+- Minimum LaTeX TikZ figures to insert: 1, mandatory unless the user explicitly forbids TikZ or the assignment forbids self-drawn/LaTeX figures
 
 If the user already gave enough information, record the answer instead of asking again. The AI-image permission and count must still be explicitly recorded. Do not treat user silence as `off`, and do not begin report drafting, figure generation, DOCX assembly, or PDF export before this intake is resolved.
 
@@ -50,6 +51,8 @@ If the user already gave enough information, record the answer instead of asking
 - AI text-to-image: off/on
 - AI image maximum:
 - AI image minimum:
+- TikZ minimum: 1 unless explicitly forbidden
+- TikZ minimum gate:
 - AI-image intake answer source: user answered / already specified in request
 - Superpowers availability:
 - Superpowers skills invoked:
@@ -158,4 +161,5 @@ Use this section only when AI text-to-image is enabled. Each generated or attemp
 - If Linux/POSIX behavior is required, the record must show host OS check, native Linux/WSL decision, WSL availability or install-permission outcome, distribution/kernel/compiler facts, and exact build/run/test commands.
 - If screenshots are required, the record must show capture targets, raw screenshot paths, annotated/cropped paths when used, and whether each screenshot was inspected for wrong-page/error/login/CAPTCHA problems.
 - If TikZ, flowcharts, pipelines, architecture diagrams, timelines, or mechanism diagrams are used, each must show `Review And Revise status` with arrow audit and text-layout audit completed after rendering and after DOCX/PDF insertion.
+- A nontrivial report with zero TikZ figures fails this gate unless the run record documents the user's explicit TikZ prohibition or an assignment prohibition.
 - If no user template is provided, the template decision must record `integrated default: skill-assets/default-course-report-template.docx`.

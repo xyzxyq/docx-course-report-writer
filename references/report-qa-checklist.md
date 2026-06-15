@@ -119,6 +119,8 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Diagram density is acceptable: if two source-level revisions cannot remove crossings, overlaps, or cramped labels, the diagram was split or rebuilt in a simpler layout.
 - The figure ledger records arrow audit status for every TikZ/self-drawn/process diagram used in the report.
 - The figure ledger records text-layout audit status for every TikZ/self-drawn/process diagram used in the report.
+- TikZ minimum gate: nontrivial report creation includes at least one LaTeX TikZ figure unless the user explicitly forbids TikZ or the assignment forbids self-drawn/LaTeX figures.
+- A nontrivial report with zero TikZ figures fails this gate; AI figures, screenshots, paper crops, and Python plots do not satisfy the required TikZ minimum.
 - AI-generated figures have a pre-generation drawing spec and post-generation text check. Reject figures with unrelated names, fake logos, wrong numbers, or hallucinated labels.
 - If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. If AI images were enabled for a nontrivial creation report, at least one AI-generated conceptual/explanatory figure is inserted unless the assignment or user forbids it.
 - Report-visible figures, captions, paragraphs, and tables do not contain production-process claims about source encoding, drawing tools, renderers, image models, prompt mechanics, screenshot scripts, or QA scripts. Keep those details in the run record, figure ledger, or attribution sidecar.
