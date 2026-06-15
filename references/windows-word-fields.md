@@ -27,7 +27,7 @@ Recommended command:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
-  -File C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\update_word_fields.ps1 `
+  -File "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\update_word_fields.ps1" `
   -DocxPath report.docx `
   -ExportPdf `
   -UseAsciiTemp

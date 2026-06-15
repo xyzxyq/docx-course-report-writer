@@ -174,8 +174,8 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
         )
 
         required_phrases = [
-            "C:\\Users\\20795\\.codex\\skills\\imagegen\\SKILL.md",
-            "C:\\Users\\20795\\.codex\\skills\\.system\\imagegen\\SKILL.md",
+            "$CODEX_HOME/skills/imagegen/SKILL.md",
+            "$CODEX_HOME/skills/.system/imagegen/SKILL.md",
             "two different skills",
             "does not require `OPENAI_API_KEY`",
             "Do not check `OPENAI_API_KEY`",
@@ -186,6 +186,22 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, combined_text)
+
+    def test_skill_docs_do_not_hardcode_user_home_paths(self) -> None:
+        docs = [
+            ROOT / "SKILL.md",
+            ROOT / "references" / "figures-and-diagrams.md",
+            ROOT / "references" / "workflow.md",
+            ROOT / "references" / "template-fidelity.md",
+            ROOT / "references" / "tooling-recipes.md",
+            ROOT / "references" / "windows-word-fields.md",
+        ]
+        forbidden = "C:" + "\\Users" + "\\20795"
+
+        for doc in docs:
+            text = doc.read_text(encoding="utf-8")
+            with self.subTest(doc=doc.relative_to(ROOT)):
+                self.assertNotIn(forbidden, text)
 
     def test_tikz_figure_is_mandatory_for_nontrivial_reports(self) -> None:
         combined_text = "\n".join(

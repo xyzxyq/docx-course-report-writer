@@ -34,7 +34,7 @@ Before writing report body content, record:
 Bundled helper:
 
 ```powershell
-python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\inspect_template.py `
+python "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\inspect_template.py" `
   --template template.docx `
   --json-out report/template-fidelity.json `
   --md-out report/template-fidelity.md

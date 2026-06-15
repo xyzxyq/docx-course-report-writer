@@ -78,7 +78,7 @@ If a distribution must be selected, prefer a current Ubuntu distribution availab
 Convert Windows paths to WSL mount paths:
 
 ```powershell
-$win = 'C:\Users\20795\Documents\project'
+$win = "$env:USERPROFILE\Documents\project"
 $wsl = $win -replace '^C:', '/mnt/c' -replace '\\', '/'
 wsl.exe -d Ubuntu-24.04 -- bash -lc "cd '$wsl' && pwd && uname -a"
 ```
@@ -143,7 +143,7 @@ For server/client workflows:
 Use `scripts/annotate_screenshot.py` for repeatable red-box annotations:
 
 ```powershell
-python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\annotate_screenshot.py `
+python "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\annotate_screenshot.py" `
   --input raw.png `
   --output annotated.png `
   --box "编译成功:40,120,620,80" `
@@ -164,7 +164,7 @@ Use Word COM when available:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
-  -File C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\update_word_fields.ps1 `
+  -File "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\update_word_fields.ps1" `
   -DocxPath report.docx `
   -ExportPdf `
   -UseAsciiTemp
@@ -213,7 +213,7 @@ Use these flags only when intentional:
 Use `scripts/qa_docx_report.py` after generating the DOCX:
 
 ```powershell
-python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\qa_docx_report.py `
+python "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\qa_docx_report.py" `
   --docx report.docx `
   --require-toc `
   --require-cover `
@@ -241,7 +241,7 @@ Preferred sequence:
 5. Treat any blank or near-blank page as blocking unless explicitly allowed by the template or assignment and documented in the run record.
 
 ```powershell
-python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py `
+python "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py" `
   --pdf report.pdf `
   --pages-dir build\pdf-pages `
   --sheets-dir build\pdf-review-sheets `
@@ -251,7 +251,7 @@ python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf
 Or use the compact equivalent:
 
 ```powershell
-python C:\Users\20795\.codex\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py `
+python "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\render_pdf_review_pages.py" `
   --pdf report.pdf `
   --out-dir report-rendered-pages `
   --contact-sheet-cols 2 `
