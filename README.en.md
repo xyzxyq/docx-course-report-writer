@@ -2,12 +2,12 @@
   <img src="assets/logo.png" width="128" alt="DOCX Course Report Writer logo">
 </p>
 
-<h1 align="center">DOCX Course Report Writer</h1>
+<h1 align="center">Course Report Writer · DOCX / LaTeX / Typst</h1>
 
 <p align="center">
-  A Codex Skill for Chinese coursework reports, lab reports, course papers, and LaTeX-to-Word delivery.
+  A Codex Skill for Chinese coursework reports, lab reports, course papers, and DOCX / LaTeX / Typst delivery.
   <br>
-  It turns report writing into a planned, evidence-first, reviewed, and verifiable DOCX/PDF workflow.
+  It combines evidence, writing, selected-format builds, and delivery checks in one workflow.
 </p>
 
 <p align="center">
@@ -18,17 +18,44 @@
 
 <p align="center">
   <a href="#quick-start"><img src="https://img.shields.io/badge/Codex-Skill-111827" alt="Codex Skill"></a>
-  <a href="#quality-gates"><img src="https://img.shields.io/badge/output-DOCX%20%2B%20PDF-2563eb" alt="DOCX and PDF"></a>
-  <a href="#superpowers-workflow"><img src="https://img.shields.io/badge/workflow-Superpowers-7c3aed" alt="Superpowers workflow"></a>
+  <a href="#quality-gates"><img src="https://img.shields.io/badge/output-DOCX%20%2F%20LaTeX%20%2F%20Typst-2563eb" alt="DOCX, LaTeX, Typst"></a>
+  <a href="#subagent-settings"><img src="https://img.shields.io/badge/subagents-configurable-7c3aed" alt="Configurable subagents"></a>
   <a href="#diagram-qa"><img src="https://img.shields.io/badge/diagram-QA%20required-0f766e" alt="Diagram QA"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a>
 </p>
 
 ---
 
+## Optimization status
+
+DOCX, LaTeX and Typst authoring use matching built-in templates. Ask for the format unless explicitly specified; native formats deliver source plus PDF. The main agent integrates the report; substantial reports use bounded specialists and an independent reviewer when available, while small edits stay local. Disclose subagent models, reasoning efforts and concurrency at first use; users may adjust or disable them. See [collaboration settings](references/multi-agent-workflow.md). Keep one full review and at most two focused repair rounds. Superpowers is optional. See [commands and limits](references/output-formats.md), [native templates](references/native-templates.md), and [platform status](docs/platform-support.md).
+
+Current verification includes **47 automated tests** and **12 read-only behavioral scenarios**. Both native templates were compiled and inspected on macOS, and a Transformer figure exercised PDF/SVG-to-DOCX insertion. Word/WPS desktop behavior, Windows execution and real-report quality/speed A/B comparisons remain unverified. See the [verification record](docs/verification-2026-10-23.md). The installed skill identifier remains `docx-course-report-writer`.
+
+<a id="subagent-settings"></a>
+
+## Default subagent settings
+
+| Task | Default model | Reasoning effort |
+|---|---|---|
+| Evidence verification and bounded tasks such as figures | `gpt-6.1-sol` | `medium` |
+| Independent final review | `gpt-6.1-sol` | `high` |
+
+At first report use, check host capabilities, disclose these settings, and offer adjustment or disabling. Record and reuse explicit project preferences without changing the main agent's model. Disclose unavailable settings instead of silently substituting; requested parameters alone are not runtime confirmation.
+
+Defaults allow at most **2 active subagents** and **3 worker tasks per report**, also limited by host capacity. The main agent integrates the argument, terminology, numbers and citations; one independent reviewer owns the full review. All roles share at most two repair rounds. These are adjustable starting settings, not a measured optimum. The [collaboration workflow](references/multi-agent-workflow.md) is authoritative.
+
+## Companion skills and informed intake
+
+Before execution, consider installed, available skills that materially improve the task. Examples: `nature-academic-search` for literature/citations, `nature-writing` for drafting, `nature-polishing` for existing prose and `nature-image2ppt` for requested editable reconstruction. Load only selected task-relevant guidance; these are not mandatory dependencies or a workflow chain. Preserve the assignment's style and evidence boundaries.
+
+When asking for format, explain both benefits and limits: DOCX suits visual Word/WPS editing and school templates but pagination/fields may vary across applications; LaTeX excels at equations/references and stable PDF layout but requires syntax/compiler knowledge; Typst offers concise source and convenient previews but a smaller template ecosystem and no direct Word/LaTeX compatibility.
+
+Ask whether AI illustrations are wanted. Only after Yes, ask their insertion count and whether to rebuild them as editable PPT objects, export PDF and insert into the report. No skips the follow-ups; reuse explicit answers. Reconstruction adds work and may retain raster textures/photos. Deliver PPTX and PDF and verify vector preservation in the report. The DOCX builder accepts single-page PDF and self-contained static SVG paths in Markdown figures, using the optional `PyMuPDF` dependency. PDF is converted to SVG; DOCX retains SVG plus a PNG compatibility preview. Inspect the actual report export to determine which representation the application uses. An image-only PPT/PDF is not vectorization or object-level editing in Word. See [intake](references/intake-and-run-record.md), [PPT reconstruction and insertion](references/ppt-figure-reconstruction.md) and the [Transformer verification record](docs/verification-2026-10-23.md#transformer-vector-figure-end-to-end-run).
+
 ## What It Does
 
-`docx-course-report-writer` is a local Codex Skill for producing and repairing Chinese academic DOCX reports. It starts with task intake and evidence planning, generates or repairs the Word document, then verifies fields, table of contents, diagrams, layout, and factual consistency before delivery.
+`docx-course-report-writer` is a local Codex Skill for producing and repairing Chinese academic DOCX/LaTeX/Typst report outputs. It starts with task intake and evidence planning, asks for the required output format (DOCX, LaTeX→PDF, or Typst→PDF), generates or repairs the target deliverables, then verifies fields, table of contents, diagrams, layout, and factual consistency before delivery.
 
 Use it for:
 
@@ -44,9 +71,10 @@ Use it for:
 - [Demo](#demo)
 - [Features](#features)
 - [Quick Start](#quick-start)
+- [Subagent Settings](#subagent-settings)
 - [Workflow](#workflow)
 - [Superpowers Workflow](#superpowers-workflow)
-- [Actor/Critic Iteration](#actor-critic)
+- [Bounded Artifact Review](#actor-critic)
 - [WSL And Screenshot Highlights](#wsl-screenshot)
 - [Diagram QA](#diagram-qa)
 - [Default Template](#default-template)
@@ -75,7 +103,7 @@ The goal is not only to create a file that opens. The goal is to produce a repor
 
 ## Demo: Deep Learning Architecture Course Report
 
-This demo comes from a complete report run with two Actor/Critic review cycles. It shows the details this Skill treats as delivery gates: a one-page cover, right-aligned TOC page numbers, formal figure numbering, references that strictly follow GB/T 7714-2015 by default, no raw source or production-process lines in the body, and page-level PDF rendering for every final page.
+This demo comes from a historical completed report run. It shows the details this Skill treats as delivery gates: a one-page cover, right-aligned TOC page numbers, formal figure numbering, references that strictly follow GB/T 7714-2015 by default, no raw source or production-process lines in the body, and page-level PDF rendering for every final page.
 
 | File | Description |
 | --- | --- |
@@ -122,17 +150,17 @@ The deterministic figure showcase now uses the current report's architecture tra
 
 | Feature | Description |
 | --- | --- |
-| Chinese DOCX report generation | Supports common coursework, lab, paper, and review structures |
+| Chinese report generation | DOCX, LaTeX and Typst templates for coursework, lab, paper and review structures |
 | Template-first assembly | Uses the user template when provided, otherwise uses the integrated default template |
 | Word TOC and field update | Uses real heading styles and automatic Word fields |
-| PDF and page-level QA | Exports from Word first, renders final PDF pages to PNG, and uses four-page contact sheets for review |
+| PDF and page-level QA | Uses office export for DOCX or native compilation for LaTeX/Typst; inspects page PNGs, with contact sheets as an index |
 | Evidence-first writing | Tracks logs, screenshots, data, scores, filenames, model names, and dates |
 | GB/T 7714-2015 references | Uses sequential numeric citations and strictly follows GB/T 7714-2015 by default for course-report references |
-| Linux/WSL runtime | Checks whether the host is Linux; otherwise verifies WSL on Windows; asks before installing WSL when missing |
+| Linux experiment runtime | Uses native Linux, verified WSL on Windows, or an existing VM/remote Linux host on macOS when Linux behavior is required |
 | Browser and terminal screenshots | Treats screenshots as first-class evidence, including browser pages, terminal windows, GUI states, and external source pages |
 | Diagram and TikZ review | Audits arrows, labels, spacing, semantics, and final scaling |
-| Controlled AI images | Always asks whether text-to-image is enabled and the exact maximum number of images that may be generated or inserted |
-| Actor/Critic loop | Creates Actor and Critic roles, runs at least two full iterations, and continues while blockers remain |
+| Controlled AI images | Asks AI enablement first; if enabled, asks insertion count and editable PPT reconstruction preference |
+| Bounded collaboration and review | First-use model/effort disclosure; configurable specialists and independent review for substantial reports; one full review and at most two focused repairs |
 
 <a id="quick-start"></a>
 
@@ -140,25 +168,28 @@ The deterministic figure showcase now uses the current report's architecture tra
 
 Install this project into your Codex skills directory:
 
-```powershell
-C:\Users\<User>\.codex\skills\docx-course-report-writer
-```
+- macOS: `~/.codex/skills/docx-course-report-writer`
+- Windows: `%USERPROFILE%\.codex\skills\docx-course-report-writer`
+
+Back up an existing installation before synchronizing the repository's skill files. Exclude `.git`, `output/`, temporary files, caches and macOS `._*` metadata. The updated skill is available on the next turn.
+
+Use Python 3.10 or newer with the report dependencies (`python3`, `python` or `py -3` as appropriate). PowerShell/Word COM is Windows-only. macOS office export and native compiler commands are in [output-formats.md](references/output-formats.md).
 
 Then invoke it directly in Codex:
 
 ```text
 Use $docx-course-report-writer to create a Chinese lab report from requirements.md and src/.
-Run the code, capture real evidence, and deliver DOCX plus PDF.
+Run the code, capture real evidence, and deliver in the selected output format (DOCX, LaTeX→PDF, or Typst→PDF).
 Ask me before enabling text-to-image figures and confirm the maximum image count.
 ```
 
 Recommended inputs:
 
 - Assignment requirements or grading rubric.
-- User-provided DOCX template, if any.
+- User-provided DOCX, LaTeX or Typst template, if any.
 - Code, logs, screenshots, data tables, references, or an existing draft.
 - Cover metadata such as name, student ID, course name, teacher, and date.
-- Whether PDF, proof screenshots, charts, appendix, or citations are required.
+- Whether DOCX, LaTeX→PDF, Typst→PDF, proof screenshots, charts, appendix, or citations are required.
 - If citations are required, expect sequential numeric references that strictly follow GB/T 7714-2015 unless the assignment or template explicitly requires another standard.
 
 <a id="workflow"></a>
@@ -167,15 +198,13 @@ Recommended inputs:
 
 ```mermaid
 flowchart LR
-  A["Task and template intake"] --> B["Evidence plan"]
-  B --> C["Actor cycle 1"]
-  C --> D["Critic cycle 1"]
-  D --> E["Actor cycle 2"]
-  E --> F["Critic cycle 2"]
-  F --> G{"Blocking defects?"}
-  G -- "Yes" --> E
-  G -- "No" --> H["Word fields / PDF / diagram QA"]
-  H --> I["Deliver DOCX/PDF"]
+  A[Format and assignment] --> B[Evidence and draft]
+  B --> C[Build and inspect artifact]
+  C --> D{Blocking defects?}
+  D -- No --> E[Deliver report and source]
+  D -- Budget remaining --> F[Batch repair and focused checks]
+  F --> D
+  D -- Two repairs or external blocker --> G[Save and report pending items]
 ```
 
 See [`references/workflow.md`](references/workflow.md) for the full workflow.
@@ -184,33 +213,13 @@ See [`references/workflow.md`](references/workflow.md) for the full workflow.
 
 ## Superpowers Workflow
 
-When the Superpowers plugin or any `superpowers:*` skills are installed, this Skill must invoke the relevant Superpowers workflow before acting:
-
-- Use Superpowers at task start.
-- Use planning workflows when scope or execution order matters.
-- Use execution, debugging, or subagent workflows for implementation and repair.
-- Use verification-before-completion or an equivalent final gate before delivery.
-
-If Superpowers is unavailable, use [`references/superpowers-adapter.md`](references/superpowers-adapter.md) as the local fallback and record that limitation.
+Superpowers is optional, not a dependency. Use a relevant workflow only when explicitly requested or needed for a specific problem. Do not add nested plans or review loops.
 
 <a id="actor-critic"></a>
 
-## Actor/Critic Iteration
+## Bounded Artifact Review
 
-Every run creates two roles:
-
-| Role | Responsibility |
-| --- | --- |
-| Actor | Builds, repairs, regenerates, draws, exports, and integrates the report |
-| Critic | Independently audits the actual artifact and blocks delivery while defects remain |
-
-Rules:
-
-- Run at least two full `Actor -> Critic` cycles.
-- There is no maximum iteration count.
-- The Critic audits the current DOCX/PDF/diagram/log artifacts, not just the plan.
-
-See [`references/actor-critic-loop.md`](references/actor-critic-loop.md).
+Map assignment requirements to evidence and acceptance checks. The main agent integrates and builds; substantial reports use an enabled, available independent reviewer on the actual artifacts, while small edits use self-review. Verify key claims against source passages/raw results and recompute derived numbers; bibliographic validity alone is insufficient. All reviewers share a maximum of two focused repair rounds; repeated unchanged failures and missing external inputs stop the loop. Unresolved defects stay pending. See [review protocol](references/actor-critic-loop.md).
 
 <a id="wsl-screenshot"></a>
 
@@ -218,13 +227,7 @@ See [`references/actor-critic-loop.md`](references/actor-critic-loop.md).
 
 ### Skilled Linux/WSL Runtime Handling
 
-When a coursework task needs Linux/POSIX behavior, this Skill follows a fixed runtime route:
-
-1. Check whether the host is already Linux.
-2. If not, check for a local Linux runtime. On Windows, prefer WSL.
-3. If WSL is available, record the distribution, kernel, compiler/runtime versions, Windows-to-WSL path mapping, and real build/run/test commands.
-4. If WSL is missing, ask whether the user allows WSL installation or enablement. It does not install WSL without explicit permission.
-5. If setup needs admin rights, network access, Store login, or reboot, record the limitation and use results only after the Linux environment is verified.
+When coursework specifically requires Linux behavior, use native Linux, verified WSL on Windows, or an existing Linux VM/remote host on macOS. macOS POSIX support alone does not prove Linux equivalence. Record the actual distribution, kernel, compiler/runtime and build/run/test commands. Missing runtimes remain a documented prerequisite; WSL setup is Windows-only and requires explicit permission. Formatting an existing report reuses saved results rather than rerunning experiments.
 
 This is useful for Linux coursework, C/POSIX labs, sockets, processes, signals, shared memory, semaphores, Makefiles, and Linux-only commands.
 
@@ -261,10 +264,15 @@ See [`references/figures-and-diagrams.md`](references/figures-and-diagrams.md).
 
 ## Default Template
 
-Template precedence is fixed:
+Use the user's matching template first. Otherwise copy the selected built-in asset:
 
-1. Use the user-provided DOCX template when available.
-2. Otherwise use [`skill-assets/default-course-report-template.docx`](skill-assets/default-course-report-template.docx).
+| Format | Template | Build |
+|---|---|---|
+| DOCX | [Word template](skill-assets/default-course-report-template.docx) | Existing Python builder and office finalization |
+| LaTeX | [main.tex](skill-assets/latex/main.tex) plus bibliography | latexmk / XeLaTeX |
+| Typst | [main.typ](skill-assets/typst/main.typ) plus bibliography | Typst |
+
+See [native template mapping](references/native-templates.md) for fonts, metadata and limitations. This is a structural adaptation of the default Word report, not lossless conversion of arbitrary Word templates. The router requires `--format`; the legacy DOCX builder interface remains unchanged.
 
 ### User-Template Fidelity
 
@@ -287,19 +295,20 @@ The default builder preserves useful page setup, heading styles, table styling, 
 
 ## Quality Gates
 
-Before delivery, the run must pass or explicitly document limitations for:
+Record **PASS / NEEDS_FIXES / UNVERIFIED** against the actual checked build. Overall PASS requires every applicable mandatory gate to pass:
 
 - Evidence authenticity.
+- Key-claim support in source passages/tables or raw results, and recalculated derived values with conditions, units and denominators checked.
 - Template residue.
 - Linux/WSL runtime verification when Linux/POSIX behavior matters.
-- Word TOC, page numbers, references, and fields.
+- DOCX Word TOC/fields or native-format compilation/references, plus page numbering.
 - Cover and TOC layout: the default cover occupies page 1 only, TOC page numbers are right-aligned with formal dot leaders, and cover/TOC pages do not count as body pages or display the body `PAGE` field; the first visible page number 1 must be on the first chapter/body page.
 - References: metadata is verified before drafting; in-text citations are superscript numeric references; the final bibliography strictly follows GB/T 7714-2015 by default; if a course requires another standard, the run record must say so explicitly.
 - Fact consistency across text, captions, tables, and figures.
 - Screenshot authenticity for browser and terminal captures.
 - Diagram semantics, arrows, labels, and layout.
 - Figure captions: every image has a formal `Figure x.x Title` style caption in the target language, and raw provenance/source lines do not leak into the report body.
-- Rendered PDF/page inspection when layout matters. Prefer Word COM field update and PDF export first, then `scripts/render_pdf_review_pages.py` to create page PNGs and four-page review sheets. Treat `BLANK_PAGE` output as blocking unless the blank page is intentional and documented.
+- Rendered PDF/page inspection when layout matters. DOCX uses the available office application; LaTeX/Typst use native compilers. Word COM is Windows-only. Use `scripts/render_pdf_review_pages.py` for page PNGs and four-page review sheets. Inspect every page on the initial build and affected pages after repairs; sheets are an index. Treat `BLANK_PAGE` as blocking unless intentional and documented.
 - Analysis depth for experiment-heavy reports.
 
 See [`references/report-qa-checklist.md`](references/report-qa-checklist.md).
@@ -317,17 +326,24 @@ docx-course-report-writer/
 │  └─ logo.png
 ├─ skill-assets/
 │  ├─ default-course-report-template.docx
+│  ├─ latex/                  # main.tex + references.bib
+│  ├─ typst/                  # main.typ + references.bib
 │  ├─ report-draft-template.md
 │  ├─ references-template.md
 │  └─ image-attributions-template.md
 ├─ references/
 │  ├─ workflow.md
+│  ├─ multi-agent-workflow.md
 │  ├─ actor-critic-loop.md
+│  ├─ ppt-figure-reconstruction.md
 │  ├─ figures-and-diagrams.md
 │  ├─ report-qa-checklist.md
 │  └─ ...
 ├─ scripts/
 │  ├─ build_report.py
+│  ├─ check_environment.py
+│  ├─ route_report_output.py
+│  ├─ vector_figure.py
 │  ├─ qa_docx_report.py
 │  ├─ render_pdf_review_pages.py
 │  ├─ update_word_fields.ps1
@@ -350,6 +366,8 @@ docx-course-report-writer/
 - Sample PDF: [`docs/sample-report.pdf`](docs/sample-report.pdf)
 - Testing notes: [`docs/testing-report.md`](docs/testing-report.md)
 - Historical failures and fixes: [`docs/historical-failures.md`](docs/historical-failures.md)
+- Backend evaluation notes: [`docs/backend-evaluation.md`](docs/backend-evaluation.md)
+- Platform support matrix: [`docs/platform-support.md`](docs/platform-support.md)
 
 <a id="faq"></a>
 
@@ -357,15 +375,15 @@ docx-course-report-writer/
 
 ### What if no template is provided?
 
-The Skill uses [`skill-assets/default-course-report-template.docx`](skill-assets/default-course-report-template.docx). A user-provided template always takes priority.
+The Skill uses the built-in template for the selected format (DOCX, LaTeX or Typst). A matching user template takes priority.
 
 ### Can it insert AI-generated images?
 
-Yes, but it must first ask whether text-to-image is enabled and the exact maximum number of images that may be generated or inserted. AI images are only for explanatory or conceptual use.
+Yes. Ask enablement first; only if enabled ask insertion count and whether to reconstruct as editable PPT objects. Keep PPTX/PDF and verify final report vector preservation when reconstruction is selected. AI images are only for explanatory or conceptual use.
 
-### Why require at least two Actor/Critic cycles?
+### How does it reduce token use?
 
-Most DOCX report failures happen after the first draft: stale template content, broken TOC fields, weak evidence, bad layout, or unreadable diagrams. Two mandatory cycles make artifact review part of the workflow.
+Read format-specific material only, delegate distinct useful tasks within concurrency/task caps, reuse verified evidence, and assign one reviewer to the full artifact. Batch defects and review affected content after repairs. Models, efforts and the disable option are in [collaboration settings](references/multi-agent-workflow.md). A shorter entrypoint is measurable; end-to-end token savings have not been benchmarked, and delegation does not guarantee lower total token use or a better pass rate.
 
 ### Why emphasize arrows?
 

@@ -746,7 +746,15 @@ def add_figure(
     paragraph = doc.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     paragraph.paragraph_format.space_before = Pt(6)
-    paragraph.add_run().add_picture(str(fig_path), width=Cm(float(payload.get("width_cm", 13.8))))
+    run = paragraph.add_run()
+    width = Cm(float(payload.get("width_cm", 13.8)))
+    if fig_path.suffix.lower() in {".pdf", ".svg"}:
+        from vector_figure import add_vector_picture
+
+        picture = add_vector_picture(run, fig_path, width)
+    else:
+        picture = run.add_picture(str(fig_path), width=width)
+    picture._inline.docPr.set("descr", caption_text)
 
     caption_para = doc.add_paragraph()
     caption_para.alignment = WD_ALIGN_PARAGRAPH.CENTER

@@ -1,5 +1,7 @@
 # User-Provided DOCX Template Fidelity
 
+Review terminology below refers to the reviewer selected under `multi-agent-workflow.md`. Follow SKILL.md: one full review and a shared two-round repair budget.
+
 Use this when a user provides a `.docx` template and says to use it, follow it, base the report on it, or write in that template.
 
 ## Core Principle

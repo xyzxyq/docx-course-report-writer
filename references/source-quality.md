@@ -11,7 +11,7 @@ Prefer this order:
 
 ## Reference Metadata Lock
 
-No report drafting may start until every intended citation has a verified `Reference Metadata Ledger` entry. GB/T 7714-2015 is the default citation standard for course reports unless the assignment or user template explicitly requires another standard.
+Verify each source in the `Reference Metadata Ledger` before drafting claims that cite it. Reuse verified metadata; update only changed or missing entries. Uncited sections do not need to wait for unrelated reference checks. GB/T 7714-2015 is the default citation standard for course reports unless the assignment or user template explicitly requires another standard.
 
 For each cited source, record:
 
@@ -41,6 +41,22 @@ Drafting and QA rules:
 - The final reference list must be ordered by first citation appearance.
 - The final reference list must use GB/T 7714-2015 punctuation, item order, reference type marker, DOI/URL placement, and template-consistent reference typography.
 - Citation padding is a defect: cite only sources that support a specific sentence, claim, figure, method, or interpretation.
+
+## Claim support and calculations
+
+Metadata verification and claim support are separate. For central numerical, comparative, causal or conclusion-bearing statements, extend the existing evidence/run record with:
+
+| Claim / section | Source locator | Evidence and conditions | Status / limitation |
+|---|---|---|---|
+| Precise statement to support | DOI/URL + page, table or section; or raw file + row/field | Observed / computed / literature-reported / interpretation; sample, units and setting | Verified / contradicted / unverified; permitted wording |
+
+Use passage-level reading for these claims. An abstract, title, search snippet or a real DOI alone does not establish support. Check whether a reported result is experimental, simulated or predicted and whether the report's population, baseline and conditions match. Do not generalize a narrow result into an unconditional claim.
+
+For derived percentages, improvements, averages and totals, retain the source values and calculation in the same record. Check units, denominator, sample size, uncertainty when reported, and percent versus percentage points. Prefer a small deterministic calculation over asking another model to agree. Do not rerun expensive experiments to reformat their saved results.
+
+When sources disagree, record the differing conditions and preserve the uncertainty; do not resolve it by majority vote among agents. Unsupported essential claims stay unverified or block the relevant section. Optional unsupported claims can be removed. An unavailable full text limits what can be asserted; it is not permission to invent detail.
+
+Reuse verified source and claim entries across workers. Reopen a source only for a changed claim, a missing locator, a substantive conflict or a time-sensitive update. This is a compact record of important claims, not a transcript of every sentence or search result.
 
 ## Recent Literature
 

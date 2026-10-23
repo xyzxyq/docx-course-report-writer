@@ -1,5 +1,7 @@
 # Failure Patterns To Prevent
 
+Review terminology below refers to the reviewer selected under `multi-agent-workflow.md`. Follow SKILL.md: one full review and a shared two-round repair budget.
+
 These patterns come from recent DOCX report runs. Apply them as checks, not as session stories.
 
 | Symptom | Root Cause | Required Response |
@@ -25,7 +27,7 @@ These patterns come from recent DOCX report runs. Apply them as checks, not as s
 | Rendered pages were checked before Word updated the DOCX fields | The agent rendered a stale DOCX/PDF and missed TOC/page-number defects | Word COM update/export must happen before PDF page rendering; then render the final PDF pages to PNG with `scripts/render_pdf_review_pages.py`, inspect individual pages or four pages per contact sheet, and label these as PDF page render images, not screenshots |
 | Four-page contact sheet contains an unnoticed blank quadrant | The agent verified the contact sheet was non-empty overall instead of checking each page cell; the render script lacked blank-page detection | Run `scripts/render_pdf_review_pages.py` with default blank-page detection, treat `BLANK_PAGE` as blocking, inspect red-bordered near-blank pages individually, and document any intentional blank page before using `--allow-blank-pages` |
 | User reports a defect after delivery and the next fix edits only the final DOCX | Source-first workflow was abandoned after feedback | Treat feedback as a failed QA test; fix the source script/draft/figure spec, regenerate DOCX/PDF, and rerun focused checks |
-| Repair starts with a guessed fix instead of inspecting the actual failed artifact | Systematic debugging was skipped under pressure | Invoke `superpowers:systematic-debugging` when installed; otherwise inspect artifact/source/logs, compare with working patterns, form one hypothesis, make one source-level fix, and verify |
+| Repair starts with a guessed fix instead of inspecting the actual failed artifact | Systematic debugging was skipped under pressure | Use `superpowers:systematic-debugging` only if specifically needed; inspect artifact/source/logs, compare with working patterns, form one hypothesis, make one source-level fix, and verify |
 | No-template report starts with a blank page before the TOC | Report builder inserted a pre-TOC page break even though no cover/template opening was preserved | Only add a page break before TOC when a real cover/opening exists; render page 1 after PDF export and reject accidental blank first pages |
 | Contact sheet looked acceptable but an individual page was blank or near-blank | Critic used the contact sheet as proof and did not inspect every rendered page PNG | Render every PDF page, run blank/near-blank detection, inspect individual page PNGs, and treat contact sheets as an index only |
 | Default template brings old static TOC, placeholders, or sample chapter text into a new report | Integrated template was loaded as full body content instead of a style/page setup source | Use the user-provided template when available; otherwise use `skill-assets/default-course-report-template.docx` but clear stale body content unless cover/body preservation is explicitly requested |

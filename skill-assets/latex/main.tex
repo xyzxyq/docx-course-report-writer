@@ -1,0 +1,98 @@
+% Copy this folder, replace metadata/body/bibliography, then compile with latexmk -xelatex.
+\documentclass[UTF8,a4paper,fontset=fandol,zihao=5,openany]{ctexrep}
+\usepackage[margin=25.4mm]{geometry}
+\usepackage{graphicx,booktabs,amsmath}
+\usepackage[sort&compress]{gbt7714}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\setmainfont{TeX Gyre Termes}}
+% Fandol is bundled with TeX Live: deterministic CJK choice on Windows and macOS.
+\ctexset{
+  chapter={format=\centering\heiti\bfseries\fontsize{16}{20}\selectfont,
+    beforeskip=12pt,afterskip=6pt},
+  section={format=\heiti\bfseries\fontsize{14}{18}\selectfont},
+  subsection={format=\heiti\bfseries\fontsize{12}{16}\selectfont}}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{6pt}
+\captionsetup{position=bottom,font=small,labelsep=space}
+\renewcommand{\bibfont}{\fontsize{10}{12}\selectfont}
+\setcounter{tocdepth}{2}
+
+% Replace these sample values before report delivery; do not invent personal details.
+\newcommand{\ReportCourse}{课程名称}
+\newcommand{\ReportTitle}{报告题目}
+\newcommand{\ReportCollege}{学院系别}
+\newcommand{\ReportMajor}{专业名称}
+\newcommand{\ReportStudent}{学生姓名}
+\newcommand{\ReportStudentID}{学生学号}
+\newcommand{\ReportTeacher}{任课教师}
+\newcommand{\ReportDate}{提交日期}
+
+\begin{document}
+\fontsize{10.5}{13.125}\selectfont
+\pagestyle{empty}
+\begin{titlepage}
+  \centering
+  \vspace*{22mm}
+  {\heiti\bfseries\fontsize{18}{24}\selectfont 《\ReportCourse》\par}
+  \vspace{12mm}
+  {\heiti\bfseries\fontsize{22}{28}\selectfont 课程报告\par}
+  \vspace{22mm}
+  {\fontsize{13}{22}\selectfont
+  \begin{tabular}{rl}
+    实验题目 & \underline{\makebox[90mm]{\ReportTitle}}\\[6mm]
+    学院系别 & \underline{\makebox[90mm]{\ReportCollege}}\\[6mm]
+    专业名称 & \underline{\makebox[90mm]{\ReportMajor}}\\[6mm]
+    学生姓名 & \underline{\makebox[90mm]{\ReportStudent}}\\[6mm]
+    学生学号 & \underline{\makebox[90mm]{\ReportStudentID}}\\[6mm]
+    任课教师 & \underline{\makebox[90mm]{\ReportTeacher}}
+  \end{tabular}\par}
+  \vfill
+  {\ReportDate\par}
+  \vspace*{10mm}
+\end{titlepage}
+\pagenumbering{gobble}
+\tableofcontents
+\thispagestyle{empty}
+\clearpage
+\pagenumbering{arabic}
+\pagestyle{plain}
+
+\chapter{研究目的}
+% Replace all instructional sample content with the actual report.
+本文为课程报告模板示例。正式报告应说明研究问题、任务要求和评价标准，所有结果须有可核验的来源。
+\section{任务与范围}
+围绕课程要求组织正文，区分已观察结果、解释和待验证假设。在线技术文档可作为工具使用说明的来源\cite{typst-docs}。
+
+\chapter{方法与结果}
+\section{方法说明}
+公式示例：
+\begin{equation}\label{eq:mean}
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+\end{equation}
+式\eqref{eq:mean}表示算术平均值；实际分析应说明数据来源和适用条件。
+\begin{figure}[htbp]
+  \centering
+  \fbox{\parbox{.72\linewidth}{\centering 研究问题 $\longrightarrow$ 方法设计 $\longrightarrow$ 证据分析}}
+  \caption{研究过程示意}\label{fig:process}
+\end{figure}
+如图\ref{fig:process}所示，结论应由证据支持。
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ll}\toprule
+  项目 & 记录要求\\\midrule
+  输入 & 保留数据来源\\
+  输出 & 保存实际结果\\\bottomrule
+  \end{tabular}
+  \caption{证据记录要求}\label{tab:evidence}
+\end{table}
+
+\chapter{讨论与结论}
+结合实际结果说明限制，避免将模板示例作为实验结论。表\ref{tab:evidence}仅展示记录结构。
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{参考文献}
+\bibliographystyle{gbt7714-numerical}
+\bibliography{references}
+\end{document}

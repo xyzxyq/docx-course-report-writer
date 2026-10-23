@@ -30,7 +30,7 @@ class ReferencePolicyTest(unittest.TestCase):
 
         required_phrases = [
             "Reference Metadata Lock",
-            "No report drafting may start until",
+            "before drafting claims that cite it",
             "Do not invent",
             "DOI resolver",
             "Crossref",
@@ -43,36 +43,14 @@ class ReferencePolicyTest(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
-    def test_run_record_contains_reference_ledger_and_final_reference_gates(self) -> None:
-        text = (ROOT / "references" / "intake-and-run-record.md").read_text(encoding="utf-8")
-
-        required_phrases = [
-            "Reference Metadata Ledger",
-            "GB/T 7714-2015 format source",
-            "Verified DOI or canonical URL",
-            "In-text citation style",
-            "Reference hallucination audit",
-            "Reference typography audit",
-        ]
-
-        for phrase in required_phrases:
-            with self.subTest(phrase=phrase):
-                self.assertIn(phrase, text)
-
-    def test_actor_critic_and_qa_check_reference_content_and_format(self) -> None:
-        actor_critic = (ROOT / "references" / "actor-critic-loop.md").read_text(encoding="utf-8")
+    def test_review_and_record_route_to_shared_reference_checks(self) -> None:
+        for name in ["actor-critic-loop.md", "intake-and-run-record.md"]:
+            text = (ROOT / "references" / name).read_text(encoding="utf-8")
+            self.assertIn("report-qa-checklist.md", text)
         qa = (ROOT / "references" / "report-qa-checklist.md").read_text(encoding="utf-8")
-
-        for phrase in [
-            "reference hallucination",
-            "GB/T 7714-2015",
-            "superscript bracketed numeric citations",
-            "reference list typography",
-        ]:
-            with self.subTest(file="actor-critic-loop.md", phrase=phrase):
-                self.assertIn(phrase, actor_critic)
-            with self.subTest(file="report-qa-checklist.md", phrase=phrase):
-                self.assertIn(phrase, qa)
+        for phrase in ["reference hallucination", "GB/T 7714-2015",
+                       "superscript bracketed numeric citations", "reference list typography"]:
+            self.assertIn(phrase, qa)
 
     def test_reference_template_requires_verified_metadata_fields(self) -> None:
         text = (ROOT / "skill-assets" / "references-template.md").read_text(encoding="utf-8")

@@ -2,9 +2,15 @@
 
 Use these command patterns as starting points. Adjust paths, executable names, and ports to the actual assignment.
 
+## Platform routing
+
+Python helpers use the selected interpreter on Windows or macOS. Use `output-formats.md` for native builds and macOS DOCX export. All PowerShell/COM/WSL commands below are Windows-only. On macOS use zsh/bash, quoted POSIX paths and an available office application; do not attempt Word COM or WSL.
+
+PDF/SVG figures use the existing Markdown figure syntax and the optional PyMuPDF dependency; see [PPT reconstruction, insertion and verification](ppt-figure-reconstruction.md). Check exported PDF content, since Office clients may choose the PNG compatibility preview. For a headless office build that cannot find installed CJK fonts, select a valid local fontconfig file for that export process and rerender; never accept blank Chinese text merely because PDF creation succeeded.
+
 ## Unicode And Long-Output Hygiene
 
-On this Windows machine, Chinese paths plus long PowerShell output can corrupt paths or trigger stdout failures. Prefer small, structured reads:
+On Windows, Chinese paths plus long PowerShell output can corrupt paths or trigger stdout failures. Prefer small, structured reads:
 
 ```powershell
 $env:PYTHONIOENCODING='utf-8'
@@ -34,7 +40,7 @@ Use this whenever the report depends on Linux/POSIX behavior: sockets, fork/proc
 1. Check whether the user host is already Linux. If yes, use native Linux and record `uname -a`.
 2. If the host is not Linux, check for local Linux runtimes. On Windows, check WSL first.
 3. If a suitable WSL distribution exists, use it unless the user explicitly asks for native Windows.
-4. If no suitable Linux runtime exists, ask the user whether to install WSL. Do not install, enable features, change default distributions, or run admin-level setup before explicit user permission.
+4. On Windows, if no suitable Linux runtime exists, ask the user whether to install WSL. On macOS use an existing Linux VM or remote host when Linux-specific behavior is required. Do not install, enable features, change default distributions, or run admin-level setup before explicit user permission.
 5. If installation is approved but requires admin rights, reboot, Store login, or network access, report that limitation and continue only after the environment is usable.
 
 ### Windows Host Checks
