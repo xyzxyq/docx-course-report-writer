@@ -148,44 +148,7 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
         self.assertIn("one-pass text-to-image", text)
         self.assertIn("must be regenerated", text)
         self.assertIn("visible text plan", text)
-        self.assertIn("Actor/Critic text review", text)
         self.assertNotIn("text whitelist", text)
-
-    def test_deterministic_diagrams_prioritize_tikz_before_python(self) -> None:
-        text = (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8")
-
-        required_phrases = [
-            "LaTeX TikZ > Python",
-            "prefer LaTeX TikZ before Python",
-            "Use Python only when TikZ is unsuitable",
-        ]
-
-        for phrase in required_phrases:
-            with self.subTest(phrase=phrase):
-                self.assertIn(phrase, text)
-
-    def test_report_ai_images_must_use_user_top_level_imagegen_not_system_skill(self) -> None:
-        combined_text = "\n".join(
-            [
-                (ROOT / "SKILL.md").read_text(encoding="utf-8"),
-                (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8"),
-                (ROOT / "references" / "workflow.md").read_text(encoding="utf-8"),
-            ]
-        )
-
-        required_phrases = [
-            "$CODEX_HOME/skills/imagegen/SKILL.md",
-            "$CODEX_HOME/skills/.system/imagegen/SKILL.md",
-            "two different skills",
-            "does not require `OPENAI_API_KEY`",
-            "Do not check `OPENAI_API_KEY`",
-            "Never route report text-to-image work through `.system/imagegen`",
-            "unless the user explicitly requests `.system/imagegen`",
-        ]
-
-        for phrase in required_phrases:
-            with self.subTest(phrase=phrase):
-                self.assertIn(phrase, combined_text)
 
     def test_skill_docs_do_not_hardcode_user_home_paths(self) -> None:
         docs = [
@@ -202,28 +165,6 @@ class AIImagePromptingPolicyTest(unittest.TestCase):
             text = doc.read_text(encoding="utf-8")
             with self.subTest(doc=doc.relative_to(ROOT)):
                 self.assertNotIn(forbidden, text)
-
-    def test_tikz_figure_is_mandatory_for_nontrivial_reports(self) -> None:
-        combined_text = "\n".join(
-            [
-                (ROOT / "SKILL.md").read_text(encoding="utf-8"),
-                (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8"),
-                (ROOT / "references" / "intake-and-run-record.md").read_text(encoding="utf-8"),
-                (ROOT / "references" / "report-qa-checklist.md").read_text(encoding="utf-8"),
-            ]
-        )
-
-        required_phrases = [
-            "at least one LaTeX TikZ figure",
-            "mandatory unless the user explicitly forbids TikZ",
-            "Minimum LaTeX TikZ figures to insert: 1",
-            "TikZ minimum gate",
-            "A nontrivial report with zero TikZ figures fails this gate",
-        ]
-
-        for phrase in required_phrases:
-            with self.subTest(phrase=phrase):
-                self.assertIn(phrase, combined_text)
 
     def test_windows_chinese_encoding_fix_is_documented(self) -> None:
         text = (ROOT / "references" / "figures-and-diagrams.md").read_text(encoding="utf-8")

@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .DS_Store
+._*
 Thumbs.db
 *.tmp
 *.temp

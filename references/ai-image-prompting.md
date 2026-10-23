@@ -1,5 +1,7 @@
 # AI Image Prompting For Course Reports
 
+Review terminology below refers to the reviewer selected under `multi-agent-workflow.md`. Follow SKILL.md: one full review and a shared two-round repair budget.
+
 Use this reference whenever text-to-image figures are enabled. The goal is not to make decorative images. The goal is to create dense, purposeful, report-grade visual assets that explain a concrete knowledge structure.
 
 ## Root Cause From Failed Runs
@@ -153,7 +155,13 @@ Acceptance criteria:
 Every visible element must map to a named concept. All listed modules must be present. Arrows must express data flow or gradient flow. Visible text must be readable, accurate, relevant, and non-garbled.
 ```
 
+## PPT reconstruction exception
+
+If the user selects editable PPT reconstruction, follow [ppt-figure-reconstruction.md](ppt-figure-reconstruction.md). The AI image supplies a layout reference; final verified text, shapes and arrows are rebuilt as native PPT objects, then exported and inserted through a verified vector-preserving route. The direct-image one-pass/no-overlay policy below does not prohibit this separate reconstruction workflow. Fix labels in native objects rather than repeatedly regenerating the reference image. A bitmap placed in PPT/PDF remains raster, and any retained raster regions must be disclosed.
+
 ## One-Pass Text-To-Image Label Policy
+
+This section applies when the accepted AI raster image itself is inserted in the report, without PPT reconstruction.
 
 Architecture, schematic, flowchart, pipeline, and model-structure figures must have readable final text labels in the generated image itself. For text-to-image figures, one-pass text-to-image is mandatory: the accepted PNG/JPEG must already contain the labels, arrows, and legend.
 

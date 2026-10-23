@@ -31,6 +31,8 @@ def parse_box(spec: str) -> tuple[str, int, int, int, int]:
 
 def load_font(size: int) -> ImageFont.ImageFont:
     candidates = [
+        "/System/Library/Fonts/PingFang.ttc",
+        "/System/Library/Fonts/STHeiti Medium.ttc",
         r"C:\Windows\Fonts\msyh.ttc",
         r"C:\Windows\Fonts\simhei.ttf",
         r"C:\Windows\Fonts\simsun.ttc",

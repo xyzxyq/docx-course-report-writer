@@ -5,7 +5,7 @@ Use the template or user-polished report as the source of truth. Use these defau
 ## Body Text
 
 - Chinese font: 宋体
-- Size: 小四 / 10.5 pt
+- Size: 五号 / 10.5 pt (小四 is 12 pt; use it when required by the assignment)
 - First-line indent: 2 Chinese characters
 - Line spacing: 1.25
 - Paragraph spacing: modest, usually 0 pt before and about 6 pt after
@@ -15,7 +15,7 @@ Use the template or user-polished report as the source of truth. Use these defau
 ## Page Setup
 
 - A4 paper unless the template or assignment says otherwise.
-- Typical margins: top/bottom 2.54 cm, left 3.0 cm, right 2.6 cm.
+- Built-in template margins: 2.54 cm on all sides.
 - Preserve template section breaks, page numbers, headers, and footers when they are useful.
 - Avoid unnecessary blank pages after rebuilding from a prior report.
 

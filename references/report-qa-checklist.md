@@ -2,6 +2,14 @@
 
 Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 
+Word-specific fields, styles, template and office-export checks apply only to DOCX. For LaTeX/Typst use native structure/reference checks and inspect compiled PDF pages. Apply the selected-format rules in `output-formats.md`.
+
+## Gate results
+
+Map mandatory assignment requirements to report locations, supporting evidence and observable checks in the existing run record. Record each applicable gate as **PASS / NEEDS_FIXES / UNVERIFIED**, with the checked build ID/hash. An inapplicable check needs a reason; missing evidence, a failed tool or an uninspected artifact is not a pass. Overall PASS requires all applicable mandatory gates to pass. This is a submission-readiness assessment, not a promise of the teacher's grade.
+
+When measuring this skill's quality or comparing runs, reuse these records: mandatory gates passed / total applicable gates; verified key claims / key claims checked; first-build and first-review pass separately; repair rounds; actual elapsed time and token usage only when available. Keep unknowns in the applicable denominator. Claim coverage is not an accuracy estimate for the whole report, and instruction length is not token usage. Do not impose a benchmark or subjective score on every report. Any claimed improvement needs comparable assignments, evidence, model settings and an explicit baseline.
+
 ## Blocking Gates
 
 ### Content And Compliance
@@ -14,12 +22,15 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - If the task is item-by-item, the report contains visible requirement coverage.
 - Run record exists or equivalent notes are present, including scope lock, AI-image permission/count, fact ledger, figure ledger, and final gates.
 - If citations are used, the run record includes a locked `Reference Metadata Ledger` created before drafting, with verified DOI or canonical URL, metadata source, GB/T 7714-2015 type marker, and intended citation number for every cited source.
-- AI-image intake was answered explicitly before report drafting/DOCX assembly. User silence is not recorded as `off`.
-- Superpowers availability and invoked workflow skills are recorded; if unavailable, the fallback process from `superpowers-adapter.md` was used.
-- Actor and Critic agents/roles were created or activated. The loop record exists for at least two complete cycles, has no artificial iteration cap, and the Critic audited the current artifact, not only the plan.
+- AI-image intake was answered explicitly; if enabled, count and PPT-reconstruction preference are recorded before figure production. If disabled, those follow-ups are skipped. User silence is not recorded as `off`.
+- No extra workflow/plugin is required. First-use subagent settings, any explicit preference and actual task/review status follow `multi-agent-workflow.md`; an unavailable independent check is reported accurately.
+- Review the actual artifact once, batch blockers and use at most two focused repair rounds as specified in SKILL.md. Small edits require affected-content and downstream layout checks, not a full unrelated audit.
 - Latest user-approved fact ledger is reflected in the whole artifact: final scores, dataset sizes, model names, filenames, class names, dates, and "final" claims are not stale.
 - Result-heavy reports contain real analysis, not only implementation narrative: plots/tables from real data, interpretation, error causes, limitations, and personal understanding.
 - Claims clearly separate direct model outputs, ensemble outputs, OCR/fusion outputs, probe/debug corrections, and official/final submission results.
+- Central numerical, comparative and causal claims match a read source passage/table or raw result, including conditions and limits; valid reference metadata alone is insufficient.
+- Derived numbers were recomputed from recorded inputs with units, denominators and relevant uncertainty checked. Percent change and percentage-point change are distinguished.
+- Conflicting evidence and unsupported mandatory conclusions are resolved or marked pending; agreement between agents does not establish truth.
 
 ### Evidence Authenticity
 
@@ -39,7 +50,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Labels and boxes do not obscure proof text.
 - If a hand-marked style was requested, boxes have mild deterministic jitter.
 
-### TOC And Fields
+### TOC And Fields (DOCX only)
 
 - Word heading styles are used for TOC-relevant headings.
 - Default-template body headings use formal chapter/section text such as `第一章`, `1.1`, and `1.1.1`; a flat set of unnumbered headings is blocking.
@@ -55,7 +66,7 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 ### Rendered Visual QA
 
 - PDF or page renders were inspected, not only DOCX XML/text.
-- Word COM update/export must happen before PDF page rendering unless an explicit limitation is documented.
+- On the Windows Word route, Word COM update/export must happen before PDF page rendering unless an explicit limitation is documented.
 - The final PDF pages were rendered to PNG when layout matters.
 - Every rendered page PNG was inspected when layout matters; contact sheets are an index, not the proof.
 - Blank or near-blank page detection was run for every rendered page; each blank or near-blank page is either fixed or documented as intentional.
@@ -88,6 +99,8 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Method-heavy sections use diagrams, tables, or snippets when prose alone is weak.
 - Requirement mapping is easy for a reviewer to scan.
 - Error handling or abnormal cases are discussed when relevant.
+- Substantive sections answer the assignment's questions with supported analysis; conclusions do not exceed the results. Terminology, figures, numbers and citations agree across sections.
+- Section length follows the grading criteria and information needed; repeated introductions, generic filler and concatenated specialist drafts are removed during main-agent integration.
 
 ### References
 
@@ -119,8 +132,6 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Diagram density is acceptable: if two source-level revisions cannot remove crossings, overlaps, or cramped labels, the diagram was split or rebuilt in a simpler layout.
 - The figure ledger records arrow audit status for every TikZ/self-drawn/process diagram used in the report.
 - The figure ledger records text-layout audit status for every TikZ/self-drawn/process diagram used in the report.
-- TikZ minimum gate: nontrivial report creation includes at least one LaTeX TikZ figure unless the user explicitly forbids TikZ or the assignment forbids self-drawn/LaTeX figures.
-- A nontrivial report with zero TikZ figures fails this gate; AI figures, screenshots, paper crops, and Python plots do not satisfy the required TikZ minimum.
 - AI-generated figures have a pre-generation drawing spec and post-generation text check. Reject figures with unrelated names, fake logos, wrong numbers, or hallucinated labels.
 - If AI-generated figures are used, the report plan/source notes record the user's opt-in and maximum count. If AI images were enabled for a nontrivial creation report, at least one AI-generated conceptual/explanatory figure is inserted unless the assignment or user forbids it.
 - Report-visible figures, captions, paragraphs, and tables do not contain production-process claims about source encoding, drawing tools, renderers, image models, prompt mechanics, screenshot scripts, or QA scripts. Keep those details in the run record, figure ledger, or attribution sidecar.
@@ -128,9 +139,15 @@ Use this checklist on the actual generated DOCX/PDF, not only on the plan.
 - Browser screenshots were inspected for wrong page, blank page, loading state, login wall, 403, CAPTCHA, and error pages.
 - Terminal screenshots include command/result context and remain readable at final DOCX/PDF scale.
 
+### Optional PPT Figure Reconstruction
+
+Only if selected: confirm editable native PPT objects, exported figure PDF, any residual raster regions, target-app insertion behavior and final report rendering according to `ppt-figure-reconstruction.md`. Preserve PPTX/PDF and insertion SVG when used. Neither a raster image in PPT nor a PDF attachment alone proves a vector, editable report illustration. Reuse the same review/repair budget.
+
 ### Deliverables
 
-- Final DOCX exists.
+- Selected output exists: DOCX, or PDF plus the LaTeX/Typst source project.
+- Final artifact identity matches the checked build; user is reminded to review.
+- For substantial reports, independent review follows the enabled, available settings in `multi-agent-workflow.md`; small edits use self-review. State which actually ran, on which build, and any unavailable checks without duplicating the full review.
 - PDF exists if required or useful for QA.
 - Source draft exists when a source-first workflow was used.
 - References file exists when citations were used.

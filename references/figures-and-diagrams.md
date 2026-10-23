@@ -1,5 +1,7 @@
 # Figures And Diagrams
 
+Review terminology below refers to the reviewer selected under `multi-agent-workflow.md`. Follow SKILL.md: one full review and a shared two-round repair budget.
+
 ## Start With Figure Role, Not Figure Count
 
 Prefer adding a figure when the report needs to explain:
@@ -26,19 +28,13 @@ These roles are not interchangeable.
 Choose the production method by what the figure must do:
 
 - real result, chart, or proof -> local experiment output
-- rigorous flow, structure, or pipeline -> LaTeX TikZ > Python
+- rigorous flow, structure, or pipeline -> a suitable deterministic diagram tool
 - authoritative method illustration -> paper figure crop
 - interface context -> screenshot
 - abstract orientation or concept reinforcement -> AI-generated image may be appropriate
 - empty-looking page only -> do not add a figure
 
-For deterministic diagrams, the default priority is **LaTeX TikZ > Python**. In practice, prefer LaTeX TikZ before Python for formal flowcharts, timelines, model architecture diagrams, module graphs, and pipeline figures because TikZ keeps boxes, arrows, anchors, labels, and source-controlled layout explicit. Use Python only when TikZ is unsuitable, such as numeric charts, heatmaps, data-driven plots, image montages, or cases where the figure is primarily computed from data rather than laid out as a conceptual structure.
-
-## Mandatory TikZ Minimum
-
-For every nontrivial course-report creation task, plan, render, insert, and QA at least one LaTeX TikZ figure. This is mandatory unless the user explicitly forbids TikZ or the assignment explicitly forbids self-drawn/LaTeX figures. Minimum LaTeX TikZ figures to insert: 1.
-
-The TikZ minimum gate is separate from the AI-image gate. AI figures may supplement the report, but they do not satisfy the required deterministic TikZ figure. A nontrivial report with zero TikZ figures fails this gate unless the run record documents the user's explicit TikZ prohibition.
+For deterministic diagrams, choose TikZ, SVG, Mermaid or another suitable reproducible tool based on the figure and available runtime. Python is appropriate for data plots and computed graphics. TikZ is optional; no mandatory minimum applies, and a Typst/DOCX report need not install TeX solely to create a figure.
 
 ## Real Experiment Screenshot Rules
 
@@ -67,20 +63,17 @@ For highlighted experiment results:
 
 ## When AI Image Generation Is Appropriate
 
-Before any report drafting, figure generation, or DOCX assembly, ask the user:
+Use the combined clickable intake in `intake-and-run-record.md`. Reuse explicit answers. If AI is disabled, no count question is needed. If enabled, obtain a positive final insertion count and ask whether to reconstruct the AI illustration as editable PPT objects before generation; record failed attempts separately. Do not treat silence as permission or as off. For nontrivial creation reports with AI enabled, insert academically useful conceptual/explanatory art within the agreed count; never replace experimental evidence.
 
-1. Whether to enable AI-generated images and insert them into the DOCX.
-2. The exact maximum number of generated images to run/insert.
+After explicit AI enablement/count, load `references/ai-image-prompting.md` once and reuse it. Use the available image-generation tool/skill under its current instructions; do not assume a machine-specific skill path or credential requirement. Follow SKILL.md's shared repair budget; this figure guidance does not create an additional agent or revision loop.
 
-This is a blocking intake question. Do not treat silence as `off`. If the user enables AI images but gives no count, stop and ask for the count. For nontrivial creation reports where AI images are enabled, generate and insert at least one conceptual or explanatory AI figure unless the assignment or user forbids it.
-
-After intake is resolved, load `references/ai-image-prompting.md` before every text-to-image call. The prompt-card workflow in that file is mandatory, not optional. For the actual text-to-image call, use the user-installed top-level `imagegen` skill, resolved by skill name or by a portable skills-root path such as `$CODEX_HOME/skills/imagegen/SKILL.md` or the platform-equivalent user skills directory. The bundled/internal system skill is `$CODEX_HOME/skills/.system/imagegen/SKILL.md`; these are two different skills. Never route report text-to-image work through `.system/imagegen` or `$CODEX_HOME/skills/.system/imagegen/SKILL.md` unless the user explicitly requests `.system/imagegen`. The user top-level report `imagegen` skill does not require `OPENAI_API_KEY` in this Codex environment. Do not check `OPENAI_API_KEY`, and do not block AI figure generation because that environment variable is absent.
+For selected PPT reconstruction, follow [ppt-figure-reconstruction.md](ppt-figure-reconstruction.md); the AI image is a reference, while final semantic objects are rebuilt and checked in PPT. The direct-raster one-pass rules below do not prohibit this route.
 
 Use AI image generation only when:
 
 - the figure materially improves reader understanding
 - the figure is not required to serve as formal evidence
-- a raster/illustrative image is better than TikZ, self-drawn structure, screenshot, or paper crop
+- a raster illustration or a composition reference for requested PPT reconstruction provides a benefit over direct diagram authoring
 
 Good use cases:
 
@@ -116,7 +109,7 @@ Before generating an AI figure, record:
 - a one-paragraph drawing plan covering layout, visual hierarchy, and where factual labels will appear
 - rejection criteria, including what counts as too empty, too generic, or insufficiently related to the report section
 
-After generating it, ensure:
+For direct raster insertion (PPT reconstruction uses its own final-object checks), ensure:
 
 - it is labeled as `概念图`, `示意图`, or `概念架构图`
 - it has a formal chapter-scoped caption in the report body, such as `图2.1 概念图：从早期网络到现代基础模型的架构演化`
@@ -130,7 +123,7 @@ After generating it, ensure:
 - the figure explains the intended knowledge point through modules, arrows, grouping, labels, and legend rather than only through atmosphere
 - the Critic records accepted/rejected iteration notes, not only the final image path
 
-If accurate text is important, use one of these patterns:
+For direct raster insertion, if accurate text is important, use one of these patterns:
 
 1. Keep the AI text whitelist short and require the text-to-image model to render the final labels directly.
 2. If the generated text is wrong, regenerate with fewer labels or simpler wording.
@@ -176,7 +169,7 @@ TikZ is recommended for clean, reproducible diagrams when the report needs:
 - architecture-like structures
 - layered concept diagrams
 
-For deterministic report diagrams, prefer LaTeX TikZ before Python unless the figure is a data plot or TikZ would make the output harder to maintain. Python remains appropriate for Matplotlib/Seaborn charts, image grids, confusion matrices from real data, or other data-derived figures.
+Use TikZ when it helps maintain the diagram; no fixed tool priority overrides the task or available environment. Python remains appropriate for Matplotlib/Seaborn charts, image grids, confusion matrices from real data, or other data-derived figures.
 
 If TikZ is used:
 
