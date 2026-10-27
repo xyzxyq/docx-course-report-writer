@@ -1,0 +1,506 @@
+{
+  "observed_date": "2026-10-27",
+  "source": "GitHub public REST API /repos/{owner}/{repo}; repository stars, not individual skill stars",
+  "repositories": [
+    {
+      "full_name": "anthropics/skills",
+      "html_url": "https://github.com/anthropics/skills",
+      "stargazers_count": 184077,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-10-09T18:45:52Z",
+      "archived": false,
+      "description": "Public repository for Agent Skills"
+    },
+    {
+      "full_name": "openai/skills",
+      "html_url": "https://github.com/openai/skills",
+      "stargazers_count": 28332,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-09-08T20:35:26Z",
+      "archived": false,
+      "description": "Skills Catalog for Codex"
+    },
+    {
+      "full_name": "K-Dense-AI/scientific-agent-skills",
+      "html_url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "stargazers_count": 54843,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-26T09:36:15Z",
+      "archived": false,
+      "description": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. 177 ready-to-use validated skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard."
+    },
+    {
+      "full_name": "K-Dense-AI/claude-scientific-writer",
+      "html_url": "https://github.com/K-Dense-AI/claude-scientific-writer",
+      "stargazers_count": 2530,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-21T00:39:09Z",
+      "archived": false,
+      "description": "A general purpose scientific writer"
+    },
+    {
+      "full_name": "obra/superpowers",
+      "html_url": "https://github.com/obra/superpowers",
+      "stargazers_count": 305784,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-23T03:48:57Z",
+      "archived": false,
+      "description": "An agentic skills framework & software development methodology that works."
+    },
+    {
+      "full_name": "ComposioHQ/awesome-claude-skills",
+      "html_url": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "stargazers_count": 78036,
+      "default_branch": "master",
+      "license": null,
+      "pushed_at": "2026-09-18T07:16:11Z",
+      "archived": false,
+      "description": "A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows"
+    },
+    {
+      "full_name": "VoltAgent/awesome-agent-skills",
+      "html_url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "stargazers_count": 36424,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-25T13:18:51Z",
+      "archived": false,
+      "description": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more."
+    },
+    {
+      "full_name": "travisvn/awesome-claude-skills",
+      "html_url": "https://github.com/travisvn/awesome-claude-skills",
+      "stargazers_count": 15583,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-04-28T19:30:24Z",
+      "archived": false,
+      "description": "A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows — particularly Claude Code"
+    },
+    {
+      "full_name": "MiniMax-AI/skills",
+      "html_url": "https://github.com/MiniMax-AI/skills",
+      "stargazers_count": 13728,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-04-18T09:48:47Z",
+      "archived": false,
+      "description": null
+    },
+    {
+      "full_name": "google-deepmind/science-skills",
+      "html_url": "https://github.com/google-deepmind/science-skills",
+      "stargazers_count": 3342,
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "spdx_id": "Apache-2.0",
+        "url": "https://api.github.com/licenses/apache-2.0",
+        "node_id": "MDc6TGljZW5zZTI="
+      },
+      "pushed_at": "2026-10-23T13:14:09Z",
+      "archived": false,
+      "description": "GDM Science Skills to speed up agentic scientific workflows with better grounding and higher token efficiency. Integrate insights from AlphaGenome, AFDB, UniProt and 30+ other databases and tools."
+    },
+    {
+      "full_name": "Imbad0202/academic-research-skills",
+      "html_url": "https://github.com/Imbad0202/academic-research-skills",
+      "stargazers_count": 54095,
+      "default_branch": "main",
+      "license": {
+        "key": "other",
+        "name": "Other",
+        "spdx_id": "NOASSERTION",
+        "url": null,
+        "node_id": "MDc6TGljZW5zZTA="
+      },
+      "pushed_at": "2026-10-27T04:38:19Z",
+      "archived": false,
+      "description": "Academic Research Skills for Claude Code: research → write → review → revise → finalize"
+    },
+    {
+      "full_name": "zLanqing/codex-claude-academic-skills",
+      "html_url": "https://github.com/zLanqing/codex-claude-academic-skills",
+      "stargazers_count": 5365,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-05-14T09:08:48Z",
+      "archived": false,
+      "description": "本仓库包含三个面向学术科研人员的Skills，覆盖从文献阅读、论文写作到科学计算的完整研究工作流。office-academic-skill 负责论文阅读报告与学术 PPT/Word 文档生成；research-writing-skill 提供论文写作、润色与审稿回复辅助；scientific-toolkit-skill 整合 MATLAB/Python 科学计算与期刊级图表生成。三个 Skill 专为中文科研用户设计，可在 Claude Code 和 codex 中一键调用。"
+    },
+    {
+      "full_name": "yunshenwuchuxun/latex-paper-skills",
+      "html_url": "https://github.com/yunshenwuchuxun/latex-paper-skills",
+      "stargazers_count": 271,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-14T11:41:29Z",
+      "archived": false,
+      "description": "A modular skill-based framework for writing, revising, and managing LaTeX academic papers with AI assistance."
+    },
+    {
+      "full_name": "Achuan-2/pandoc_docx_template",
+      "html_url": "https://github.com/Achuan-2/pandoc_docx_template",
+      "stargazers_count": 1100,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-07-09T03:29:18Z",
+      "archived": false,
+      "description": "设置Markdown导出为docx时的样式，可控制导出docx的段落文字、标题编号等样式，适用于obsidian、typora、思源笔记等Markdown笔记软件，支持Codex、Claude Code等调用skill丨Template for exporting Markdown to docx (Word) using pandoc"
+    },
+    {
+      "full_name": "the-shy123456/thesis-docx",
+      "html_url": "https://github.com/the-shy123456/thesis-docx",
+      "stargazers_count": 480,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-04-09T14:35:26Z",
+      "archived": false,
+      "description": "写论文的skill"
+    },
+    {
+      "full_name": "tfriedel/claude-office-skills",
+      "html_url": "https://github.com/tfriedel/claude-office-skills",
+      "stargazers_count": 841,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-04-01T11:49:29Z",
+      "archived": false,
+      "description": "Office document creation and editing skills for Claude Code - PPTX, DOCX, XLSX, and PDF workflows with automation support"
+    },
+    {
+      "full_name": "Gostyan/docx-skill-4-cn-paper",
+      "html_url": "https://github.com/Gostyan/docx-skill-4-cn-paper",
+      "stargazers_count": 461,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-07-12T12:49:14Z",
+      "archived": false,
+      "description": "中文论文常用排版格式Skills，适用于课程论文、数模竞赛、毕业论文等场景，让llm agent写word论文或者将.md转.docx时可调用"
+    },
+    {
+      "full_name": "appautomaton/document-SKILLs",
+      "html_url": "https://github.com/appautomaton/document-SKILLs",
+      "stargazers_count": 174,
+      "default_branch": "master",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-15T15:04:58Z",
+      "archived": false,
+      "description": "Claude Code and Codex SKILLs for PDF, Excel, Word, and PowerPoint manipulation — extraction, forms, formulas, tracked changes, adapted from Anthropic skills."
+    },
+    {
+      "full_name": "iOfficeAI/OfficeCLI",
+      "html_url": "https://github.com/iOfficeAI/OfficeCLI",
+      "stargazers_count": 32527,
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "spdx_id": "Apache-2.0",
+        "url": "https://api.github.com/licenses/apache-2.0",
+        "node_id": "MDc6TGljZW5zZTI="
+      },
+      "pushed_at": "2026-10-27T06:37:15Z",
+      "archived": false,
+      "description": "OfficeCLI is the first and best Office suite  purpose-built for AI agents to read, edit, and automate Word, Excel, and PowerPoint files. Free, open-source, single binary, no Office installation required."
+    },
+    {
+      "full_name": "apcamargo/typst-skills",
+      "html_url": "https://github.com/apcamargo/typst-skills",
+      "stargazers_count": 232,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-09-08T04:18:41Z",
+      "archived": false,
+      "description": "Agent skills that guide AI agents to write Typst code"
+    },
+    {
+      "full_name": "lucifer1004/claude-skill-typst",
+      "html_url": "https://github.com/lucifer1004/claude-skill-typst",
+      "stargazers_count": 134,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-26T14:00:50Z",
+      "archived": false,
+      "description": "Typst skill for agents."
+    },
+    {
+      "full_name": "Gakusyun/typst-author-chinese",
+      "html_url": "https://github.com/Gakusyun/typst-author-chinese",
+      "stargazers_count": 9,
+      "default_branch": "master",
+      "license": null,
+      "pushed_at": "2026-05-02T04:20:25Z",
+      "archived": false,
+      "description": "Typst 中文排版 SKILL。This is an agent skill designed for the purpose of authoring documents utilising native Chinese typography. "
+    },
+    {
+      "full_name": "Haojae/scipilot-figure-skill",
+      "html_url": "https://github.com/Haojae/scipilot-figure-skill",
+      "stargazers_count": 2716,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-06-15T03:39:30Z",
+      "archived": false,
+      "description": "SciPilot Skills family - Publication-grade scientific figure copilot for Claude Code "
+    },
+    {
+      "full_name": "Boom5426/Nature-Paper-Skills",
+      "html_url": "https://github.com/Boom5426/Nature-Paper-Skills",
+      "stargazers_count": 634,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-13T13:05:33Z",
+      "archived": false,
+      "description": "An AI-powered Scientific Writing Workflow: Agent skills for drafting, revising, auditing, and resubmitting Nature-style journal manuscripts."
+    },
+    {
+      "full_name": "InternScience/Awesome-Scientific-Skills",
+      "html_url": "https://github.com/InternScience/Awesome-Scientific-Skills",
+      "stargazers_count": 578,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-08-13T09:28:38Z",
+      "archived": false,
+      "description": "An open, curated collection of Agent Skills for scientific research — clone it, use it, extend it!"
+    },
+    {
+      "full_name": "delibae/claude-prism",
+      "html_url": "https://github.com/delibae/claude-prism",
+      "stargazers_count": 1829,
+      "default_branch": "chore/bump-1.1.6",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-08-28T10:23:19Z",
+      "archived": false,
+      "description": "An offline-first scientific writing workspace powered by Claude. LaTeX + Python + 100+ scientific skills all running locally."
+    },
+    {
+      "full_name": "bahayonghang/academic-writing-skills",
+      "html_url": "https://github.com/bahayonghang/academic-writing-skills",
+      "stargazers_count": 520,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-10-26T02:42:06Z",
+      "archived": false,
+      "description": "AI-powered post-writing toolkit for academic papers — format validation, grammar/style polishing, de-AI editing, reference checking, and reviewer-style paper audits. 5 skills for LaTeX, Typst & PDF. Focused on enhancing existing text quality, not generating from scratch."
+    },
+    {
+      "full_name": "alirezarezvani/claude-skills",
+      "html_url": "https://github.com/alirezarezvani/claude-skills",
+      "stargazers_count": 28795,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-26T16:54:47Z",
+      "archived": false,
+      "description": "380 Claude Code skills & agent skills & plugins (30+ Agents, 70+ custom commands, 380+ skills, customizable references, scripts)for Claude Code, Codex, Gemini CLI, Cursor, and 8 more coding agents — engineering, marketing, product, compliance, C-level advisory, research, business operations, commercial & finance, and your daily productivity skills."
+    },
+    {
+      "full_name": "sickn33/agentic-awesome-skills",
+      "html_url": "https://github.com/sickn33/agentic-awesome-skills",
+      "stargazers_count": 48572,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-10-27T08:06:25Z",
+      "archived": false,
+      "description": "AAS Core is the local, agent-first control plane for complete catalog discovery, agent-owned selection, stack validation, and planning, backed by 2,750+ agentic skills. Includes CLI, local MCP, catalog, plugins, and Workbench."
+    },
+    {
+      "full_name": "kepano/obsidian-skills",
+      "html_url": "https://github.com/kepano/obsidian-skills",
+      "stargazers_count": 50195,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-09-15T14:43:57Z",
+      "archived": false,
+      "description": "Agent skills for Obsidian. Teach your agent to use Obsidian CLI and open formats including Markdown, Bases, JSON Canvas."
+    },
+    {
+      "full_name": "huggingface/skills",
+      "html_url": "https://github.com/huggingface/skills",
+      "stargazers_count": 11222,
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "spdx_id": "Apache-2.0",
+        "url": "https://api.github.com/licenses/apache-2.0",
+        "node_id": "MDc6TGljZW5zZTI="
+      },
+      "pushed_at": "2026-10-23T09:08:05Z",
+      "archived": false,
+      "description": "Give your agents the power of the Hugging Face ecosystem"
+    },
+    {
+      "full_name": "brycewang-stanford/Awesome-Journal-Skills",
+      "html_url": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
+      "stargazers_count": 1315,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-09-27T08:08:29Z",
+      "archived": false,
+      "description": "Journal-specific Claude Code/Codex skill packs covering mainstream journals — AER, QJE, Nature, Cell, 管理世界, 经济研究 & 200+ more — your fast track to getting published. ｜ 覆盖主流期刊的 Claude Code/Codex 期刊技能包，从选题、识别策略到表格规范与审稿回复全流程，助你快速发论文。"
+    },
+    {
+      "full_name": "benchflow-ai/skillsbench",
+      "html_url": "https://github.com/benchflow-ai/skillsbench",
+      "stargazers_count": 1874,
+      "default_branch": "main",
+      "license": {
+        "key": "apache-2.0",
+        "name": "Apache License 2.0",
+        "spdx_id": "Apache-2.0",
+        "url": "https://api.github.com/licenses/apache-2.0",
+        "node_id": "MDc6TGljZW5zZTI="
+      },
+      "pushed_at": "2026-10-24T05:35:25Z",
+      "archived": false,
+      "description": "SkillsBench evaluates how well skills work and how effective agents are at using them."
+    },
+    {
+      "full_name": "serenakeyitan/citation-check-skill",
+      "html_url": "https://github.com/serenakeyitan/citation-check-skill",
+      "stargazers_count": 257,
+      "default_branch": "main",
+      "license": {
+        "key": "mit",
+        "name": "MIT License",
+        "spdx_id": "MIT",
+        "url": "https://api.github.com/licenses/mit",
+        "node_id": "MDc6TGljZW5zZTEz"
+      },
+      "pushed_at": "2026-01-26T23:02:30Z",
+      "archived": false,
+      "description": "Citation Check Skill is a lightweight, opinionated citation validation layer designed to detect, verify, and enforce citations in LLM outputs."
+    },
+    {
+      "full_name": "ZhangNy301/citation-assistant",
+      "html_url": "https://github.com/ZhangNy301/citation-assistant",
+      "stargazers_count": 238,
+      "default_branch": "main",
+      "license": null,
+      "pushed_at": "2026-10-22T05:12:34Z",
+      "archived": false,
+      "description": "Claude Code Skill for automated academic citation workflow with Semantic Scholar API"
+    }
+  ]
+}

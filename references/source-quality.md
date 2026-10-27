@@ -34,6 +34,12 @@ Verification rules:
 - If a title or author list cannot be verified, do not cite the source. Replace it with a verifiable source or ask the user.
 - Treat "paper exists" and "reference metadata is correct" as separate checks.
 
+Identity and version checks when merging or updating references:
+
+- Detect duplicates by normalized DOI or another verified identifier plus bibliographic identity, not citation-key spelling or a similar title alone. Consolidate confirmed duplicates and update citation keys/numbers in the source and rendered reference list together.
+- Distinguish preprint versions, accepted manuscripts, final publications and corrections. Prefer the appropriate verified publication for the claim; do not silently swap versions or count them as independent evidence. If changing the cited version, reread the supporting passage/table and retain the actual version in the ledger.
+- For online-first articles, use verified article numbers and publication state; absent volume, pages or DOI are not values to invent. Record unavailable/not-applicable fields in the ledger. Reuse an available citation-management tool for metadata work, but its output does not prove claim support.
+
 Drafting and QA rules:
 
 - Use sequential numeric GB/T 7714-2015 style by default.

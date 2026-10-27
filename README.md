@@ -40,7 +40,25 @@
 
 默认由主 agent 统稿；复杂报告按需分派资料/专项任务与独立终审，小改动直接处理。首次使用告知 subagent 的模型、思考强度和并发上限，用户可调整或关闭，具体见[协作设置](references/multi-agent-workflow.md)。只进行一次完整检查，最多两轮集中修复；达到上限仍有缺陷时标记待完成。Superpowers 可选。已验证范围与限制见[平台矩阵](docs/platform-support.md)和[使用说明](references/output-formats.md)。
 
-当前验证包括 **47 项自动测试**及 **12 个只读情景推演**；macOS 上已编译并检查两套原生模板，也实测了 Transformer 插图的 PDF/SVG → DOCX 路径。Word/WPS 桌面、Windows 和真实报告质量/速度 A/B 对比仍未验证。详见[验证记录](docs/verification-2026-10-23.md)。安装标识保持为 `docx-course-report-writer`。
+当前 **59 项自动测试全部通过**，包括12项占位符保真回归及实际编译PDF的Typst中文行距检查。占位符替换保留非目标格式、图片、字段和链接，遇到复杂边界明确拒绝；Typst默认正文基线距调整为约17pt，并放宽标题与文献间距。三格式真实报告见下方样例。此前12个只读情景推演保留为历史记录；Word/WPS最终外观、Windows和真实质量/速度A/B仍未验证。详见[本轮修复记录](docs/verification-2026-10-27.md)与[历史验证](docs/verification-2026-10-23.md)。安装标识仍为 `docx-course-report-writer`。
+
+<a id="multiformat-demo"></a>
+
+## 本次产出：多智能体协作研究综述
+
+同一份约5,138字、5章、14条参考文献的报告，分别使用三种格式构建。点击PDF阅读完整报告，源码目录包含参考文献与插图。
+
+| 格式 | 报告 | 可编辑源 | 状态 |
+|---|---|---|---|
+| **DOCX** | [Word文档](examples/multiagent-report/report.docx) · [PDF预览](examples/multiagent-report/report-docx-preview.pdf) | DOCX本身 | 正文与图文检查通过；**自动目录仍待更新，不是提交定稿** |
+| **LaTeX** | [11页PDF](examples/multiagent-report/report-latex.pdf) | [LaTeX项目](examples/multiagent-report/latex) | 原生编译与独立逐页审查通过 |
+| **Typst** | [10页修订PDF](examples/multiagent-report/report-typst.pdf) | [Typst项目](examples/multiagent-report/typst) | 已修复密排；逐页布局自查与行距回归通过 |
+
+| DOCX正文（LibreOffice预览） | LaTeX正文 | Typst正文（修订后） |
+|---|---|---|
+| [![DOCX报告正文](examples/multiagent-report/previews/docx-body.png)](examples/multiagent-report/report-docx-preview.pdf) | [![LaTeX报告正文](examples/multiagent-report/previews/latex-body.png)](examples/multiagent-report/report-latex.pdf) | [![Typst报告正文](examples/multiagent-report/previews/typst-body.png)](examples/multiagent-report/report-typst.pdf) |
+
+Typst按用户反馈将正文实测行距从12.02pt调整为17.00pt，页数由9页变为10页；正文、引文与图片不变。图源另附[可编辑PPTX](examples/multiagent-report/figures/collaboration.pptx)与[矢量PDF](examples/multiagent-report/figures/collaboration.pdf)。这是概念图与文献综述，不是模型性能复现实验。完整范围、构建方法与限制见[样例说明](examples/multiagent-report/README.md)。
 
 <a id="subagent-settings"></a>
 
@@ -397,3 +415,9 @@ DOCX 包结构通过不等于页面排版通过。目录、图表、表格、代
 - [`docs/testing-report.md`](docs/testing-report.md)：测试与验证记录。
 - [`docs/platform-support.md`](docs/platform-support.md)：平台 × 格式支持矩阵（含限制与待验证项）。
 - [`docs/backend-evaluation.md`](docs/backend-evaluation.md)：三种后端路线对照与默认路由决策记录。
+
+## Star History
+
+[![Star History](docs/star-history.svg)](https://github.com/xyzxyq/docx-course-report-writer/stargazers)
+
+截至 **2026-10-27，共61颗Star**。[数据](docs/star-history.json)来自GitHub API，按当前仍保留星标的用户的star时间累计；不包含已取消的star，不等同历史净总数。此图为日期标注的静态快照，并非实时更新。在线图接口当前拒绝访问本仓库，因此采用仓库内可直接显示的SVG。

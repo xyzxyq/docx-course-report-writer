@@ -14,14 +14,14 @@
 
 #set document(title: title, author: student)
 #set page(paper: "a4", margin: 25.4mm, numbering: none)
-#set text(font: (latin-font, cjk-font), size: 10.5pt, lang: "zh")
-#set par(first-line-indent: (amount: 2em, all: true), leading: 0.45em, spacing: 6pt, justify: true)
+#set text(font: (latin-font, cjk-font), size: 10.5pt, lang: "zh", top-edge: 0.88em, bottom-edge: -0.12em)
+#set par(first-line-indent: (amount: 2em, all: true), leading: 6.5pt, spacing: 12.5pt, justify: true)
 #set heading(numbering: (..nums) => {
   let ns = nums.pos()
   if ns.len() == 1 { numbering("第一章", ns.first()) }
   else { ns.map(str).join(".") }
 })
-#show heading: set block(above: 12pt, below: 6pt)
+#show heading: set block(above: 24pt, below: 12pt)
 #show heading: set text(font: (heading-font, cjk-font), weight: "bold")
 #show heading.where(level: 1): it => {
   pagebreak(weak: true)
@@ -111,4 +111,5 @@ $ macron(x) = 1/n sum_(i=1)^n x_i $ <eq-mean>
 
 #pagebreak()
 #show bibliography: set text(size: 10pt)
+#show bibliography: set par(leading: 4pt, spacing: 10pt)
 #bibliography("references.bib", title: [参考文献], style: "gb-7714-2015-numeric")

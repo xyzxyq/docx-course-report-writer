@@ -1,0 +1,257 @@
+{
+  "date": "2026-10-27",
+  "method": "GitHub connector repository search; per_page=20; default ranking; first page only; not exhaustive or sorted by stars",
+  "queries": [
+    {
+      "query": "skills stars:>10000",
+      "repositories": [
+        "mattpocock/skills",
+        "anthropics/skills",
+        "emilkowalski/skills",
+        "vercel-labs/skills",
+        "openai/skills",
+        "google/skills",
+        "MiniMax-AI/skills",
+        "slavingia/skills",
+        "huggingface/skills",
+        "obra/superpowers",
+        "multica-ai/andrej-karpathy-skills",
+        "VoltAgent/awesome-openclaw-skills",
+        "guipsamora/pandas_exercises",
+        "addyosmani/agent-skills",
+        "Chalarangelo/30-seconds-of-code",
+        "ComposioHQ/awesome-claude-skills",
+        "Shubhamsaboo/awesome-llm-apps",
+        "sickn33/agentic-awesome-skills",
+        "kepano/obsidian-skills",
+        "alirezarezvani/claude-skills"
+      ]
+    },
+    {
+      "query": "scientific skills stars:>100",
+      "repositories": [
+        "K-Dense-AI/scientific-agent-skills",
+        "K-Dense-AI/claude-scientific-writer",
+        "delibae/claude-prism",
+        "InternScience/Awesome-Scientific-Skills",
+        "Haojae/scipilot-figure-skill",
+        "google-deepmind/science-skills",
+        "K-Dense-AI/claude-skills-mcp",
+        "boheling/deltasci",
+        "Boom5426/Nature-Paper-Skills",
+        "LeonChaoX/qinyan-academic-skills",
+        "lingxling/awesome-skills-cn",
+        "Rimagination/good-story",
+        "zLanqing/codex-claude-academic-skills",
+        "aipoch/open-science",
+        "gaasher/Agent-Loop-Skills",
+        "BAIKEMARK/happy-figure-skill",
+        "jihe520/sci-box",
+        "modelscope/Awesome-Vibe-Research",
+        "weisscharlesj/SciCompforChemists",
+        "Dsadd4/AgentFigureGallery"
+      ]
+    },
+    {
+      "query": "academic skills stars:>100",
+      "repositories": [
+        "Imbad0202/academic-research-skills",
+        "Imbad0202/academic-research-skills-codex",
+        "HughYau/AcademicForge",
+        "zLanqing/codex-claude-academic-skills",
+        "lishix520/academic-paper-skills",
+        "hoochanlon/hamuleite",
+        "LeonChaoX/qinyan-academic-skills",
+        "brohrer/academic_advisory",
+        "AIScientists-Dev/academic-humanizer",
+        "Gabberflast/academic-pptx-skill",
+        "bahayonghang/academic-writing-skills",
+        "aipoch/medical-research-skills",
+        "chtc66/academic-skills",
+        "franklee16/academic-research-skills",
+        "openags/paper-search-mcp",
+        "chrisblattman/claudeblattman",
+        "AAASS554/codex-academic-paper-skills",
+        "zsyggg/paper-craft-skills",
+        "aspi6246/Claude-Code-Skills-for-Academics",
+        "LigphiDonk/academic-figure-generator"
+      ]
+    },
+    {
+      "query": "docx skills stars:>100",
+      "repositories": [
+        "Achuan-2/pandoc_docx_template",
+        "the-shy123456/thesis-docx",
+        "tfriedel/claude-office-skills",
+        "leemysw/feishu-docx",
+        "deusyu/translate-book",
+        "thvroyal/kimi-skills",
+        "Fokkyp/SoftwareCopyright-Skill",
+        "Gostyan/docx-skill-4-cn-paper",
+        "iOfficeAI/OfficeCLI",
+        "bowenliang123/markdown-exporter",
+        "genspark-ai/genoffice",
+        "appautomaton/document-SKILLs",
+        "qiye45/wechatDownload",
+        "zhaohui-yang/official-document-drafting",
+        "XiaoMaColtAI/math-modeling-skill",
+        "officecli/officecli",
+        "ferdinandobons/brand-docs",
+        "mizzlelover/gongwen-gbt9704-skill",
+        "yeap531/word-format-skill",
+        "SankaiAI/ats-optimized-resume-agent-skill"
+      ]
+    },
+    {
+      "query": "typst skill",
+      "repositories": [
+        "apcamargo/typst-skills",
+        "bahayonghang/academic-writing-skills",
+        "lucifer1004/claude-skill-typst",
+        "touying-typ/seaslides",
+        "statzhero/typst-skill",
+        "christopherkenny/skills",
+        "akilrammohan/typst-skill",
+        "YPares/agent-skills",
+        "Gakusyun/typst-author-chinese",
+        "hutzelmann/thesis-proposal-skills",
+        "ChanMeng666/typst-claude-skill",
+        "chesley-veko/book_skill",
+        "abhinav12k/Typster",
+        "MoYeRanqianzhi/typst-skill",
+        "AyloRyd/typst-dstu-nure-skill",
+        "Auda29/typst_skill",
+        "TDAA-Go/TDAA-Go",
+        "shinaoka/typst-skills",
+        "edoardob90/typst-cetz-skills",
+        "Helios-YQH/lab-report"
+      ]
+    },
+    {
+      "query": "latex skills stars:>50",
+      "repositories": [
+        "yunshenwuchuxun/latex-paper-skills",
+        "delibae/claude-prism",
+        "ndpvt-web/latex-document-skill",
+        "bahayonghang/academic-writing-skills",
+        "Light0305/Light-skills",
+        "deuslirio/UFGTeX-Presentation",
+        "Calix-L/awesome-latex-skills",
+        "CloudWave818/ieee-skills",
+        "ysyecust/lecture-to-notes",
+        "LilG-Cheng-Ju/PerfectResume-Latex",
+        "hajimi-kun/latex-to-word-workflow",
+        "flonat/flonat-research",
+        "Spark-To-Paper-Skills/paperjury",
+        "hanlulong/econ-writing-skill",
+        "OpenRaiser/PaperFit",
+        "quzhiii/thesis-skills",
+        "yoli-mi/good-learning",
+        "Ar9av/PaperOrchestra",
+        "sunnnybala/Rstack",
+        "oxfordinternetinstitute/sds-python"
+      ]
+    },
+    {
+      "query": "awesome claude skills stars:>1000",
+      "repositories": [
+        "ComposioHQ/awesome-claude-skills",
+        "BehiSecc/awesome-claude-skills",
+        "travisvn/awesome-claude-skills",
+        "hesreallyhim/awesome-claude-code",
+        "VoltAgent/awesome-agent-skills",
+        "rohitg00/awesome-claude-code-toolkit",
+        "heilcheng/awesome-agent-skills",
+        "gamedev-skills/awesome-gamedev-agent-skills",
+        "rohitg00/awesome-claude-design",
+        "zhuyansen/awesome-claude-video-skills",
+        "bergside/awesome-design-skills",
+        "Prat011/awesome-llm-skills",
+        "taishi-i/awesome-ChatGPT-repositories",
+        "brycewang-stanford/Awesome-Journal-Skills",
+        "xianyu110/awesome-openclaw-tutorial",
+        "UnderleveledBuilder/awesome-short-drama-skills",
+        "taishi-i/awesome-japanese-nlp-resources",
+        "ruvnet/RuView"
+      ]
+    },
+    {
+      "query": "skills citation stars:>100",
+      "repositories": [
+        "ZhangNy301/citation-assistant",
+        "Astro-Han/karpathy-llm-wiki",
+        "serenakeyitan/citation-check-skill",
+        "cookjohn/gs-skills",
+        "Aperivue/medsci-skills",
+        "AgriciDaniel/claude-blog",
+        "stephenlzc/AI-Powered-Literature-Review-Skills",
+        "Yila-AI/awesome-research-skills",
+        "Gabberflast/academic-pptx-skill",
+        "PleasePrompto/notebooklm-skill",
+        "PleasePrompto/google-ai-mode-skill",
+        "hajimi-kun/latex-to-word-workflow",
+        "OranAi-Ltd/orangeo-ai-visibility-skill",
+        "roomi-fields/notebooklm-mcp",
+        "cclank/notebooklm-skill",
+        "Socialpranker/deepdive"
+      ]
+    },
+    {
+      "query": "skills scientific visualization stars:>100",
+      "repositories": []
+    },
+    {
+      "query": "skills report Chinese stars:>50",
+      "repositories": [
+        "zhaohui-yang/official-document-drafting",
+        "Lucaswangzcx/literature-downloader-skill",
+        "hoolulu/deep-research",
+        "handsomeZR-netizen/zhuoyu-workshop-skill",
+        "Gaoyuan-0423/biomedical-paper-reader",
+        "Aryia-Behroziuan/References"
+      ]
+    },
+    {
+      "query": "skills pdf stars:>100",
+      "repositories": [
+        "yusufkaraaslan/Skill_Seekers",
+        "virgiliojr94/book-to-skill",
+        "bevibing/tutor-skills",
+        "kitchen-engineer42/pdf2skills",
+        "michalparkola/tapestry-skills",
+        "tfriedel/claude-office-skills",
+        "molefrog/skills",
+        "cookjohn/cnki-skills",
+        "chuspeeism/dashi-ppt-skill",
+        "JuneYaooo/lineage-skill",
+        "AgriciDaniel/claude-seo",
+        "zubair-trabzada/ai-marketing-claude",
+        "lovstudio/any2pdf",
+        "ningzimu/image-to-editable-ppt-skill",
+        "Graphify-Labs/graphify",
+        "joeseesun/qiaomu-anything-to-notebooklm",
+        "thvroyal/kimi-skills",
+        "deusyu/translate-book",
+        "zubair-trabzada/ai-legal-claude",
+        "PSPDFKit/pdf-to-markdown"
+      ]
+    },
+    {
+      "query": "skills evaluation stars:>1000",
+      "repositories": [
+        "alibaba/skill-up",
+        "zjunlp/SkillNet",
+        "benchflow-ai/skillsbench",
+        "yaojingang/yao-meta-skill",
+        "Tencent/AI-Infra-Guard",
+        "evalstate/fast-agent",
+        "rpamis/comet",
+        "google/agents-cli",
+        "Sahir619/fable-method",
+        "ZHangZHengEric/Sage",
+        "alchaincyf/darwin-skill",
+        "Q00/ouroboros"
+      ]
+    }
+  ]
+}

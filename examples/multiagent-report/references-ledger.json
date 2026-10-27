@@ -1,0 +1,262 @@
+[
+  {
+    "key": "wooldridge",
+    "authors": "Wooldridge, Michael and Jennings, Nicholas R.",
+    "title": "Intelligent agents: theory and practice",
+    "year": "1995",
+    "type": "article",
+    "venue": "The Knowledge Engineering Review",
+    "doi": "10.1017/S0269888900008122",
+    "url": "https://spiral.imperial.ac.uk/entities/publication/d1e966d6-907a-4838-a8ff-64a5992f4014",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://spiral.imperial.ac.uk/entities/publication/d1e966d6-907a-4838-a8ff-64a5992f4014",
+    "required_fields": {
+      "volume": "10",
+      "number": "2",
+      "pages": "115--152"
+    },
+    "publication_state": "Published source",
+    "missing_fields": "none required",
+    "first_citation_number": 1
+  },
+  {
+    "key": "maddpg",
+    "authors": "Lowe, Ryan and Wu, Yi and Tamar, Aviv and Harb, Jean and Abbeel, Pieter and Mordatch, Igor",
+    "title": "Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments",
+    "year": "2017",
+    "type": "inproceedings",
+    "venue": "Advances in Neural Information Processing Systems 30",
+    "doi": "",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/68a9750337a418a86fe06c1991a1d64c-Abstract.html",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/68a9750337a418a86fe06c1991a1d64c-Abstract.html",
+    "required_fields": {},
+    "publication_state": "Published source",
+    "missing_fields": "No DOI reported by official proceedings; canonical URL retained",
+    "first_citation_number": 2
+  },
+  {
+    "key": "qmix",
+    "authors": "Rashid, Tabish and Samvelyan, Mikayel and Schroeder, Christian and Farquhar, Gregory and Foerster, Jakob and Whiteson, Shimon",
+    "title": "QMIX: Monotonic Value Function Factorisation for Deep Multi-Agent Reinforcement Learning",
+    "year": "2018",
+    "type": "inproceedings",
+    "venue": "Proceedings of the 35th International Conference on Machine Learning",
+    "doi": "",
+    "url": "https://proceedings.mlr.press/v80/rashid18a.html",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://proceedings.mlr.press/v80/rashid18a.html",
+    "required_fields": {
+      "volume": "80",
+      "pages": "4295--4304",
+      "publisher": "PMLR"
+    },
+    "publication_state": "Published source",
+    "missing_fields": "No DOI reported by official proceedings; canonical URL retained",
+    "first_citation_number": 3
+  },
+  {
+    "key": "react",
+    "authors": "Yao, Shunyu and Zhao, Jeffrey and Yu, Dian and Du, Nan and Shafran, Izhak and Narasimhan, Karthik and Cao, Yuan",
+    "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+    "year": "2023",
+    "type": "misc",
+    "venue": "arXiv:2210.03629v3",
+    "doi": "10.48550/arXiv.2210.03629",
+    "url": "https://arxiv.org/abs/2210.03629v3",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2210.03629v3",
+    "required_fields": {
+      "date": "2023-03-10"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 4
+  },
+  {
+    "key": "autogen",
+    "authors": "Wu, Qingyun and Bansal, Gagan and Zhang, Jieyu and Wu, Yiran and Li, Beibin and Zhu, Erkang and Jiang, Li and Zhang, Xiaoyun and Zhang, Shaokun and Liu, Jiale and Awadallah, Ahmed Hassan and White, Ryen W and Burger, Doug and Wang, Chi",
+    "title": "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation",
+    "year": "2023",
+    "type": "misc",
+    "venue": "arXiv:2308.08155v2",
+    "doi": "10.48550/arXiv.2308.08155",
+    "url": "https://arxiv.org/abs/2308.08155v2",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2308.08155v2",
+    "required_fields": {
+      "date": "2023-10-03"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 5
+  },
+  {
+    "key": "metagpt",
+    "authors": "Hong, Sirui and Zhuge, Mingchen and Chen, Jiaqi and Zheng, Xiawu and Cheng, Yuheng and Zhang, Ceyao and Wang, Jinlin and Wang, Zili and Yau, Steven Ka Shing and Lin, Zijuan and Zhou, Liyang and Ran, Chenyu and Xiao, Lingfeng and Wu, Chenglin and Schmidhuber, Jürgen",
+    "title": "MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework",
+    "year": "2024",
+    "type": "misc",
+    "venue": "arXiv:2308.00352v7",
+    "doi": "10.48550/arXiv.2308.00352",
+    "url": "https://arxiv.org/abs/2308.00352v7",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2308.00352v7",
+    "required_fields": {
+      "date": "2024-11-01"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 6
+  },
+  {
+    "key": "generative",
+    "authors": "Park, Joon Sung and O'Brien, Joseph C. and Cai, Carrie J. and Morris, Meredith Ringel and Liang, Percy and Bernstein, Michael S.",
+    "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+    "year": "2023",
+    "type": "misc",
+    "venue": "arXiv:2304.03442v2",
+    "doi": "10.48550/arXiv.2304.03442",
+    "url": "https://arxiv.org/abs/2304.03442v2",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2304.03442v2",
+    "required_fields": {
+      "date": "2023-08-06"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 7
+  },
+  {
+    "key": "multiagentbench",
+    "authors": "Zhu, Kunlun and Du, Hongyi and Hong, Zhaochen and Yang, Xiaocheng and Guo, Shuyi and Wang, Zhe and Wang, Zhenhailong and Qian, Cheng and Tang, Xiangru and Ji, Heng and You, Jiaxuan",
+    "title": "MultiAgentBench: Evaluating the Collaboration and Competition of LLM agents",
+    "year": "2025",
+    "type": "inproceedings",
+    "venue": "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    "doi": "10.18653/v1/2025.acl-long.421",
+    "url": "https://aclanthology.org/2025.acl-long.421/",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://aclanthology.org/2025.acl-long.421/",
+    "required_fields": {
+      "pages": "8580--8622",
+      "publisher": "Association for Computational Linguistics",
+      "address": "Vienna"
+    },
+    "publication_state": "Published source",
+    "missing_fields": "none required",
+    "first_citation_number": 8
+  },
+  {
+    "key": "mast",
+    "authors": "Cemri, Mert and Pan, Melissa Z. and Yang, Shuyi and Agrawal, Lakshya A. and Chopra, Bhavya and Tiwari, Rishabh and Keutzer, Kurt and Parameswaran, Aditya and Klein, Dan and Ramchandran, Kannan and Zaharia, Matei and Gonzalez, Joseph E. and Stoica, Ion",
+    "title": "Why Do Multi-Agent LLM Systems Fail?",
+    "year": "2025",
+    "type": "misc",
+    "venue": "arXiv:2503.13657v3",
+    "doi": "10.48550/arXiv.2503.13657",
+    "url": "https://arxiv.org/abs/2503.13657v3",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2503.13657v3",
+    "required_fields": {
+      "date": "2025-10-26"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 9
+  },
+  {
+    "key": "maporl",
+    "authors": "Park, Chanwoo and Han, Seungju and Guo, Xingzhi and Ozdaglar, Asuman E. and Zhang, Kaiqing and Kim, Joo-Kyung",
+    "title": "MAPoRL: Multi-Agent Post-Co-Training for Collaborative Large Language Models with Reinforcement Learning",
+    "year": "2025",
+    "type": "inproceedings",
+    "venue": "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    "doi": "10.18653/v1/2025.acl-long.1459",
+    "url": "https://aclanthology.org/2025.acl-long.1459/",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://aclanthology.org/2025.acl-long.1459/",
+    "required_fields": {
+      "pages": "30215--30248",
+      "publisher": "Association for Computational Linguistics",
+      "address": "Vienna"
+    },
+    "publication_state": "Published source",
+    "missing_fields": "none required",
+    "first_citation_number": 10
+  },
+  {
+    "key": "scaling",
+    "authors": "Kim, Yubin and Gu, Ken and Park, Chanwoo and Park, Chunjong and Schmidgall, Samuel and Heydari, A. Ali and Yan, Yao and Zhang, Zhihan and Zhuang, Yuchen and Liu, Yun and Malhotra, Mark and Liang, Paul Pu and Park, Hae Won and Yang, Yuzhe and Xu, Xuhai and Du, Yilun and Patel, Shwetak and Althoff, Tim and McDuff, Daniel and Liu, Xin",
+    "title": "Capable language models can outgrow the benefits of collaboration",
+    "year": "2026",
+    "type": "article",
+    "venue": "Nature Machine Intelligence",
+    "doi": "10.1038/s42256-026-01268-y",
+    "url": "https://www.nature.com/articles/s42256-026-01268-y",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://www.nature.com/articles/s42256-026-01268-y",
+    "required_fields": {
+      "volume": "8",
+      "pages": "1157--1172",
+      "date": "2026-07-24"
+    },
+    "publication_state": "Published source",
+    "missing_fields": "none required",
+    "first_citation_number": 11
+  },
+  {
+    "key": "masbench",
+    "authors": "Chu, Qizhi and Yu, Zekai and Wen, Sijie and Liu, Yang and Qian, Chen and Yang, Cheng and Shi, Chuan and Liu, Zhiyuan",
+    "title": "MASBench: Benchmarking LLM-based Multi-Agent Collaboration under Partial Observability",
+    "year": "2026",
+    "type": "misc",
+    "venue": "arXiv:2610.04672v1",
+    "doi": "10.48550/arXiv.2610.04672",
+    "url": "https://arxiv.org/abs/2610.04672v1",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2610.04672v1",
+    "required_fields": {
+      "date": "2026-10-03"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 12
+  },
+  {
+    "key": "agentworld",
+    "authors": "Shu, Raphael and Zhang, Yusen and Cho, Young Min and Yang, Jin Mo and Yuan, Yuan and Zheng, Wenliang and Guntuku, Sharath Chandra and Ungar, Lyle and Yu, Zhou and Zhang, Rui",
+    "title": "AgentWorld: Benchmarking Long-Horizon Collaboration of Multi-agent LLMs",
+    "year": "2026",
+    "type": "misc",
+    "venue": "arXiv:2609.31590v1",
+    "doi": "10.48550/arXiv.2609.31590",
+    "url": "https://arxiv.org/abs/2609.31590v1",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2609.31590v1",
+    "required_fields": {
+      "date": "2026-09-25"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 14
+  },
+  {
+    "key": "exploration",
+    "authors": "Choi, Hyeong Kyu and Li, Jiatong and Li, Wendi and Wang, Xin Eric and Li, Sharon",
+    "title": "Do Multi-Agent LLMs Explore Each Other?",
+    "year": "2026",
+    "type": "misc",
+    "venue": "arXiv:2607.11250v2",
+    "doi": "10.48550/arXiv.2607.11250",
+    "url": "https://arxiv.org/abs/2607.11250v2",
+    "verified_on": "2026-10-27",
+    "verification_source": "https://arxiv.org/abs/2607.11250v2",
+    "required_fields": {
+      "date": "2026-10-16"
+    },
+    "publication_state": "Versioned arXiv manuscript; no journal/conference status inferred",
+    "missing_fields": "none required",
+    "first_citation_number": 13
+  }
+]

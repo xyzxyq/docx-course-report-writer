@@ -6,7 +6,7 @@ Copy the entire `skill-assets/latex/` or `skill-assets/typst/` directory into th
 
 The Word asset's A4 page is approximately 210 × 297 mm with four 25.4 mm margins. Its visible cover contains course, title, college, major, name, student ID, teacher and date. The native templates preserve those fields, a separate automatic TOC, chapter/section hierarchy, figure/table captions, references on a new page and body page 1 after unnumbered front matter. The empty logo placeholder is omitted; add only a supplied/authorized logo.
 
-The legacy Word file has inconsistent style metadata: body style 11 pt/1.25 spacing, normal style 10.5 pt, and instructional text claiming 小四/1.5 spacing. Native body defaults follow the existing DOCX builder's 10.5 pt, two-character indent and roughly 1.25 line spacing, with 16/14/12 pt headings. They are a normalized adaptation, not an exact page-for-page conversion. Long titles/names and font substitutions require fresh page review. A strict school template overrides these defaults.
+The legacy Word file has inconsistent style metadata: body style 11 pt/1.25 spacing, normal style 10.5 pt, and instructional text claiming 小四/1.5 spacing. Native body defaults use 10.5 pt, two-character indent and 16/14/12 pt headings. Typst explicitly targets a 17 pt body baseline gap, matching the measured reading rhythm of the LaTeX report; numeric spacing settings are not interchangeable between engines. They are a normalized adaptation, not an exact page-for-page conversion. Long titles/names and font substitutions require fresh page review. A strict school template overrides these defaults.
 
 ## LaTeX
 
@@ -20,6 +20,7 @@ The legacy Word file has inconsistent style metadata: body style 11 pt/1.25 spac
 
 - Entry: `main.typ`; bibliography: `references.bib`.
 - Requires Typst and installed CJK/Latin fonts. Run `typst fonts` once, then set the three font variables at the top. Defaults suit macOS: Songti SC, Heiti SC, Times New Roman. Windows commonly uses SimSun, SimHei, Times New Roman; Noto CJK is another explicit option if installed. Do not silently accept missing-font warnings.
+- Readability defaults: 10.5 pt body, explicit text edges totaling 1 em plus 6.5 pt leading (17 pt baseline gap), 12.5 pt paragraph spacing, and heading block spacing of 24 pt above / 12 pt below. Bibliography uses 10 pt text with 4 pt leading and 10 pt paragraph spacing. Typst's [leading](https://typst.app/docs/reference/model/par/#parameters-leading) is the gap between text frames, not a line-spacing multiplier. Check actual PDF line distances and title/paragraph separation; fewer pages or absence of clipping does not establish readable density.
 - Edit cover variables; use native headings, `@label` and `@bibliography-key`. The built-in `gb-7714-2015-numeric` CSL style provides the citation/bibliography format. Confirm actual typography against the assignment. See the [official bibliography documentation](https://typst.app/docs/reference/model/bibliography/).
 - Figure/table counters reset per chapter. Cross-chapter references resolve the heading counter at the target location using the [counter location API](https://typst.app/docs/reference/introspection/counter/), so a table in chapter 2 remains table 2.1 when cited from chapter 3.
 

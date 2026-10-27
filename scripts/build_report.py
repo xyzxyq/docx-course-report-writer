@@ -493,13 +493,86 @@ def template_value_map(args: argparse.Namespace, report_title: str) -> dict[str,
     return {key: value for key, value in mapping.items() if value}
 
 
-def replace_paragraph_text(paragraph, text: str) -> None:
-    for run in list(paragraph.runs):
-        run.text = ""
-    if paragraph.runs:
-        paragraph.runs[0].text = text
-    else:
+def replace_paragraph_text(paragraph, text: str, old_text: str | None = None) -> None:
+    """Replace plain text spans without rewriting their runs or non-text children."""
+    old_text = paragraph.text if old_text is None else old_text
+    if text == old_text:
+        return
+    if not old_text:
         paragraph.add_run(text)
+        return
+
+    groups = [[]]
+    field_depth = 0
+    for field in paragraph._p.xpath("preceding::w:fldChar"):
+        kind = field.get(qn("w:fldCharType"))
+        if kind == "begin":
+            field_depth += 1
+        elif kind == "end":
+            field_depth = max(0, field_depth - 1)
+    for element in paragraph._p:
+        if element.tag in {qn("w:pPr"), qn("w:proofErr")}:
+            continue
+        if element.tag != qn("w:r"):
+            groups.append([])
+            continue
+        for child in element:
+            if child.tag == qn("w:rPr"):
+                continue
+            if child.tag == qn("w:fldChar"):
+                kind = child.get(qn("w:fldCharType"))
+                if kind == "begin":
+                    field_depth += 1
+                elif kind == "end":
+                    field_depth = max(0, field_depth - 1)
+            if child.tag == qn("w:t") and not field_depth:
+                groups[-1].append(child)
+            else:
+                # A match must not bridge drawings, fields, links or revision boundaries.
+                groups.append([])
+
+    matches = []
+    for group in groups:
+        source = "".join(node.text or "" for node in group)
+        spans = list(re.finditer(re.escape(old_text), source))
+        if spans:
+            matches.append((group, spans))
+    if sum(len(spans) for _, spans in matches) != paragraph.text.count(old_text):
+        raise ValueError(
+            f"Cannot replace {old_text!r} in a complex template region: "
+            "field, hyperlink, revision or non-text boundary. "
+            "Use a plain-text placeholder or edit this region in Word/WPS."
+        )
+
+    for group, spans in matches:
+        offset = 0
+        positions = []
+        for node in group:
+            end = offset + len(node.text or "")
+            positions.append((node, offset, end))
+            offset = end
+        changed = set()
+        for match in reversed(spans):
+            first = True
+            for node, start, end in positions:
+                if start >= match.end() or end <= match.start():
+                    continue
+                value = node.text or ""
+                left = max(0, match.start() - start)
+                right = min(end, match.end()) - start
+                node.text = value[:left] + (text if first else "") + value[right:]
+                changed.add(node)
+                first = False
+        for node in changed:
+            # Only a disposable run is rewritten, to encode tabs/newlines and xml:space.
+            replacement = OxmlElement("w:r")
+            replacement.text = node.text or ""
+            parent = node.getparent()
+            index = parent.index(node)
+            for child in list(replacement):
+                parent.insert(index, child)
+                index += 1
+            parent.remove(node)
 
 
 def replace_text_placeholders(doc: Document, mapping: dict[str, str]) -> None:
@@ -514,29 +587,28 @@ def replace_text_placeholders(doc: Document, mapping: dict[str, str]) -> None:
         )
 
     for paragraph in doc.paragraphs:
-        text = paragraph.text
+        original_text = paragraph.text
         for marker, value in placeholder_variants:
-            if marker in text:
-                text = text.replace(marker, value)
-        compact = normalized_text(text)
-        if compact in mapping and mapping[compact] and text.strip() == paragraph.text.strip():
-            text = f"{paragraph.text}    {mapping[compact]}"
-        if text != paragraph.text:
-            replace_paragraph_text(paragraph, text)
+            if marker in paragraph.text:
+                replace_paragraph_text(paragraph, value, marker)
+        compact = normalized_text(paragraph.text)
+        if compact in mapping and mapping[compact] and paragraph.text == original_text:
+            paragraph.add_run(f"    {mapping[compact]}")
 
     for table in doc.tables:
         for row in table.rows:
             for cell_index, cell in enumerate(row.cells):
                 cell_text = normalized_text(cell.text)
                 if cell_index + 1 < len(row.cells) and cell_text in mapping:
-                    replace_paragraph_text(row.cells[cell_index + 1].paragraphs[0], mapping[cell_text])
+                    target = row.cells[cell_index + 1]
+                    if target._tc is not cell._tc and not any(
+                        marker in target.text for marker, _ in placeholder_variants
+                    ):
+                        replace_paragraph_text(target.paragraphs[0], mapping[cell_text])
                 for paragraph in cell.paragraphs:
-                    text = paragraph.text
                     for marker, value in placeholder_variants:
-                        if marker in text:
-                            text = text.replace(marker, value)
-                    if text != paragraph.text:
-                        replace_paragraph_text(paragraph, text)
+                        if marker in paragraph.text:
+                            replace_paragraph_text(paragraph, value, marker)
 
 
 def add_body_paragraph(doc: Document, text: str, indent: bool = True) -> None:

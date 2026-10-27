@@ -83,6 +83,7 @@ When measuring this skill's quality or comparing runs, reuse these records: mand
 - No image is missing.
 - No table overflows the page.
 - No text is clipped.
+- Body, headings and references have readable separation; an over-dense page fails even without clipping. For Typst, verify actual CJK baseline spacing against the chosen template (default about 17 pt at 10.5 pt body), not just `par.leading` or page count. Compare representative body and reference pages at the same physical size.
 - No caption is isolated from its figure/table.
 - PDF/page text was scanned for obsolete scores, forbidden result claims, LaTeX residue, and stale template phrases.
 - Reference pages were inspected in DOCX/PDF render for GB/T 7714-2015 punctuation/order, hanging indent, bracketed sequence numbers, and reference list typography.
@@ -115,6 +116,7 @@ When measuring this skill's quality or comparing runs, reuse these records: mand
 - Every in-text citation has a corresponding reference-list entry; dangling citation numbers are blocking.
 - Central claims are backed by actual reading, not abstract-level padding.
 - Recent sources are used when the topic requires current information.
+- Merged references have no confirmed duplicate identities under different keys; cited versions and any version changes were checked against the supporting evidence under [source-quality.md](source-quality.md).
 
 ### Figures And Tables
 
@@ -124,6 +126,7 @@ When measuring this skill's quality or comparing runs, reuse these records: mand
 - Image sizes are visually balanced.
 - Tables fit the page and remain readable.
 - Figure labels are readable at final PDF size.
+- Data plots use meaningful axes/grouping and define sample size and any error intervals; aggregation, significance and visual encoding follow [Data Plot Semantics](figures-and-diagrams.md#data-plot-semantics).
 - Captions and source lines remain close to the figure/table they describe.
 - TikZ/self-drawn arrows are visible, point to the intended node/region, avoid unnecessary crossings, and remain readable after DOCX/PDF scaling.
 - Flowcharts, pipelines, architecture diagrams, timelines, and mechanism figures completed a Review And Revise pass after rendering.

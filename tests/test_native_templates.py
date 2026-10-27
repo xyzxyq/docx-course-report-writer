@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import shutil
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -27,7 +28,10 @@ class NativeTemplatesTest(unittest.TestCase):
             project = root / '中文 project'
             shutil.copytree(ROOT / 'skill-assets' / fmt, project)
             src = project / ('main.' + extension)
-            src.write_text(src.read_text(encoding='utf-8').replace('提交日期', '2026-10-23'), encoding='utf-8')
+            source = src.read_text(encoding='utf-8').replace('提交日期', '2026-10-23')
+            if fmt == 'typst':
+                source = source.replace('= 研究目的\n', '= 研究目的\n排版回归' + '中' * 130 + '测量结束\n\n')
+            src.write_text(source, encoding='utf-8')
             output = root / 'output' / '课程 report.pdf'
             def build(source, target):
                 result = subprocess.run([
@@ -57,6 +61,17 @@ class NativeTemplatesTest(unittest.TestCase):
                 self.assertIn('表2.1仅展示记录结构', texts[4], 'cross-chapter references must retain the target chapter')
                 self.assertIn('参考文献', texts[5])
                 self.assertIn('typst.app', texts[5])
+                if fmt == 'typst':
+                    tp = doc[2].get_textpage()
+                    text = tp.get_text_range()
+                    start, end = text.index('排版回归'), text.index('测量结束')
+                    rows = sorted({round(tp.get_charbox(i)[1], 2)
+                                   for i in range(start, end) if text[i] == '中'})
+                    self.assertGreaterEqual(len(rows), 3)
+                    gap = statistics.median(b - a for a, b in zip(rows, rows[1:]))
+                    self.assertAlmostEqual(17, gap, delta=0.4,
+                                           msg='CJK baseline gap must not collapse to the former 12 pt')
+                    tp.close()
                 # The citation must be raised relative to its preceding Chinese character.
                 page = doc[2]
                 tp = page.get_textpage()

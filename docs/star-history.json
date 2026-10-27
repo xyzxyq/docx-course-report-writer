@@ -1,0 +1,154 @@
+{
+  "repository": "xyzxyq/docx-course-report-writer",
+  "retrieved_at": "2026-10-27T20:58:35+08:00",
+  "timezone": "Asia/Shanghai",
+  "source": "GitHub REST stargazers with application/vnd.github.star+json",
+  "scope": "Current stargazers grouped by their starred_at date; excludes removed stars, not historical net totals. Static snapshot, no scheduled refresh.",
+  "current_stars": 61,
+  "daily": [
+    {
+      "date": "2026-06-08",
+      "cumulative_current_stars": 1
+    },
+    {
+      "date": "2026-06-11",
+      "cumulative_current_stars": 3
+    },
+    {
+      "date": "2026-06-12",
+      "cumulative_current_stars": 5
+    },
+    {
+      "date": "2026-06-14",
+      "cumulative_current_stars": 6
+    },
+    {
+      "date": "2026-06-15",
+      "cumulative_current_stars": 12
+    },
+    {
+      "date": "2026-06-16",
+      "cumulative_current_stars": 17
+    },
+    {
+      "date": "2026-06-17",
+      "cumulative_current_stars": 18
+    },
+    {
+      "date": "2026-06-18",
+      "cumulative_current_stars": 20
+    },
+    {
+      "date": "2026-06-19",
+      "cumulative_current_stars": 22
+    },
+    {
+      "date": "2026-06-20",
+      "cumulative_current_stars": 24
+    },
+    {
+      "date": "2026-06-21",
+      "cumulative_current_stars": 29
+    },
+    {
+      "date": "2026-06-22",
+      "cumulative_current_stars": 30
+    },
+    {
+      "date": "2026-06-23",
+      "cumulative_current_stars": 33
+    },
+    {
+      "date": "2026-06-25",
+      "cumulative_current_stars": 34
+    },
+    {
+      "date": "2026-06-29",
+      "cumulative_current_stars": 36
+    },
+    {
+      "date": "2026-07-01",
+      "cumulative_current_stars": 37
+    },
+    {
+      "date": "2026-07-02",
+      "cumulative_current_stars": 38
+    },
+    {
+      "date": "2026-07-05",
+      "cumulative_current_stars": 39
+    },
+    {
+      "date": "2026-07-08",
+      "cumulative_current_stars": 40
+    },
+    {
+      "date": "2026-07-09",
+      "cumulative_current_stars": 41
+    },
+    {
+      "date": "2026-07-14",
+      "cumulative_current_stars": 43
+    },
+    {
+      "date": "2026-07-16",
+      "cumulative_current_stars": 44
+    },
+    {
+      "date": "2026-07-28",
+      "cumulative_current_stars": 45
+    },
+    {
+      "date": "2026-07-30",
+      "cumulative_current_stars": 46
+    },
+    {
+      "date": "2026-08-05",
+      "cumulative_current_stars": 47
+    },
+    {
+      "date": "2026-08-26",
+      "cumulative_current_stars": 48
+    },
+    {
+      "date": "2026-09-07",
+      "cumulative_current_stars": 49
+    },
+    {
+      "date": "2026-09-14",
+      "cumulative_current_stars": 50
+    },
+    {
+      "date": "2026-09-27",
+      "cumulative_current_stars": 51
+    },
+    {
+      "date": "2026-10-09",
+      "cumulative_current_stars": 52
+    },
+    {
+      "date": "2026-10-11",
+      "cumulative_current_stars": 53
+    },
+    {
+      "date": "2026-10-14",
+      "cumulative_current_stars": 55
+    },
+    {
+      "date": "2026-10-15",
+      "cumulative_current_stars": 56
+    },
+    {
+      "date": "2026-10-20",
+      "cumulative_current_stars": 57
+    },
+    {
+      "date": "2026-10-25",
+      "cumulative_current_stars": 59
+    },
+    {
+      "date": "2026-10-27",
+      "cumulative_current_stars": 61
+    }
+  ]
+}

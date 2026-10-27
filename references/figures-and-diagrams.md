@@ -36,6 +36,16 @@ Choose the production method by what the figure must do:
 
 For deterministic diagrams, choose TikZ, SVG, Mermaid or another suitable reproducible tool based on the figure and available runtime. Python is appropriate for data plots and computed graphics. TikZ is optional; no mandatory minimum applies, and a Typst/DOCX report need not install TeX solely to create a figure.
 
+## Data Plot Semantics
+
+For data plots, identify the question, variables, units, grouping and sample size before choosing a chart. Use saved data and existing plotting tools; this does not add a mandatory EDA pipeline or a new approval step.
+
+- Show variation or individual observations when an aggregate would hide information needed for the comparison, especially with small samples. Connect points only when their order/continuity has meaning; explain axis transformations or truncation that could change interpretation.
+- Define error bars/bands in the caption (for example SD, SEM or a stated confidence interval), the sample size and what counts as an independent observation. Identify tests/corrections only when significance is actually reported; never invent uncertainty or significance from summary values alone.
+- Use distinguishable colors plus labels, markers or line styles where needed. Check labels, legends and intervals at the final insertion size; a grayscale preview is useful when print use or color-only encoding makes it relevant.
+
+Choose conventions that suit the assignment and evidence; no universal journal-size preset or blanket chart-type ban applies. These checks share the existing review and repair budget.
+
 ## Real Experiment Screenshot Rules
 
 Use these rules when screenshots are evidence:

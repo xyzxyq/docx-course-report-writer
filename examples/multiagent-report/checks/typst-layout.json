@@ -1,0 +1,77 @@
+{
+  "before": {
+    "sha256": "c4d71648b89bba2e6a699330116aa77b5149fe1b11102696a4f229764d491670",
+    "pages": 9,
+    "body_baseline_pt": 12.02,
+    "missing_paragraphs": [],
+    "citation_numbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "raster_images": 0
+  },
+  "after": {
+    "sha256": "f291f26ed773377d535bec57831874205ec212449802fd05482a26d07143d21c",
+    "pages": 10,
+    "body_baseline_pt": 17.0,
+    "missing_paragraphs": [],
+    "citation_numbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "raster_images": 0
+  },
+  "latex": {
+    "sha256": "26d7c9f0380e5bebf03eabcef4a0928a90030ab96206553485c8028fd0b218b9",
+    "pages": 11,
+    "body_baseline_pt": 17.0,
+    "missing_paragraphs": [],
+    "citation_numbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "raster_images": 0
+  },
+  "review": {
+    "scope": "main-agent layout self-review; all 10 actual rendered pages read; unchanged content evidence reused",
+    "passed": true,
+    "blank_pages": [],
+    "limitations": "User acceptance and cross-host font behavior not yet checked."
+  }
+}

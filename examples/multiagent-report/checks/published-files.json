@@ -1,0 +1,94 @@
+{
+  "report-latex.pdf": {
+    "sha256": "26d7c9f0380e5bebf03eabcef4a0928a90030ab96206553485c8028fd0b218b9",
+    "bytes": 563397
+  },
+  "report-typst.pdf": {
+    "sha256": "f291f26ed773377d535bec57831874205ec212449802fd05482a26d07143d21c",
+    "bytes": 413233
+  },
+  "report-docx-preview.pdf": {
+    "sha256": "3cb19c2a0f06404855dbcf84a41be9871b423d070ee63e8d0cc6d5c7227a2033",
+    "bytes": 515538
+  },
+  "report.docx": {
+    "sha256": "0d734af361c0d8d9ec54af607b1285e413fd3d02e2514bb570586b2454acde6c",
+    "bytes": 343443
+  },
+  "references-ledger.json": {
+    "sha256": "6807dbc43adc226ae14d44fda6d90d4e489353fc49ffece223be571dc5becfec",
+    "bytes": 11661
+  },
+  "README.md": {
+    "sha256": "8dfcfd4d5b32a40a7f406ec25d9cdf2b127f4841d8408a323cabeb27b62f548f",
+    "bytes": 3403
+  },
+  "latex/main.tex": {
+    "sha256": "72d4b29c7f41e37b613d197fbe20a6e8e5b18a1237cfba486e11187fbf67aaaa",
+    "bytes": 19544
+  },
+  "latex/references.bib": {
+    "sha256": "69893bd51db3ac77e47c255e74af092416290ce9e4276c960462ee9b5f421188",
+    "bytes": 7179
+  },
+  "typst/main.typ": {
+    "sha256": "40a9703e17226e740bb0048c5b6760952531f630afec1798948b30be642368b9",
+    "bytes": 20099
+  },
+  "typst/references.bib": {
+    "sha256": "69893bd51db3ac77e47c255e74af092416290ce9e4276c960462ee9b5f421188",
+    "bytes": 7179
+  },
+  "figures/collaboration.pptx": {
+    "sha256": "e1a5cbd1d909e460cb19033a990da400716c4dd6795e4e01e2f4ac0dd398dda1",
+    "bytes": 6973
+  },
+  "figures/collaboration.pdf": {
+    "sha256": "ca4bfca179dc3c947ac9d2d9af7d2a584c4b97ea8fa2c6dc477904814f1ad1b5",
+    "bytes": 198609
+  },
+  "figures/collaboration.svg": {
+    "sha256": "676834a577d6b66490fae97331b0d85b319db219f1a8c861a99a50105046a525",
+    "bytes": 192253
+  },
+  "previews/docx-body.png": {
+    "sha256": "01052a41b3d4be21150bab6c8f7406f48c769308d1682371910ffceed7be2ac6",
+    "bytes": 391805
+  },
+  "previews/latex-body.png": {
+    "sha256": "3a06ff1c8885296e69cefe9eb8b0473ee2421a8bf1fba51bc55d9fe01f391e1e",
+    "bytes": 385799
+  },
+  "previews/typst-body.png": {
+    "sha256": "ad2d2f5be875447f74b9f2720f91e1e11014a32642ed76c23c288802d8725be3",
+    "bytes": 462857
+  },
+  "previews/typst-before.png": {
+    "sha256": "cdd99b8f39f284055900917abd24bff2cca0a88b33e6ab1ea3fc17afe6d66bf0",
+    "bytes": 388047
+  },
+  "checks/typst-layout.json": {
+    "sha256": "b9119e65bb35c33df6a3e312a227c24decccfcd9c70697a780e4d92d3a347164",
+    "bytes": 1353
+  },
+  "checks/figure-structure.json": {
+    "sha256": "40afc8ca2dad109ba3989147c0a6ad0805e3ed7c6f78588d1b0b1fa3d53dd9b6",
+    "bytes": 177
+  },
+  "latex/assets/collaboration-figure.pdf": {
+    "sha256": "ca4bfca179dc3c947ac9d2d9af7d2a584c4b97ea8fa2c6dc477904814f1ad1b5",
+    "bytes": 198609
+  },
+  "latex/assets/collaboration-figure.svg": {
+    "sha256": "676834a577d6b66490fae97331b0d85b319db219f1a8c861a99a50105046a525",
+    "bytes": 192253
+  },
+  "typst/assets/collaboration-figure.pdf": {
+    "sha256": "ca4bfca179dc3c947ac9d2d9af7d2a584c4b97ea8fa2c6dc477904814f1ad1b5",
+    "bytes": 198609
+  },
+  "typst/assets/collaboration-figure.svg": {
+    "sha256": "676834a577d6b66490fae97331b0d85b319db219f1a8c861a99a50105046a525",
+    "bytes": 192253
+  }
+}

@@ -30,7 +30,23 @@
 
 DOCX, LaTeX and Typst authoring use matching built-in templates. Ask for the format unless explicitly specified; native formats deliver source plus PDF. The main agent integrates the report; substantial reports use bounded specialists and an independent reviewer when available, while small edits stay local. Disclose subagent models, reasoning efforts and concurrency at first use; users may adjust or disable them. See [collaboration settings](references/multi-agent-workflow.md). Keep one full review and at most two focused repair rounds. Superpowers is optional. See [commands and limits](references/output-formats.md), [native templates](references/native-templates.md), and [platform status](docs/platform-support.md).
 
-Current verification includes **47 automated tests** and **12 read-only behavioral scenarios**. Both native templates were compiled and inspected on macOS, and a Transformer figure exercised PDF/SVG-to-DOCX insertion. Word/WPS desktop behavior, Windows execution and real-report quality/speed A/B comparisons remain unverified. See the [verification record](docs/verification-2026-10-23.md). The installed skill identifier remains `docx-course-report-writer`.
+All **59 automated tests pass**, including 12 placeholder-fidelity regressions and a compiled-PDF CJK line-spacing check. Placeholder replacement preserves unaffected formatting/media and rejects complex boundaries. The Typst body now uses an approximately 17 pt baseline gap with more space around headings and references. The 12 read-only scenarios remain historical evidence. Word/WPS final appearance, Windows execution and quality/speed A/B comparisons remain unverified. See the [current verification record](docs/verification-2026-10-27.md).
+
+## Latest three-format report example
+
+The same Chinese multi-agent research report was built separately as DOCX, LaTeX and Typst: five chapters, about 5,138 Chinese characters and 14 references.
+
+| Format | Report | Editable source | Status |
+|---|---|---|---|
+| DOCX | [DOCX](examples/multiagent-report/report.docx) · [PDF preview](examples/multiagent-report/report-docx-preview.pdf) | DOCX itself | Body/layout checked; **TOC still needs updating, not submission-ready** |
+| LaTeX | [11-page PDF](examples/multiagent-report/report-latex.pdf) | [Source project](examples/multiagent-report/latex) | Native build and independent page review passed |
+| Typst | [Revised 10-page PDF](examples/multiagent-report/report-typst.pdf) | [Source project](examples/multiagent-report/typst) | Dense layout corrected; all pages and spacing regression checked |
+
+| DOCX / LibreOffice | LaTeX | Revised Typst |
+|---|---|---|
+| ![DOCX body](examples/multiagent-report/previews/docx-body.png) | ![LaTeX body](examples/multiagent-report/previews/latex-body.png) | ![Typst body](examples/multiagent-report/previews/typst-body.png) |
+
+Typst's measured body baseline gap increased from 12.02 to 17.00 pt without changing the report content. [Editable figure PPTX](examples/multiagent-report/figures/collaboration.pptx), [vector PDF](examples/multiagent-report/figures/collaboration.pdf) and [scope/build notes](examples/multiagent-report/README.md) are included. This is a literature report with a conceptual illustration, not a new model experiment.
 
 <a id="subagent-settings"></a>
 
@@ -392,3 +408,9 @@ Flowcharts and TikZ diagrams often fail because arrows cross, overlap text, or b
 ## Design References
 
 The README layout, language entry, and quick navigation are inspired by [`luongnv89/claude-howto`](https://github.com/luongnv89/claude-howto). The planning, execution, debugging, and verification workflow is aligned with [`obra/superpowers`](https://github.com/obra/superpowers).
+
+## Star History
+
+[![Star History](docs/star-history.svg)](https://github.com/xyzxyq/docx-course-report-writer/stargazers)
+
+**61 stars as of 2026-10-27.** [GitHub API data](docs/star-history.json), accumulated by the star dates of current stargazers. Removed stars are excluded; this is not a historical net-total series. The chart is a dated static snapshot, not a live feed. The hosted image endpoint currently refuses this repository, so this SVG is served directly from the repository.

@@ -45,6 +45,9 @@ python "$env:CODEX_HOME\skills\docx-course-report-writer\scripts\inspect_templat
 ## Editing Rules
 
 - Prefer direct replacement in the copied template: replace placeholder paragraphs, content controls, table cells, and sample body regions.
+- For plain-text placeholders, change only the matched text nodes, including when Word splits a marker across runs. Keep surrounding run formatting, drawings, links and fields intact; replacement text inherits the first matched run's formatting. Do not assign an entire existing run/paragraph's text merely to replace one marker.
+- The bundled builder handles ordinary body/table placeholders; it rejects visible matches inside fields/links or across non-text boundaries before saving. Content controls, tracked revisions and other complex regions require inspection and an appropriate native editing route, not a claim of automatic support. Compare non-target structure as well as rendered pages.
+- In a label/value table, an explicit placeholder takes precedence over whole-value filling. Without a placeholder, the adjacent cell's first paragraph is treated as the value to replace; use explicit markers when that paragraph also contains explanatory text. Rebuild from the original template, not a previously filled copy whose markers are gone.
 - Preserve section properties and style definitions. Do not call a whole-document clear operation until after the contract identifies what structural elements must be retained.
 - When using the bundled `scripts/build_report.py`, pass the user template through `--template`; the script now uses copy-first preservation by default for user-provided templates. Use `--drop-template-body` only after the Template Fidelity Contract or the user explicitly says the body may be discarded.
 - Use `scripts/qa_docx_report.py --template-fidelity-template template.docx` during final QA. Do not pass `--allow-section-drift` or `--allow-style-loss` unless the fallback is documented and approved.
