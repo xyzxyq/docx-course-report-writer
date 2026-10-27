@@ -1,0 +1,60 @@
+name: Update Star History
+
+on:
+  schedule:
+    - cron: '17 0 * * *' # 08:17 Asia/Shanghai
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: star-history
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+      - name: Download and validate the official Star History chart
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          chart="$(mktemp)"
+          trap 'rm -f "$chart"' EXIT
+          curl --fail --location --silent --show-error --retry 3 --max-time 60 \
+            "https://api.star-history.com/svg?repos=${REPOSITORY}&type=Date" \
+            --output "$chart"
+          python3 - "$chart" <<'PY'
+          import os
+          import sys
+          from pathlib import Path
+          from xml.etree import ElementTree as ET
+
+          data = Path(sys.argv[1]).read_bytes()
+          root = ET.fromstring(data)
+          assert root.tag == '{http://www.w3.org/2000/svg}svg', 'Expected an SVG chart'
+          labels = ' '.join(''.join(node.itertext()) for node in root.iter()
+                            if node.tag == '{http://www.w3.org/2000/svg}text')
+          assert os.environ['REPOSITORY'] in labels, 'Missing repository legend'
+          assert 'GitHub Stars' in labels, 'Missing chart axis'
+          Path('docs/star-history.svg').write_bytes(data)
+          PY
+      - name: Commit chart changes
+        run: |
+          set -euo pipefail
+          git add docs/star-history.svg
+          if git diff --cached --quiet; then
+            echo "The official chart is unchanged."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: refresh Star History chart [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main

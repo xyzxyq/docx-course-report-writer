@@ -411,6 +411,6 @@ The README layout, language entry, and quick navigation are inspired by [`luongn
 
 ## Star History
 
-[![Star History](docs/star-history.svg)](https://github.com/xyzxyq/docx-course-report-writer/stargazers)
+[![Star History](docs/star-history.svg)](https://www.star-history.com/#xyzxyq/docx-course-report-writer&Date)
 
-**61 stars as of 2026-10-27.** [GitHub API data](docs/star-history.json), accumulated by the star dates of current stargazers. Removed stars are excluded; this is not a historical net-total series. The chart is a dated static snapshot, not a live feed. The hosted image endpoint currently refuses this repository, so this SVG is served directly from the repository.
+Uses the official [Star History](https://github.com/star-history/star-history) chart. [GitHub Actions](https://github.com/xyzxyq/docx-course-report-writer/actions/workflows/star-history.yml) refreshes it daily at **00:17 UTC (08:17 Asia/Shanghai)** and supports manual runs; unchanged charts do not create commits. Download or validation failures preserve the last valid chart and are visible in Actions. Scheduled runs may be delayed, and upstream caching can affect data freshness. GitHub pauses scheduled workflows after 60 days without repository activity; re-enable the workflow in Actions if that happens.

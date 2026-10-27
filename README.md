@@ -418,6 +418,6 @@ DOCX 包结构通过不等于页面排版通过。目录、图表、表格、代
 
 ## Star History
 
-[![Star History](docs/star-history.svg)](https://github.com/xyzxyq/docx-course-report-writer/stargazers)
+[![Star History](docs/star-history.svg)](https://www.star-history.com/#xyzxyq/docx-course-report-writer&Date)
 
-截至 **2026-10-27，共61颗Star**。[数据](docs/star-history.json)来自GitHub API，按当前仍保留星标的用户的star时间累计；不包含已取消的star，不等同历史净总数。此图为日期标注的静态快照，并非实时更新。在线图接口当前拒绝访问本仓库，因此采用仓库内可直接显示的SVG。
+采用 [Star History](https://github.com/star-history/star-history) 官方趋势图。[GitHub Actions](https://github.com/xyzxyq/docx-course-report-writer/actions/workflows/star-history.yml) 每天北京时间 **08:17（UTC 00:17）** 自动拉取并更新，也支持手动运行；图表未变化时不产生提交。下载或校验失败时保留上次有效图，运行状态可在 Actions 中查看。调度可能延迟，显示数据也受上游缓存影响。 公开仓库连续60天无活动时，GitHub会暂停定时任务，需在 Actions 中重新启用。
